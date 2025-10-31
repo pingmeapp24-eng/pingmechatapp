@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PingMe</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* কাস্টম স্ক্রলবার স্টাইল */
@@ -47,12 +45,9 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen antialiased">
 
-    <!-- প্রধান কন্টেইনার -->
     <div id="main-container" class="flex flex-col md:flex-row h-screen">
 
-        <!-- সাইডবার: চ্যাট লিস্ট, ফ্রেন্ডস, গ্রুপস, এআই -->
         <div id="sidebar" class="w-full md:w-80 bg-gray-800 flex flex-col border-r border-gray-700">
-            <!-- হেডার ও নেভিগেশন -->
             <div class="p-4 border-b border-gray-700 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <h1 class="text-2xl font-bold text-indigo-400">PingMe</h1>
@@ -69,7 +64,6 @@
                 </div>
             </div>
             
-            <!-- নেভিগেশন ট্যাব -->
             <nav class="flex text-sm font-medium border-b border-gray-700">
                 <button id="chat-tab" class="flex-1 p-3 text-center border-b-2 border-indigo-500 text-indigo-400 transition-colors">Chats</button>
                 <button id="friends-tab" class="flex-1 p-3 text-center border-b-2 border-transparent text-gray-400 hover:text-indigo-400 transition-colors">Friends</button>
@@ -77,11 +71,8 @@
                 <button id="ai-tab" class="flex-1 p-3 text-center border-b-2 border-transparent text-gray-400 hover:text-indigo-400 transition-colors">AI</button>
             </nav>
 
-            <!-- চ্যাট লিস্ট কন্টেইনার (ডিফল্ট) -->
             <div id="chat-list-container" class="flex-1 overflow-y-auto">
-                <!-- এখানে চ্যাট আইটেমগুলো লোড হবে -->
                 <div id="chat-list-content">
-                    <!-- Global Chat আইটেম -->
                     <div id="global-chat-link" class="flex items-center p-3 cursor-pointer hover:bg-gray-700 transition duration-150 border-l-4 border-indigo-500">
                         <div class="relative">
                             <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-600 text-lg font-semibold">G</span>
@@ -94,7 +85,6 @@
                 </div>
             </div>
 
-            <!-- ফ্রেন্ডস পেজ কন্টেইনার -->
             <div id="friends-page-container" class="flex-1 overflow-y-auto hidden">
                 <div class="p-3 border-b border-gray-700">
                     <button id="add-friend-btn" class="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition font-semibold text-sm">Add Friend</button>
@@ -106,11 +96,9 @@
                 </div>
                 <h2 class="text-lg font-semibold p-3 text-indigo-300 border-b border-gray-700">Your Friends</h2>
                 <div id="friend-list-content">
-                    <!-- ফ্রেন্ড লিস্ট এখানে লোড হবে -->
-                </div>
+                    </div>
             </div>
 
-            <!-- গ্রুপস পেজ কন্টেইনার -->
             <div id="groups-page-container" class="flex-1 overflow-y-auto hidden">
                 <div class="p-3 border-b border-gray-700">
                     <button id="create-group-btn" class="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition font-semibold text-sm">Create New Group</button>
@@ -121,14 +109,11 @@
                 </div>
                 <h2 class="text-lg font-semibold p-3 text-indigo-300 border-b border-gray-700">Your Groups</h2>
                 <div id="group-list-content">
-                    <!-- গ্রুপ লিস্ট এখানে লোড হবে -->
-                </div>
+                    </div>
             </div>
 
-            <!-- এআই চ্যাট পেজ কন্টেইনার -->
             <div id="ai-page-container" class="flex-1 overflow-y-auto hidden">
                 <div id="ai-messages-container" class="flex-1 overflow-y-auto p-4 space-y-4">
-                    <!-- এআই চ্যাট মেসেজগুলো এখানে লোড হবে -->
                     <div class="flex justify-start">
                         <div class="bubble-other bg-gray-700 text-white p-3 rounded-lg shadow-md">
                             <p class="font-semibold text-indigo-300">Gemini AI</p>
@@ -136,7 +121,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- এআই চ্যাট ইনপুট ফর্ম -->
                 <form id="ai-chat-form" class="p-3 border-t border-gray-700 flex items-center bg-gray-800">
                     <input type="text" id="ai-chat-input" placeholder="Ask Gemini..." required class="flex-1 p-3 rounded-l-lg bg-gray-700 border-none focus:outline-none text-white placeholder-gray-400">
                     <button type="submit" class="bg-indigo-600 text-white p-3 rounded-r-lg hover:bg-indigo-700 transition-colors">
@@ -149,9 +133,7 @@
 
         </div>
 
-        <!-- চ্যাট এরিয়া -->
         <div id="chat-area" class="flex-1 flex flex-col hidden md:flex">
-            <!-- চ্যাট হেডার -->
             <div id="chat-header" class="bg-gray-800 p-4 border-b border-gray-700 flex items-center justify-between">
                 <h2 id="chat-name" class="text-xl font-semibold">Global Chat</h2>
                 <div class="flex items-center space-x-4">
@@ -164,12 +146,9 @@
                 </div>
             </div>
 
-            <!-- মেসেজ কন্টেইনার -->
             <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4">
-                <!-- মেসেজগুলো এখানে লোড হবে -->
-            </div>
+                </div>
 
-            <!-- চ্যাট ইনপুট ফর্ম -->
             <form id="chat-form" class="p-4 border-t border-gray-700 flex items-center bg-gray-800">
                 <button type="button" id="emoji-toggle-btn" class="text-gray-400 hover:text-yellow-400 p-2 rounded-full transition"></button>
                 <input type="text" id="chat-input" placeholder="Type a message..." required class="flex-1 p-3 mx-2 rounded-lg bg-gray-700 border-none focus:outline-none text-white placeholder-gray-400">
@@ -183,7 +162,6 @@
         </div>
     </div>
 
-    <!-- টোস্ট নোটিফিকেশন কন্টেইনার -->
     <div id="toast-container" class="fixed bottom-4 right-4 space-y-2"></div>
 
     <script type="module">
@@ -191,15 +169,27 @@
         import { initializeApp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, query, orderBy, limit, addDoc, serverTimestamp, arrayUnion, arrayRemove, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js"; // Added analytics import
 
         // Global Variables
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyADEk13HgPmPjiy2VD6RDYU_Z2pPJFM9gQ",
+          authDomain: "pingme-7fad3.firebaseapp.com",
+          databaseURL: "https://pingme-7fad3-default-rtdb.firebaseio.com",
+          projectId: "pingme-7fad3",
+          storageBucket: "pingme-7fad3.firebasestorage.app",
+          messagingSenderId: "8513825883",
+          appId: "1:8513825883:web:b8676bbdb4818c3d4ae37e",
+          measurementId: "G-TNN3PTP5YP"
+        };
+
+        const appId = firebaseConfig.appId; // Using appId from the config
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         const CHAT_ROOM_ID = 'global_chat'; // সবার জন্য একক চ্যাট রুম
 
         // Firebase Service Instances
-        let app, db, auth;
+        let app, db, auth, analytics; // Added analytics
         let userId = null; // বর্তমান ইউজারের আইডি
         let userDisplayName = 'Unknown User'; // ইউজারের ডিসপ্লে নাম
 
@@ -290,14 +280,12 @@
 
         async function initFirebase() {
             try {
-                if (!firebaseConfig.projectId) {
-                    console.error("Firebase config is missing projectId.");
-                    return;
-                }
+                // The check for projectId is removed as firebaseConfig is now hardcoded
                 setLogLevel('debug'); // ফায়ারবেস লগিং চালু
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
+                analytics = getAnalytics(app); // Initialize analytics
                 
                 // Auth লিসেনার সেটআপ
                 onAuthStateChanged(auth, async (user) => {
@@ -852,7 +840,7 @@
             chatListTab.addEventListener('click', () => showView('chat'));
             friendsTab.addEventListener('click', () => showView('friends'));
             groupsTab.addEventListener('click', () => showView('groups'));
-            aiTab.addEventListener('click', () => showView('ai'));
+aiTab.addEventListener('click', () => showView('ai'));
             document.getElementById('global-chat-link').addEventListener('click', () => showView('chat'));
 
             // ইউজার আইডি ডিসপ্লে টগল
@@ -886,4 +874,3 @@
     </script>
 </body>
 </html>
-
