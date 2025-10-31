@@ -13,14 +13,12 @@
         #messages-container::-webkit-scrollbar,
         #chat-list-container::-webkit-scrollbar,
         #friends-page-container::-webkit-scrollbar,
-        /* #ai-messages-container::-webkit-scrollbar, <-- সরানো হয়েছে */
         #groups-page-container::-webkit-scrollbar {
             width: 6px;
         }
         #messages-container::-webkit-scrollbar-thumb,
         #chat-list-container::-webkit-scrollbar-thumb,
         #friends-page-container::-webkit-scrollbar-thumb,
-        /* #ai-messages-container::-webkit-scrollbar-thumb, <-- সরানো হয়েছে */
         #groups-page-container::-webkit-scrollbar-thumb {
             background-color: #5B5BD6;
             border-radius: 10px;
@@ -172,7 +170,7 @@
             </main>
         </div>
 
-        <!-- === পেজ: বন্ধু তালিকা (AI লিঙ্ক সরানো হয়েছে) === -->
+        <!-- === পেজ: বন্ধু তালিকা (অপরিবর্তিত) === -->
         <div id="friends-page" class="flex flex-col h-full hidden">
             <!-- হেডার -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
@@ -188,9 +186,7 @@
             <!-- বন্ধুদের তালিকা -->
             <main id="friends-page-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100 dark:bg-gray-900">
                 
-                <!-- AI Chat Link (সরানো হয়েছে) -->
-
-                <!-- নতুন: Friend Search Bar -->
+                <!-- Friend Search Bar -->
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
                     <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Find Friends</h3>
                     <div class="flex space-x-2">
@@ -201,7 +197,7 @@
                     </div>
                 </div>
 
-                <!-- নতুন: Search Results Container -->
+                <!-- Search Results Container -->
                 <div id="friend-search-results" class="space-y-3 mt-4">
                     <!-- Search results will appear here -->
                 </div>
@@ -228,11 +224,7 @@
         </div>
 
 
-        <!-- === পেজ: এ আই চ্যাট (সরানো হয়েছে) === -->
-        <!-- <div id="ai-page" class="flex flex-col h-full hidden"> ... </div> -->
-
-
-        <!-- === পেজ: প্রোফাইল (PingMe ID সহ) === -->
+        <!-- === পেজ: প্রোফাইল (অপরিবর্তিত) === -->
         <div id="profile-page" class="flex flex-col h-full hidden">
             <!-- ... (হেডার অপরিবর্তিত) ... -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
@@ -308,9 +300,9 @@
         </div>
 
 
-        <!-- === চ্যাট পেইজ (অপরিবর্তিত) === -->
+        <!-- === চ্যাট পেইজ (আপডেটেড: স্ট্যাটাস সহ) === -->
         <div id="chat-page" class="flex flex-col h-full hidden">
-            <!-- ... (সম্পূর্ণরূপে অপরিবর্তিত) ... -->
+            <!-- হেডার (আপডেটেড) -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -322,7 +314,8 @@
                         <img id="chat-header-avatar" src="https://placehold.co/40x40/b794f6/ffffff?text=?" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
                         <div>
                             <h1 id="chat-header-name" class="text-lg font-semibold">...</h1>
-                            <p id="typing-indicator" class="text-xs text-purple-100 h-4">&nbsp;</p>
+                            <!-- নতুন: ইউজার স্ট্যাটাস -->
+                            <p id="chat-header-status" class="text-xs text-purple-100 h-4">&nbsp;</p> 
                         </div>
                     </div>
                     <div class="w-10 h-10"></div>
@@ -378,7 +371,7 @@
             Profile saved successfully!
         </div>
 
-        <!-- === বটম নেভিগেশন বার (আপডেটেড প্রোফাইল আইকন সহ) === -->
+        <!-- === বটম নেভিগেশন বার (অপরিবর্তিত) === -->
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
             <!-- চ্যাট বাটন (অ্যাক্টিভ) -->
             <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-indigo-600 dark:text-indigo-400">
@@ -431,7 +424,8 @@
             updateDoc, 
             increment, 
             where, 
-            getDocs
+            getDocs,
+            writeBatch // <-- মেসেজ সিন করার জন্য
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
@@ -460,12 +454,11 @@
         let unsubscribeUnreadCounts = null;
         let unsubscribeUserDoc = null;
         let unsubscribeFriendsList = null;
-        // let unsubscribeAiChat = null; // <-- সরানো হয়েছে
+        let unsubscribePartnerStatus = null; // <-- নতুন: পার্টনার স্ট্যাটাস লিসেনার
 
         let typingTimeout = null;
         let chatFileToUpload = null; 
         let profileFileToUpload = null; 
-        // let aiChatHistory = []; // <-- সরানো হয়েছে
 
         // কালেকশন পাথ
         const usersCollectionPath = `artifacts/${appId}/public/data/users`;
@@ -477,13 +470,12 @@
         const chatListPage = document.getElementById('chat-list-page');
         const friendsPage = document.getElementById('friends-page');
         const groupsPage = document.getElementById('groups-page');
-        // const aiPage = document.getElementById('ai-page'); // <-- সরানো হয়েছে
         const profilePage = document.getElementById('profile-page');
         const chatPage = document.getElementById('chat-page');
-        const allPages = [loginPage, chatListPage, friendsPage, groupsPage, profilePage, chatPage]; // <-- aiPage সরানো হয়েছে
+        const allPages = [loginPage, chatListPage, friendsPage, groupsPage, profilePage, chatPage]; 
         const tabPages = [chatListPage, friendsPage, groupsPage, profilePage];
 
-        // লগইন পেজ (নতুন)
+        // লগইন পেজ
         const loginFormContainer = document.getElementById('login-form-container');
         const loginEmailInput = document.getElementById('login-email');
         const loginPasswordInput = document.getElementById('login-password');
@@ -492,7 +484,7 @@
         const forgotPasswordBtn = document.getElementById('forgot-password-btn');
         const showRegisterBtn = document.getElementById('show-register-btn');
 
-        // রেজিস্ট্রেশন পেজ (নতুন)
+        // রেজিস্ট্রেশন পেজ
         const registerFormContainer = document.getElementById('register-form-container');
         const registerEmailInput = document.getElementById('register-email');
         const registerPasswordInput = document.getElementById('register-password');
@@ -513,8 +505,6 @@
 
         // ফ্রেন্ডস লিস্ট
         const friendsPageContainer = document.getElementById('friends-page-container');
-        // const aiChatLink = document.getElementById('ai-chat-link'); // <-- সরানো হয়েছে
-        // নতুন: ফ্রেন্ড সার্চ এলিমেন্ট
         const friendSearchInput = document.getElementById('friend-search-input');
         const friendSearchBtn = document.getElementById('friend-search-btn');
         const friendSearchResults = document.getElementById('friend-search-results');
@@ -547,7 +537,8 @@
         const backToChatListButton = document.getElementById('back-to-chat-list');
         const chatHeaderName = document.getElementById('chat-header-name');
         const chatHeaderAvatar = document.getElementById('chat-header-avatar');
-        const typingIndicator = document.getElementById('typing-indicator');
+        const chatHeaderStatus = document.getElementById('chat-header-status'); // <-- নতুন: চ্যাট হেডার স্ট্যাটাস
+        const typingIndicator = document.getElementById('typing-indicator'); // এটি এখন আর ব্যবহৃত হচ্ছে না, chat-header-status দ্বারা প্রতিস্থাপিত
         const emojiToggleBtn = document.getElementById('emoji-toggle-btn');
         const emojiPanel = document.getElementById('emoji-panel');
         const attachFileBtn = document.getElementById('attach-file-btn');
@@ -556,9 +547,6 @@
         const imagePreview = document.getElementById('image-preview');
         const imagePreviewName = document.getElementById('image-preview-name');
         const cancelImagePreviewBtn = document.getElementById('cancel-image-preview');
-
-        // AI পেজ (সরানো হয়েছে)
-        // const aiMessagesContainer = ...
         
         // টোস্ট নোটিফিকেশন
         const toastNotification = document.getElementById('toast-notification');
@@ -642,10 +630,10 @@
             }
         }
 
-        // --- প্রোফাইল পেজ ফাংশন (PingMe ID সহ) ---
+        // --- প্রোফাইল পেজ ফাংশন (অপরিবর্তিত) ---
         function loadProfileDataToForm() {
             if (!currentUserData) return;
-            profileUserId.textContent = currentUserData.pingId || '...'; // PingMe ID দেখানো হচ্ছে
+            profileUserId.textContent = currentUserData.pingId || '...'; 
             profilePicPreview.src = currentUserData.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(currentUserData.displayName || 'U').charAt(0)}`;
             profileDisplayNameInput.value = currentUserData.displayName || '';
             profileBioInput.value = currentUserData.bio || '';
@@ -706,28 +694,13 @@
         }
 
         async function signOutUser() {
+            await updateUserStatus('offline'); // <-- সাইন আউট করার আগে স্ট্যাটাস আপডেট
             try {
                 await signOut(auth);
                 // onAuthStateChanged এটি হ্যান্ডেল করবে এবং লগইন পেজ দেখাবে
             } catch (error) {
                 console.error("Error signing out: ", error);
                 showToast("Error signing out.", true);
-            }
-        }
-
-        // --- ডেমো ইউজার (অপরিবর্তিত) ---
-        async function addDemoUsers() {
-            const demoUsers = [
-                { uid: 'demo_user_1', displayName: 'Alice', photoURL: 'https://placehold.co/80x80/f87171/ffffff?text=A' },
-                { uid: 'demo_user_2', displayName: 'Bob', photoURL: 'https://placehold.co/80x80/60a5fa/ffffff?text=B' },
-                { uid: 'demo_user_3', displayName: 'Charlie', photoURL: 'https://placehold.co/80x80/34d399/ffffff?text=C' }
-            ];
-            for (const user of demoUsers) {
-                const userDocRef = doc(db, usersCollectionPath, user.uid);
-                const userDoc = await getDoc(userDocRef);
-                if (!userDoc.exists()) {
-                    await setDoc(userDocRef, { ...user, createdAt: serverTimestamp(), uid: user.uid }, { merge: true });
-                }
             }
         }
 
@@ -773,16 +746,16 @@
             });
         }
         
-        // --- ফ্রেন্ডস লিস্ট লোড করা (আপডেটেড: এখন শুধু সার্চ পেজ সেটআপ করে) ---
+        // --- ফ্রেন্ডস লিস্ট লোড করা (অপরিবর্তিত) ---
         function loadFriendsList() {
-            if (unsubscribeFriendsList) unsubscribeFriendsList(); // পুরনো কোনো লিসেনার থাকলে বন্ধ করা
+            if (unsubscribeFriendsList) unsubscribeFriendsList(); 
             unsubscribeFriendsList = null; 
             
             friendSearchResults.innerHTML = 
                 `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Search for friends by their email.</span></div>`;
         }
 
-        // --- নতুন: PingMe ID জেনারেটর ---
+        // --- PingMe ID জেনারেটর (অপরিবর্তিত) ---
         function generatePingId() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = 'pm_';
@@ -816,7 +789,7 @@
             });
         }
 
-        // --- চ্যাট পেজ খোলা (অপরিবর্তিত) ---
+        // --- চ্যাট পেজ খোলা (আপডেটেড: স্ট্যাটাস লিসেনার) ---
         async function openChatPage(partnerId, partnerName, partnerPhoto) {
             showPage('chat-page');
             chatHeaderName.textContent = partnerName;
@@ -824,14 +797,48 @@
             currentPartnerId = partnerId;
             currentChatRoomId = currentUserId < partnerId ? `${currentUserId}_${partnerId}` : `${partnerId}_${currentUserId}`;
             messagesContainer.innerHTML = '';
+            
             loadMessagesAndRoom(currentChatRoomId, partnerId);
+            loadPartnerStatus(partnerId); // <-- নতুন: পার্টনার স্ট্যাটাস লোড করা
         }
         
-        // --- AI পেজ খোলা (সরানো হয়েছে) ---
-        // function openAiPage() { ... }
+        // --- নতুন: পার্টনার স্ট্যাটাস লোড ---
+        function loadPartnerStatus(partnerId) {
+            if (unsubscribePartnerStatus) unsubscribePartnerStatus(); // পুরনো লিসেনার বন্ধ
+            const partnerDocRef = doc(db, usersCollectionPath, partnerId);
+            
+            unsubscribePartnerStatus = onSnapshot(partnerDocRef, (docSnap) => {
+                chatHeaderStatus.classList.remove('h-4'); // উচ্চতা সরানো যাতে টেক্সট দেখা যায়
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.status === 'online') {
+                        chatHeaderStatus.textContent = 'Online';
+                    } else {
+                        if (data.lastSeen) {
+                            // সময়কে ফরম্যাট করা
+                            const lastSeenTime = data.lastSeen.toDate();
+                            const now = new Date();
+                            let formattedTime;
+                            
+                            if (lastSeenTime.toDateString() === now.toDateString()) {
+                                // আজ
+                                formattedTime = lastSeenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            } else {
+                                // অন্য দিন
+                                formattedTime = lastSeenTime.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                            }
+                            chatHeaderStatus.textContent = `Last seen ${formattedTime}`;
+                        } else {
+                            chatHeaderStatus.textContent = 'Offline';
+                        }
+                    }
+                } else {
+                    chatHeaderStatus.textContent = 'Offline';
+                }
+            });
+        }
 
-
-        // --- মেসেজ রেন্ডার (অপরিবর্তিত) ---
+        // --- মেসেজ রেন্ডার (আপডেটেড: সেন্ড/সিন আইকন) ---
         function renderMessages(messages) {
             messagesContainer.innerHTML = ''; 
             messages.forEach(msg => {
@@ -839,18 +846,37 @@
                 const alignment = isMe ? 'justify-end' : 'justify-start';
                 const bubbleClass = isMe ? 'bubble-me bg-indigo-600 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
                 const time = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
+
+                // --- নতুন: মেসেজ স্ট্যাটাস আইকন ---
+                let statusIcon = '';
+                if (isMe && msg.status) {
+                    if (msg.status === 'sent') {
+                        statusIcon = '<i class="fas fa-check text-xs ml-1 opacity-70"></i>';
+                    } else if (msg.status === 'seen') {
+                        statusIcon = '<i class="fas fa-check-double text-xs ml-1 text-blue-400"></i>';
+                    }
+                }
+                // --- মেসেজ স্ট্যাটাস আইকন শেষ ---
+
                 const messageEl = document.createElement('div');
                 messageEl.className = `flex ${alignment}`;
+                
                 let contentHTML = '';
                 if (msg.type === 'text') {
                     contentHTML = `<p class="text-base break-words">${msg.content}</p>`;
                 } else if (msg.type === 'image') {
-                    contentHTML = `<img src="${msg.content}" alt="Sent image" class="rounded-lg max-w-xs cursor-pointer" onclick="window.open('${msg.content}', '_blank')" />`;
+                    contentHTML = `
+                        <img src="${msg.content}" alt="Sent image" class="rounded-lg max-w-xs cursor-pointer" onclick="window.open('${msg.content}', '_blank')" />
+                    `;
                 }
+                
                 messageEl.innerHTML = `
                     <div class="max-w-xs md:max-w-md p-3 ${bubbleClass}">
                         ${contentHTML}
-                        <p class="text-xs ${isMe ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">${time}</p>
+                        <p class="text-xs ${isMe ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
+                            ${time}
+                            ${statusIcon} <!-- আইকন এখানে যোগ করা হয়েছে -->
+                        </p>
                     </div>
                 `;
                 messagesContainer.appendChild(messageEl);
@@ -858,13 +884,17 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // --- মেসেজ ও টাইপিং স্ট্যাটাস লোড করা (অপরিবর্তিত) ---
+        // --- মেসেজ ও টাইপিং স্ট্যাটাস লোড করা (আপডেটেড: মেসেজ সিন করা) ---
         function loadMessagesAndRoom(chatRoomId, partnerId) {
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             
             const chatRoomRef = doc(db, chatRoomsCollectionPath, chatRoomId);
             const messagesRef = collection(chatRoomRef, 'messages');
+            
+            // নতুন: মেসেজ 'seen' হিসাবে মার্ক করা
+            markMessagesAsSeen(chatRoomRef, partnerId);
+
             const q = query(messagesRef);
 
             unsubscribeMessages = onSnapshot(q, (snapshot) => {
@@ -877,7 +907,14 @@
             unsubscribeRoom = onSnapshot(chatRoomRef, async (docSnap) => {
                 if (docSnap.exists()) {
                     const roomData = docSnap.data();
-                    typingIndicator.textContent = (roomData.typing && roomData.typing[partnerId]) ? "typing..." : "\u00A0";
+                    
+                    // টাইপিং স্ট্যাটাস এখন chatHeaderStatus দ্বারা কন্ট্রোল হচ্ছে, তাই typingIndicator সরানো হয়েছে
+                    // if (roomData.typing && roomData.typing[partnerId]) {
+                    //     typingIndicator.textContent = "typing...";
+                    // } else {
+                    //     typingIndicator.textContent = "\u00A0"; 
+                    // }
+                    
                     if (roomData.unreadCounts && roomData.unreadCounts[currentUserId] > 0) {
                         await updateDoc(chatRoomRef, {
                             [`unreadCounts.${currentUserId}`]: 0
@@ -887,7 +924,31 @@
             });
         }
 
-        // --- মেসেজ পাঠানো (অপরিবর্তিত) ---
+        // --- নতুন: মেসেজ 'seen' হিসাবে মার্ক করার ফাংশন ---
+        async function markMessagesAsSeen(chatRoomRef, partnerId) {
+            const messagesRef = collection(chatRoomRef, 'messages');
+            const q = query(messagesRef, 
+                where("senderId", "==", partnerId), 
+                where("status", "==", "sent") // <-- শুধুমাত্র 'sent' মেসেজগুলো
+            );
+            
+            try {
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) return; // আপডেট করার কিছু নেই
+                
+                const batch = writeBatch(db);
+                querySnapshot.forEach(doc => {
+                    batch.update(doc.ref, { status: "seen" });
+                });
+                
+                await batch.commit();
+            } catch (error) {
+                console.error("Error marking messages as seen: ", error);
+            }
+        }
+
+
+        // --- মেসেজ পাঠানো (আপডেটেড: 'status: sent') ---
         async function sendGenericMessage(content, type) {
             if (!currentChatRoomId || !currentUserId || !currentPartnerId) return;
             const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
@@ -897,7 +958,8 @@
                     content: content,
                     senderId: currentUserId,
                     timestamp: serverTimestamp(),
-                    type: type
+                    type: type,
+                    status: 'sent' // <-- নতুন: স্ট্যাটাস যোগ করা
                 });
                 const partnerInfo = {
                     [currentUserId]: { displayName: currentUserData.displayName, photoURL: currentUserData.photoURL },
@@ -962,8 +1024,10 @@
             }
         }
 
-        // --- টাইপিং স্ট্যাটাস (অপরিবর্তিত) ---
+        // --- টাইপিং স্ট্যাটাস (আপডেটেড: এটি এখন আর প্রয়োজন নেই) ---
         async function updateTypingStatus(isTyping) {
+            // এই ফাংশনটি এখন আর UI-তে কিছু দেখায় না, 
+            // কিন্তু ভবিষ্যতে 'typing...' দেখানোর জন্য রাখা হলো।
             if (!currentChatRoomId) return;
             const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
             try {
@@ -973,10 +1037,6 @@
             }
         }
 
-        // --- AI চ্যাট ফাংশন (সরানো হয়েছে) ---
-        // function initAiPage() { ... }
-        // function renderAiMessage(...) { ... }
-        // async function handleAiChatSubmit(...) { ... }
 
         // --- নতুন: অথেন্টিকেশন ফাংশন ---
 
@@ -1041,8 +1101,10 @@
                     displayName: `User-${user.uid.substring(0, 6)}`,
                     email: user.email,
                     photoURL: null,
-                    pingId: generatePingId(), // <-- নতুন PingMe ID যোগ করা
-                    createdAt: serverTimestamp()
+                    pingId: generatePingId(), 
+                    createdAt: serverTimestamp(),
+                    status: 'offline', // <-- নতুন: স্ট্যাটাস
+                    lastSeen: serverTimestamp() // <-- নতুন: স্ট্যাটাস
                 };
                 await setDoc(userDocRef, newUser);
 
@@ -1154,12 +1216,22 @@
             }
         }
 
+        // --- নতুন: ইউজার স্ট্যাটাস আপডেট ফাংশন ---
+        async function updateUserStatus(status) {
+            if (!auth.currentUser) return;
+            const userDocRef = doc(db, usersCollectionPath, auth.currentUser.uid);
+            try {
+                await updateDoc(userDocRef, {
+                    status: status,
+                    lastSeen: serverTimestamp()
+                });
+            } catch (error) {
+                console.error("Error updating user status: ", error);
+            }
+        }
 
-        // --- AI চ্যাট হিস্টোরি লোড (সরানো হয়েছে) ---
-        // function loadAiChatHistory() { ... }
 
-
-        // --- রিয়েল-টাইম ইউজার ডক লিসেনার (PingMe ID সহ) ---
+        // --- রিয়েল-টাইম ইউজার ডক লিসেনার (অপরিবর্তিত) ---
         function setupUserDocumentListener(uid) {
             if (unsubscribeUserDoc) unsubscribeUserDoc();
             const userDocRef = doc(db, usersCollectionPath, uid);
@@ -1167,38 +1239,36 @@
             unsubscribeUserDoc = onSnapshot(userDocRef, async (userDoc) => {
                 const defaultName = `User-${uid.substring(0, 6)}`;
                 if (!userDoc.exists()) {
-                    // এটি একটি ফলব্যাক, যদি রেজিস্ট্রেশনের সময় ডক তৈরি না হয়
                     const newUser = {
                         uid: uid,
                         displayName: auth.currentUser.displayName || defaultName,
                         photoURL: auth.currentUser.photoURL || null,
                         email: auth.currentUser.email || null,
-                        pingId: generatePingId(), // ফলব্যাক PingMe ID
-                        createdAt: serverTimestamp()
+                        pingId: generatePingId(), 
+                        createdAt: serverTimestamp(),
+                        status: 'online', // <-- নতুন: স্ট্যাটাস
+                        lastSeen: serverTimestamp() // <-- নতুন: স্ট্যাটাস
                     };
                     await setDoc(userDocRef, newUser, { merge: true });
                     currentUserData = newUser;
                     showProfileModal();
                 } else {
                     currentUserData = userDoc.data();
-                    // --- নতুন: পুরনো ইউজারদের জন্য PingMe ID তৈরি করা ---
                     if (!currentUserData.pingId) {
                         const newPingId = generatePingId();
                         try {
                             await updateDoc(userDocRef, { pingId: newPingId });
-                            currentUserData.pingId = newPingId; // লোকাL কপি আপডেট
+                            currentUserData.pingId = newPingId; 
                         } catch (e) {
                             console.error("Error adding pingId: ", e);
                         }
                     }
-                    // --- PingMe ID চেক শেষ ---
-
                     if (!currentUserData.displayName || currentUserData.displayName === defaultName) {
                         if(auth.currentUser.displayName && auth.currentUser.displayName !== defaultName) {
                             await updateDoc(userDocRef, { displayName: auth.currentUser.displayName });
                             currentUserData.displayName = auth.currentUser.displayName;
                         } else {
-                            showProfileModal(); // নাম সেট করতে বলা
+                            showProfileModal(); 
                         }
                     }
                 }
@@ -1206,24 +1276,25 @@
             }, (error) => console.error("Error listening to user document: ", error));
         }
 
-        // --- সকল লিসেনার বন্ধ করা (AI ক্লিনার সরানো হয়েছে) ---
+        // --- সকল লিসেনার বন্ধ করা (আপডেটেড) ---
         function cleanupAllListeners() {
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             if (unsubscribeUnreadCounts) unsubscribeUnreadCounts();
             if (unsubscribeUserDoc) unsubscribeUserDoc();
             if (unsubscribeFriendsList) unsubscribeFriendsList();
-            // if (unsubscribeAiChat) unsubscribeAiChat(); // <-- সরানো হয়েছে
+            if (unsubscribePartnerStatus) unsubscribePartnerStatus(); // <-- নতুন
+            
             unsubscribeMessages = null;
             unsubscribeRoom = null;
             unsubscribeUnreadCounts = null;
             unsubscribeUserDoc = null;
             unsubscribeFriendsList = null;
-            // unsubscribeAiChat = null; // <-- সরানো হয়েছে
+            unsubscribePartnerStatus = null; // <-- নতুন
         }
 
 
-        // --- অ্যাপ চালু করা (আপডেটেড: Auth ফ্লো) ---
+        // --- অ্যাপ চালু করা (আপডেটেড: Auth ফ্লো + স্ট্যাটাস) ---
         async function initApp() {
             if (!firebaseConfig.apiKey) {
                 document.body.innerHTML = '<div style="color: red; padding: 20px;">Error: Firebase configuration is missing.</div>';
@@ -1237,6 +1308,26 @@
                 storage = getStorage(app); 
                 setLogLevel('Debug'); 
 
+                // নতুন: পেজ হাইড/শো হলে স্ট্যাটাস আপডেট
+                document.addEventListener("visibilitychange", () => {
+                    if (auth.currentUser) {
+                        if (document.visibilityState === "visible") {
+                            updateUserStatus('online');
+                        } else {
+                            updateUserStatus('offline');
+                        }
+                    }
+                });
+
+                // নতুন: ব্রাউজার বন্ধ করার চেষ্টা
+                window.addEventListener('beforeunload', (e) => {
+                    if (auth.currentUser) {
+                        // নির্ভরযোগ্য নয়, কিন্তু চেষ্টার জন্য
+                        updateUserStatus('offline');
+                    }
+                });
+
+
                 onAuthStateChanged(auth, async (user) => {
                     cleanupAllListeners(); 
 
@@ -1244,6 +1335,7 @@
                         if (user.emailVerified) {
                             // --- ইউজার লগড ইন এবং ভেরিফাইড ---
                             currentUserId = user.uid;
+                            await updateUserStatus('online'); // <-- লগইন করলে অনলাইন
                             setupUserDocumentListener(user.uid); 
                             
                             messageInput.disabled = false;
@@ -1252,12 +1344,11 @@
                             loadChatList();
                             loadUnreadCounts(); 
                             loadFriendsList();
-                            // loadAiChatHistory(); // <-- সরানো হয়েছে
                             
                             showPage('chat-list-page');
                         } else {
                             // --- ইউজার লগড ইন কিন্তু ভেরিফাইড নয় ---
-                            currentUserId = null; // লগআউট হিসাবে গণ্য করা
+                            currentUserId = null; 
                             showPage('login-page');
                             
                             loginMessage.innerHTML = `
@@ -1269,7 +1360,6 @@
                                     Resend verification email
                                 </button>
                             `;
-                            // বাটনটি ডাইনামিকলি তৈরি হওয়ায় এখানেই লিসেনার যোগ করতে হবে
                             document.getElementById('resend-verification-btn').addEventListener('click', async () => {
                                 try {
                                     await sendEmailVerification(user);
@@ -1285,14 +1375,13 @@
                         // --- ইউজার লগড আউট ---
                         currentUserId = null;
                         currentUserData = {};
-                        // aiChatHistory = []; // <-- সরানো হয়েছে
                         
                         messageInput.disabled = true;
                         sendButton.disabled = true;
 
-                        showPage('login-page'); // লগইন পেজ দেখানো
-                        loginMessage.innerHTML = ''; // মেসেজ ক্লিয়ার করা
-                        showLoginForm(); // নিশ্চিত করা যে লগইন ফর্ম দেখা যাচ্ছে
+                        showPage('login-page'); 
+                        loginMessage.innerHTML = ''; 
+                        showLoginForm(); 
                     }
                 });
 
@@ -1302,7 +1391,7 @@
             }
         }
 
-        // --- ইভেন্ট লিসেনার সেটআপ (AI লিসেনার সরানো হয়েছে) ---
+        // --- ইভেন্ট লিসেনার সেটআপ (আপডেটেড) ---
         // থিম
         themeToggle.addEventListener('click', toggleTheme);
 
@@ -1312,7 +1401,7 @@
         loginBtn.addEventListener('click', handleLogin);
         registerBtn.addEventListener('click', handleRegister);
         forgotPasswordBtn.addEventListener('click', handleForgotPassword);
-        friendSearchBtn.addEventListener('click', handleFriendSearch); // নতুন: সার্চ বাটন লিসেনার
+        friendSearchBtn.addEventListener('click', handleFriendSearch); 
 
         // নেভিগেশন
         navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
@@ -1331,10 +1420,16 @@
         chatForm.addEventListener('submit', handleChatFormSubmit);
         backToChatListButton.addEventListener('click', () => {
             showPage('chat-list-page');
+            // --- নতুন: চ্যাট পেজ ছাড়ার সময় লিসেনার ক্লিনআপ ---
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
+            if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             unsubscribeMessages = null;
             unsubscribeRoom = null;
+            unsubscribePartnerStatus = null;
+            chatHeaderStatus.textContent = '\u00A0'; // স্ট্যাটাস রিসেট
+            chatHeaderStatus.classList.add('h-4');
+            // --- ক্লিনআপ শেষ ---
         });
         emojiToggleBtn.addEventListener('click', () => emojiPanel.classList.toggle('hidden'));
         document.querySelectorAll('.emoji-btn').forEach(btn => btn.addEventListener('click', () => messageInput.value += btn.textContent));
@@ -1346,10 +1441,6 @@
             updateTypingStatus(true);
             typingTimeout = setTimeout(() => updateTypingStatus(false), 2000); 
         });
-
-        // AI পেজ (সরানো হয়েছে)
-        // aiChatForm.addEventListener('submit', handleAiChatSubmit);
-        // aiChatLink.addEventListener('click', openAiPage);
 
         // DOM লোড হলে অ্যাপ চালু করা
         document.addEventListener('DOMContentLoaded', initApp);
