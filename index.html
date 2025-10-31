@@ -13,14 +13,14 @@
         #messages-container::-webkit-scrollbar,
         #chat-list-container::-webkit-scrollbar,
         #friends-page-container::-webkit-scrollbar,
-        #ai-messages-container::-webkit-scrollbar,
+        /* #ai-messages-container::-webkit-scrollbar, <-- সরানো হয়েছে */
         #groups-page-container::-webkit-scrollbar {
             width: 6px;
         }
         #messages-container::-webkit-scrollbar-thumb,
         #chat-list-container::-webkit-scrollbar-thumb,
         #friends-page-container::-webkit-scrollbar-thumb,
-        #ai-messages-container::-webkit-scrollbar-thumb,
+        /* #ai-messages-container::-webkit-scrollbar-thumb, <-- সরানো হয়েছে */
         #groups-page-container::-webkit-scrollbar-thumb {
             background-color: #5B5BD6;
             border-radius: 10px;
@@ -172,7 +172,7 @@
             </main>
         </div>
 
-        <!-- === পেজ: বন্ধু তালিকা (অপরিবর্তিত) === -->
+        <!-- === পেজ: বন্ধু তালিকা (AI লিঙ্ক সরানো হয়েছে) === -->
         <div id="friends-page" class="flex flex-col h-full hidden">
             <!-- হেডার -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
@@ -188,21 +188,24 @@
             <!-- বন্ধুদের তালিকা -->
             <main id="friends-page-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100 dark:bg-gray-900">
                 
-                <!-- AI Chat Link -->
-                <div id="ai-chat-link" class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-purple-300 dark:border-purple-600">
-                    <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center shrink-0">
-                        <i class="fas fa-robot text-2xl text-white"></i>
+                <!-- AI Chat Link (সরানো হয়েছে) -->
+
+                <!-- নতুন: Friend Search Bar -->
+                <div class="p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Find Friends</h3>
+                    <div class="flex space-x-2">
+                        <input type="email" id="friend-search-input" class="flex-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Enter user's email" />
+                        <button id="friend-search-btn" class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                        </button>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">PingMe AI</h3>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Ask me anything!</p>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
                 </div>
 
-                <div class="text-center pt-4" id="friends-loading-indicator"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Loading users...</span></div>
+                <!-- নতুন: Search Results Container -->
+                <div id="friend-search-results" class="space-y-3 mt-4">
+                    <!-- Search results will appear here -->
+                </div>
+
             </main>
         </div>
 
@@ -225,44 +228,11 @@
         </div>
 
 
-        <!-- === পেজ: এ আই চ্যাট (অপরিবর্তিত) === -->
-        <div id="ai-page" class="flex flex-col h-full hidden">
-            <!-- ... (অপরিবর্তিত) ... -->
-            <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
-                <div class="flex items-center space-x-3">
-                    <button class="nav-back-btn p-1" data-target="friends-page"> 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                    </button>
-                    <div class="w-10 h-10 rounded-full bg-purple-400 flex items-center justify-center font-bold text-lg">AI</div>
-                    <div>
-                        <h1 class="text-lg font-semibold">PingMe AI</h1>
-                        <p id="ai-typing-indicator" class="text-xs text-purple-100 h-4">&nbsp;</p>
-                    </div>
-                </div>
-            </header>
-            <main id="ai-messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-100 dark:bg-gray-900">
-            </main>
-            <footer class="p-3 bg-transparent shrink-0">
-                <form id="ai-chat-form" class="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-xl p-2">
-                    <input
-                        type="text"
-                        id="ai-message-input"
-                        placeholder="Ask AI anything..."
-                        autocomplete="off"
-                        class="flex-1 bg-transparent border-none focus:ring-0 px-3 text-gray-900 dark:text-gray-100 placeholder-gray-500"
-                    />
-                    <button type="submit" id="ai-send-button" class="p-3 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                    </button>
-                </form>
-            </footer>
-        </div>
+        <!-- === পেজ: এ আই চ্যাট (সরানো হয়েছে) === -->
+        <!-- <div id="ai-page" class="flex flex-col h-full hidden"> ... </div> -->
 
-        <!-- === পেজ: প্রোফাইল (অপরিবর্তিত) === -->
+
+        <!-- === পেজ: প্রোফাইল (PingMe ID সহ) === -->
         <div id="profile-page" class="flex flex-col h-full hidden">
             <!-- ... (হেডার অপরিবর্তিত) ... -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
@@ -282,7 +252,7 @@
                     <button id="change-pic-btn" class="text-sm text-indigo-500 dark:text-indigo-400 hover:underline">Change Photo</button>
                 </div>
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
-                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Your User ID</label>
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Your PingMe ID</label>
                     <p id="profile-user-id" class="text-sm text-gray-900 dark:text-gray-100 truncate">Connecting...</p>
                 </div>
                 <div class="space-y-4">
@@ -408,21 +378,24 @@
             Profile saved successfully!
         </div>
 
-        <!-- === বটম নেভিগেশন বার (অপরিবর্তিত) === -->
+        <!-- === বটম নেভিগেশন বার (আপডেটেড প্রোফাইল আইকন সহ) === -->
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
-            <!-- ... (অপরিবর্তিত) ... -->
+            <!-- চ্যাট বাটন (অ্যাক্টিভ) -->
             <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-indigo-600 dark:text-indigo-400">
                 <i class="fas fa-comments text-2xl text-blue-500"></i>
                 <span class="text-xs font-medium mt-1">Chats</span>
             </button>
+            <!-- বন্ধু তালিকা বাটন (ইনঅ্যাক্টিভ) -->
             <button data-page="friends-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
                 <i class="fas fa-users text-lg text-green-500"></i>
                 <span class="text-xs font-medium mt-1">Friends</span>
             </button>
+            <!-- গ্রুপস বাটন (আপডেটেড) -->
             <button data-page="groups-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
-                <i class="fas fa-users-rectangle text-lg text-yellow-500"></i>
+                <i class="fas fa-user-friends text-lg text-teal-500"></i> <!-- নতুন আইকন ও রঙ -->
                 <span class="text-xs font-medium mt-1">Groups</span>
             </button>
+            <!-- প্রোফাইল বাটন (আইকন ঠিক করা হয়েছে) -->
             <button data-page="profile-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
                 <i class="fas fa-user-circle text-lg text-red-500"></i>
                 <span class="text-xs font-medium mt-1">Profile</span>
@@ -487,13 +460,12 @@
         let unsubscribeUnreadCounts = null;
         let unsubscribeUserDoc = null;
         let unsubscribeFriendsList = null;
-        let unsubscribeAiChat = null;
+        // let unsubscribeAiChat = null; // <-- সরানো হয়েছে
 
         let typingTimeout = null;
         let chatFileToUpload = null; 
         let profileFileToUpload = null; 
-        let aiChatHistory = [];
-        // const EMAIL_FOR_SIGN_IN_KEY = 'emailForSignIn'; // ইমেল লিঙ্কের জন্য আর প্রয়োজন নেই
+        // let aiChatHistory = []; // <-- সরানো হয়েছে
 
         // কালেকশন পাথ
         const usersCollectionPath = `artifacts/${appId}/public/data/users`;
@@ -505,10 +477,10 @@
         const chatListPage = document.getElementById('chat-list-page');
         const friendsPage = document.getElementById('friends-page');
         const groupsPage = document.getElementById('groups-page');
-        const aiPage = document.getElementById('ai-page');
+        // const aiPage = document.getElementById('ai-page'); // <-- সরানো হয়েছে
         const profilePage = document.getElementById('profile-page');
         const chatPage = document.getElementById('chat-page');
-        const allPages = [loginPage, chatListPage, friendsPage, groupsPage, aiPage, profilePage, chatPage]; 
+        const allPages = [loginPage, chatListPage, friendsPage, groupsPage, profilePage, chatPage]; // <-- aiPage সরানো হয়েছে
         const tabPages = [chatListPage, friendsPage, groupsPage, profilePage];
 
         // লগইন পেজ (নতুন)
@@ -541,8 +513,11 @@
 
         // ফ্রেন্ডস লিস্ট
         const friendsPageContainer = document.getElementById('friends-page-container');
-        const friendsLoadingIndicator = document.getElementById('friends-loading-indicator');
-        const aiChatLink = document.getElementById('ai-chat-link');
+        // const aiChatLink = document.getElementById('ai-chat-link'); // <-- সরানো হয়েছে
+        // নতুন: ফ্রেন্ড সার্চ এলিমেন্ট
+        const friendSearchInput = document.getElementById('friend-search-input');
+        const friendSearchBtn = document.getElementById('friend-search-btn');
+        const friendSearchResults = document.getElementById('friend-search-results');
 
         // প্রোফাইল পেজ
         const profilePicPreview = document.getElementById('profile-pic-preview');
@@ -582,12 +557,8 @@
         const imagePreviewName = document.getElementById('image-preview-name');
         const cancelImagePreviewBtn = document.getElementById('cancel-image-preview');
 
-        // AI পেজ
-        const aiMessagesContainer = document.getElementById('ai-messages-container');
-        const aiChatForm = document.getElementById('ai-chat-form');
-        const aiMessageInput = document.getElementById('ai-message-input');
-        const aiSendButton = document.getElementById('ai-send-button');
-        const aiTypingIndicator = document.getElementById('ai-typing-indicator');
+        // AI পেজ (সরানো হয়েছে)
+        // const aiMessagesContainer = ...
         
         // টোস্ট নোটিফিকেশন
         const toastNotification = document.getElementById('toast-notification');
@@ -671,10 +642,10 @@
             }
         }
 
-        // --- প্রোফাইল পেজ ফাংশন (অপরিবর্তিত) ---
+        // --- প্রোফাইল পেজ ফাংশন (PingMe ID সহ) ---
         function loadProfileDataToForm() {
             if (!currentUserData) return;
-            profileUserId.textContent = currentUserId || '...';
+            profileUserId.textContent = currentUserData.pingId || '...'; // PingMe ID দেখানো হচ্ছে
             profilePicPreview.src = currentUserData.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(currentUserData.displayName || 'U').charAt(0)}`;
             profileDisplayNameInput.value = currentUserData.displayName || '';
             profileBioInput.value = currentUserData.bio || '';
@@ -802,45 +773,23 @@
             });
         }
         
-        // --- ফ্রেন্ডস লিস্ট লোড করা (অপরিবর্তিত) ---
+        // --- ফ্রেন্ডস লিস্ট লোড করা (আপডেটেড: এখন শুধু সার্চ পেজ সেটআপ করে) ---
         function loadFriendsList() {
-            if (unsubscribeFriendsList) unsubscribeFriendsList();
-            friendsLoadingIndicator.innerHTML = '<span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Loading users...</span>';
-            const q = query(collection(db, usersCollectionPath));
+            if (unsubscribeFriendsList) unsubscribeFriendsList(); // পুরনো কোনো লিসেনার থাকলে বন্ধ করা
+            unsubscribeFriendsList = null; 
             
-            unsubscribeFriendsList = onSnapshot(q, (querySnapshot) => {
-                friendsPageContainer.querySelectorAll('.friend-item').forEach(el => el.remove());
-                let usersFound = false;
-                querySnapshot.forEach((doc) => {
-                    const user = doc.data();
-                    if (user.uid === currentUserId) return;
-                    usersFound = true;
-                    const friendEl = document.createElement('div');
-                    friendEl.className = 'friend-item flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md';
-                    friendEl.innerHTML = `
-                        <div class="flex items-center space-x-3 min-w-0">
-                            <img src="${user.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${(user.displayName || '?').charAt(0)}`}" alt="${user.displayName}" class="w-12 h-12 rounded-full object-cover" />
-                            <div class="min-w-0">
-                                <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${user.displayName || 'Unnamed User'}</h3>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">${user.uid}</p>
-                            </div>
-                        </div>
-                        <button class="start-chat-btn p-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                              <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    `;
-                    friendEl.querySelector('.start-chat-btn').addEventListener('click', () => {
-                        openChatPage(user.uid, user.displayName, user.photoURL);
-                    });
-                    friendsPageContainer.appendChild(friendEl);
-                });
-                friendsLoadingIndicator.innerHTML = usersFound ? '' : '<span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">No other users found.</span>';
-            }, (error) => {
-                console.error("Error loading friends: ", error);
-                friendsLoadingIndicator.innerHTML = '<span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-sm rounded-full">Failed to load users.</span>';
-            });
+            friendSearchResults.innerHTML = 
+                `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Search for friends by their email.</span></div>`;
+        }
+
+        // --- নতুন: PingMe ID জেনারেটর ---
+        function generatePingId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = 'pm_';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
         }
 
         // --- Unread Counts লোড করা (অপরিবর্তিত) ---
@@ -878,11 +827,9 @@
             loadMessagesAndRoom(currentChatRoomId, partnerId);
         }
         
-        // --- AI পেজ খোলা (অপরিবর্তিত) ---
-        function openAiPage() {
-            showPage('ai-page');
-            initAiPage();
-        }
+        // --- AI পেজ খোলা (সরানো হয়েছে) ---
+        // function openAiPage() { ... }
+
 
         // --- মেসেজ রেন্ডার (অপরিবর্তিত) ---
         function renderMessages(messages) {
@@ -1026,94 +973,10 @@
             }
         }
 
-        // --- AI চ্যাট ফাংশন (অপরিবর্তিত) ---
-        function initAiPage() {
-            aiMessagesContainer.innerHTML = ''; 
-            aiChatHistory.forEach(msg => {
-                renderAiMessage(msg.parts[0].text, msg.role === 'user' ? 'user' : 'model');
-            });
-            aiMessagesContainer.scrollTop = aiMessagesContainer.scrollHeight;
-        }
-
-        function renderAiMessage(content, sender = 'ai') {
-            const isMe = sender === 'user';
-            const alignment = isMe ? 'justify-end' : 'justify-start';
-            const bubbleClass = isMe ? 'bubble-me bg-indigo-600 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
-            const messageEl = document.createElement('div');
-            messageEl.className = `flex ${alignment}`;
-            messageEl.innerHTML = `<div class="max-w-xs md:max-w-md p-3 ${bubbleClass}"><p class="text-base break-words">${content}</p></div>`;
-            aiMessagesContainer.appendChild(messageEl);
-            aiMessagesContainer.scrollTop = aiMessagesContainer.scrollHeight;
-        }
-
-        async function handleAiChatSubmit(e) {
-            e.preventDefault();
-            const userQuery = aiMessageInput.value.trim();
-            if (userQuery === '' || !currentUserId) return;
-            const aiChatRef = collection(db, usersCollectionPath, currentUserId, 'ai_chat_history');
-            aiMessageInput.value = '';
-            aiSendButton.disabled = true;
-            aiTypingIndicator.textContent = "AI is typing...";
-            
-            try {
-                await addDoc(aiChatRef, { role: 'user', text: userQuery, timestamp: serverTimestamp() });
-            } catch (addError) {
-                console.error("Error saving user message: ", addError);
-                showToast("Error sending message.", true);
-                aiSendButton.disabled = false;
-                aiTypingIndicator.textContent = "\u00A0";
-                return;
-            }
-
-            const today = new Date();
-            const todayString = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            const userName = currentUserData.displayName || 'User';
-            const userBirthday = currentUserData.birthdate; 
-            let birthdayWish = '';
-            if (userBirthday) {
-                try {
-                    const [bYear, bMonth, bDay] = userBirthday.split('-');
-                    const todayMonth = today.getMonth() + 1; 
-                    const todayDay = today.getDate(); 
-                    if (parseInt(bMonth) === todayMonth && parseInt(bDay) === todayDay) {
-                        birthdayWish = `IMPORTANT: Today (${todayString}) is the user's birthday! You MUST start your response by wishing them a very happy birthday before addressing their query.`;
-                    }
-                } catch (e) { console.error("Error parsing birthday", e); }
-            }
-            const systemPrompt = `You are PingMe AI, a helpful and friendly chat assistant.
-            The user's name is ${userName}.
-            Today's date is ${todayString}.
-            ${birthdayWish}
-            Maintain a consistent, friendly tone. Remember and refer to previous parts of this conversation.`;
-
-            try {
-                const apiKey = ""; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-                const payload = {
-                    contents: aiChatHistory, 
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                };
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) throw new Error(`API error: ${response.statusText}`);
-                const result = await response.json();
-                const aiResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (aiResponse) {
-                    await addDoc(aiChatRef, { role: 'model', text: aiResponse, timestamp: serverTimestamp() });
-                } else {
-                    renderAiMessage("Sorry, I couldn't get a response. Please try again.", 'ai');
-                }
-            } catch (error) {
-                console.error("Error calling Gemini API: ", error);
-                renderAiMessage("Sorry, something went wrong. Please check your connection.", 'ai');
-            } finally {
-                aiSendButton.disabled = false;
-                aiTypingIndicator.textContent = "\u00A0";
-            }
-        }
+        // --- AI চ্যাট ফাংশন (সরানো হয়েছে) ---
+        // function initAiPage() { ... }
+        // function renderAiMessage(...) { ... }
+        // async function handleAiChatSubmit(...) { ... }
 
         // --- নতুন: অথেন্টিকেশন ফাংশন ---
 
@@ -1178,6 +1041,7 @@
                     displayName: `User-${user.uid.substring(0, 6)}`,
                     email: user.email,
                     photoURL: null,
+                    pingId: generatePingId(), // <-- নতুন PingMe ID যোগ করা
                     createdAt: serverTimestamp()
                 };
                 await setDoc(userDocRef, newUser);
@@ -1231,30 +1095,71 @@
             registerMessage.innerHTML = '';
         }
 
+        // --- নতুন: বন্ধু খোঁজার ফাংশন ---
+        async function handleFriendSearch() {
+            const emailToSearch = friendSearchInput.value.trim();
+            if (!emailToSearch) {
+                friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-sm rounded-full">Please enter an email.</span></div>`;
+                return;
+            }
+            if (emailToSearch === (auth.currentUser ? auth.currentUser.email : '')) {
+                 friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-sm rounded-full">You cannot search for yourself.</span></div>`;
+                return;
+            }
 
-        // --- AI চ্যাট হিস্টোরি লোড (অপরিবর্তিত) ---
-        function loadAiChatHistory() {
-            if (unsubscribeAiChat) unsubscribeAiChat();
-            if (!currentUserId) return;
-            const aiChatRef = collection(db, usersCollectionPath, currentUserId, 'ai_chat_history');
-            const q = query(aiChatRef);
-            unsubscribeAiChat = onSnapshot(q, (snapshot) => {
-                let messages = [];
-                snapshot.forEach(doc => messages.push(doc.data()));
-                messages.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0)); 
-                aiChatHistory = [];
-                if (messages.length === 0) {
-                    const aiGreeting = `Hello ${currentUserData.displayName || 'User'}! How can I help you today?`;
-                    aiChatHistory.push({ role: "model", parts: [{ text: aiGreeting }] });
-                } else {
-                    messages.forEach(msg => aiChatHistory.push({ role: msg.role, parts: [{ text: msg.text }] }));
+            friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Searching...</span></div>`;
+
+            try {
+                // Firestore-এ ইমেল দিয়ে ইউজার খোঁজা
+                const q = query(collection(db, usersCollectionPath), where("email", "==", emailToSearch));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">No user found with that email.</span></div>`;
+                    return;
                 }
-                if (!aiPage.classList.contains('hidden')) initAiPage();
-            }, (error) => console.error("Error loading AI chat history: ", error));
+
+                friendSearchResults.innerHTML = ''; // "Searching..." মেসেজ সরানো
+                
+                querySnapshot.forEach((doc) => {
+                    const user = doc.data();
+                    
+                    const friendEl = document.createElement('div');
+                    friendEl.className = 'friend-item flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md';
+                    friendEl.innerHTML = `
+                        <div class="flex items-center space-x-3 min-w-0">
+                            <img src="${user.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${(user.displayName || '?').charAt(0)}`}" alt="${user.displayName}" class="w-12 h-12 rounded-full object-cover" />
+                            <div class="min-w-0">
+                                <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${user.displayName || 'Unnamed User'}</h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">@${user.pingId || '...'}</p>
+                            </div>
+                        </div>
+                        <button class="start-chat-btn p-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    `;
+                    
+                    friendEl.querySelector('.start-chat-btn').addEventListener('click', () => {
+                        openChatPage(user.uid, user.displayName, user.photoURL);
+                    });
+                    
+                    friendSearchResults.appendChild(friendEl);
+                });
+
+            } catch (error) {
+                console.error("Error searching for friend: ", error);
+                friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-sm rounded-full">Error finding user.</span></div>`;
+            }
         }
 
 
-        // --- রিয়েল-টাইম ইউজার ডক লিসেনার (অপরিবর্তিত) ---
+        // --- AI চ্যাট হিস্টোরি লোড (সরানো হয়েছে) ---
+        // function loadAiChatHistory() { ... }
+
+
+        // --- রিয়েল-টাইম ইউজার ডক লিসেনার (PingMe ID সহ) ---
         function setupUserDocumentListener(uid) {
             if (unsubscribeUserDoc) unsubscribeUserDoc();
             const userDocRef = doc(db, usersCollectionPath, uid);
@@ -1268,6 +1173,7 @@
                         displayName: auth.currentUser.displayName || defaultName,
                         photoURL: auth.currentUser.photoURL || null,
                         email: auth.currentUser.email || null,
+                        pingId: generatePingId(), // ফলব্যাক PingMe ID
                         createdAt: serverTimestamp()
                     };
                     await setDoc(userDocRef, newUser, { merge: true });
@@ -1275,6 +1181,18 @@
                     showProfileModal();
                 } else {
                     currentUserData = userDoc.data();
+                    // --- নতুন: পুরনো ইউজারদের জন্য PingMe ID তৈরি করা ---
+                    if (!currentUserData.pingId) {
+                        const newPingId = generatePingId();
+                        try {
+                            await updateDoc(userDocRef, { pingId: newPingId });
+                            currentUserData.pingId = newPingId; // লোকাL কপি আপডেট
+                        } catch (e) {
+                            console.error("Error adding pingId: ", e);
+                        }
+                    }
+                    // --- PingMe ID চেক শেষ ---
+
                     if (!currentUserData.displayName || currentUserData.displayName === defaultName) {
                         if(auth.currentUser.displayName && auth.currentUser.displayName !== defaultName) {
                             await updateDoc(userDocRef, { displayName: auth.currentUser.displayName });
@@ -1288,20 +1206,20 @@
             }, (error) => console.error("Error listening to user document: ", error));
         }
 
-        // --- সকল লিসেনার বন্ধ করা (অপরিবর্তিত) ---
+        // --- সকল লিসেনার বন্ধ করা (AI ক্লিনার সরানো হয়েছে) ---
         function cleanupAllListeners() {
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             if (unsubscribeUnreadCounts) unsubscribeUnreadCounts();
             if (unsubscribeUserDoc) unsubscribeUserDoc();
             if (unsubscribeFriendsList) unsubscribeFriendsList();
-            if (unsubscribeAiChat) unsubscribeAiChat();
+            // if (unsubscribeAiChat) unsubscribeAiChat(); // <-- সরানো হয়েছে
             unsubscribeMessages = null;
             unsubscribeRoom = null;
             unsubscribeUnreadCounts = null;
             unsubscribeUserDoc = null;
             unsubscribeFriendsList = null;
-            unsubscribeAiChat = null;
+            // unsubscribeAiChat = null; // <-- সরানো হয়েছে
         }
 
 
@@ -1319,8 +1237,6 @@
                 storage = getStorage(app); 
                 setLogLevel('Debug'); 
 
-                // ইমেল লিঙ্ক সাইন-ইন সরানো হয়েছে
-
                 onAuthStateChanged(auth, async (user) => {
                     cleanupAllListeners(); 
 
@@ -1336,7 +1252,7 @@
                             loadChatList();
                             loadUnreadCounts(); 
                             loadFriendsList();
-                            loadAiChatHistory(); 
+                            // loadAiChatHistory(); // <-- সরানো হয়েছে
                             
                             showPage('chat-list-page');
                         } else {
@@ -1369,7 +1285,7 @@
                         // --- ইউজার লগড আউট ---
                         currentUserId = null;
                         currentUserData = {};
-                        aiChatHistory = []; 
+                        // aiChatHistory = []; // <-- সরানো হয়েছে
                         
                         messageInput.disabled = true;
                         sendButton.disabled = true;
@@ -1386,7 +1302,7 @@
             }
         }
 
-        // --- ইভেন্ট লিসেনার সেটআপ (আপডেটেড) ---
+        // --- ইভেন্ট লিসেনার সেটআপ (AI লিসেনার সরানো হয়েছে) ---
         // থিম
         themeToggle.addEventListener('click', toggleTheme);
 
@@ -1396,6 +1312,7 @@
         loginBtn.addEventListener('click', handleLogin);
         registerBtn.addEventListener('click', handleRegister);
         forgotPasswordBtn.addEventListener('click', handleForgotPassword);
+        friendSearchBtn.addEventListener('click', handleFriendSearch); // নতুন: সার্চ বাটন লিসেনার
 
         // নেভিগেশন
         navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
@@ -1430,9 +1347,9 @@
             typingTimeout = setTimeout(() => updateTypingStatus(false), 2000); 
         });
 
-        // AI পেজ
-        aiChatForm.addEventListener('submit', handleAiChatSubmit);
-        aiChatLink.addEventListener('click', openAiPage);
+        // AI পেজ (সরানো হয়েছে)
+        // aiChatForm.addEventListener('submit', handleAiChatSubmit);
+        // aiChatLink.addEventListener('click', openAiPage);
 
         // DOM লোড হলে অ্যাপ চালু করা
         document.addEventListener('DOMContentLoaded', initApp);
