@@ -6,7 +6,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* === পরিবর্তন: লোগো থিম কালার === */
+        /* === থিম কালার === */
+        :root {
+            --theme-color-1: #fbc02d; /* হলুদ */
+            --theme-color-2: #3b82f6; /* নীল */
+            --theme-color-3: #22d3ee; /* সায়ান */
+        }
         #messages-container::-webkit-scrollbar,
         #chat-list-container::-webkit-scrollbar,
         #friends-page-container::-webkit-scrollbar,
@@ -21,7 +26,7 @@
         #groups-page-container::-webkit-scrollbar-thumb,
         #profile-page-main::-webkit-scrollbar-thumb,
         #friend-profile-page-main::-webkit-scrollbar-thumb {
-            background-color: #fbc02d; /* লোগো হলুদ */
+            background-color: var(--theme-color-1);
             border-radius: 10px;
         }
         .bubble-me {
@@ -36,9 +41,7 @@
             border-bottom-left-radius: 0.25rem;
             border-bottom-right-radius: 1.125rem;
         }
-        .hidden {
-            display: none;
-        }
+        .hidden { display: none; }
         .page-container {
             display: flex;
             flex-direction: column;
@@ -49,18 +52,85 @@
             overflow: hidden;
             position: relative;
         }
-        /* === পরিবর্তন: লোগো গ্র্যাডিয়েন্ট === */
         .header-gradient {
-            background-image: linear-gradient(to right, #22d3ee, #3b82f6); /* সায়ান থেকে নীল */
+            background-image: linear-gradient(to right, var(--theme-color-3), var(--theme-color-2));
         }
         .toast-show {
             display: block !important;
             opacity: 1 !important;
             transform: translate(-50%, 0) !important;
         }
-        .nav-btn i {
-            transition: all 0.2s ease-in-out;
+        .nav-btn i { transition: all 0.2s ease-in-out; }
+
+        /* === নতুন সংযোজন: মেসেজ মেনু স্টাইল === */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
         }
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 420px;
+            background-color: white;
+            z-index: 50;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
+        .dark .modal-content { background-color: #1f2937; } /* gray-800 */
+        
+        /* === নতুন সংযোজন: রিপ্লে প্রিভিউ === */
+        #reply-preview-bar {
+            background-color: #f3f4f6; /* gray-100 */
+            border-top: 1px solid #e5e7eb; /* gray-200 */
+        }
+        .dark #reply-preview-bar {
+            background-color: #374151; /* gray-700 */
+            border-top-color: #4b5563; /* gray-600 */
+        }
+        
+        /* === নতুন সংযোজন: কোটেড রিপ্লে === */
+        .quoted-reply {
+            background-color: rgba(0, 0, 0, 0.05);
+            border-left: 3px solid var(--theme-color-1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+        .dark .quoted-reply {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* === নতুন সংযোজন: রিয়্যাকশন === */
+        .reaction-list {
+            position: absolute;
+            bottom: -12px;
+            left: 12px;
+            display: flex;
+            gap: 2px;
+        }
+        .bubble-me .reaction-list {
+            left: auto;
+            right: 12px;
+        }
+        .reaction-item {
+            font-size: 0.75rem;
+            padding: 2px 4px;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .dark .reaction-item {
+            background-color: #374151; /* gray-700 */
+            border-color: #4b5563; /* gray-600 */
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans overflow-hidden">
@@ -87,13 +157,11 @@
                                 <label for="login-password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
                                 <input type="password" id="login-password" class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="••••••••" />
                             </div>
-                            <!-- === পরিবর্তন: বাটন কালার === -->
                             <button id="login-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 shadow-md">
                                 Sign In
                             </button>
                         </div>
                         <div class="mt-4 text-sm text-center">
-                            <!-- === পরিবর্তন: লিংক কালার === -->
                             <button id="forgot-password-btn" class="text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</button>
                         </div>
                         <div class="my-6 flex items-center justify-center">
@@ -124,13 +192,11 @@
                                 <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Confirm Password</label>
                                 <input type="password" id="register-confirm-password" class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Repeat password" />
                             </div>
-                            <!-- === পরিবর্তন: বাটন কালার === -->
                             <button id="register-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 shadow-md">
                                 Register
                             </button>
                         </div>
                         <div class="mt-6 text-sm text-center">
-                            <!-- === পরিবর্তন: লিংক কালার === -->
                             <button id="show-login-btn" class="text-blue-600 dark:text-blue-400 hover:underline">
                                 Already have an account? Sign In
                             </button>
@@ -180,7 +246,6 @@
                     <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Find Friends</h3>
                     <div class="flex space-x-2">
                         <input type="text" id="friend-search-input" class="flex-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Enter friend's Ping ID" />
-                        <!-- === পরিবর্তন: বাটন কালার === -->
                         <button id="friend-search-btn" class="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                         </button>
@@ -231,11 +296,9 @@
             </header>
             <main id="profile-page-main" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
                 <div class="flex flex-col items-center space-y-2">
-                    <!-- === পরিবর্তন: প্লেসহোল্ডার কালার === -->
                     <img id="profile-pic-preview" src="https://placehold.co/128x128/fbc02d/ffffff?text=User" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
                     <input type="file" id="profile-pic-input" class="hidden" accept="image/*" />
                     <div class="flex space-x-3">
-                        <!-- === পরিবর্তন: লিংক কালার === -->
                         <button id="change-pic-btn" class="text-sm text-blue-500 dark:text-blue-400 hover:underline">Change Photo</button>
                         <button id="profile-pic-link-btn" class="text-sm text-yellow-500 dark:text-yellow-400 hover:underline">Use Link</button>
                     </div>
@@ -311,7 +374,6 @@
             </header>
             <main id="friend-profile-page-main" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
                 <div class="flex flex-col items-center space-y-2">
-                    <!-- === পরিবর্তন: প্লেসহোল্ডার কালার === -->
                     <img id="friend-profile-pic-preview" src="https://placehold.co/128x128/fbc02d/ffffff?text=?" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
                 </div>
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -351,7 +413,6 @@
                 </div>
 
                 <div class="pt-4">
-                    <!-- === পরিবর্তন: বাটন কালার === -->
                     <button id="friend-profile-start-chat-btn" class="w-full bg-blue-500 text-white py-2.5 rounded-lg hover:bg-blue-600 shadow-md flex items-center justify-center space-x-2 font-medium">
                         <span>Start Chat</span>
                         <i class="fas fa-comments"></i>
@@ -371,7 +432,6 @@
                             </svg>
                         </button>
                         <button id="chat-header-profile-btn" class="flex items-center space-x-3 rounded-lg p-1 -ml-1 hover:bg-white/10">
-                            <!-- === পরিবর্তন: প্লেসহোল্ডার কালার === -->
                             <img id="chat-header-avatar" src="https://placehold.co/40x40/fbc02d/ffffff?text=?" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
                             <div>
                                 <h1 id="chat-header-name" class="text-lg font-semibold text-left">...</h1>
@@ -382,7 +442,9 @@
                     <div class="w-10 h-10"></div>
                 </div>
             </header>
+            
             <main id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-100 dark:bg-gray-900"></main>
+            
             <div id="emoji-panel" class="p-2 grid grid-cols-6 gap-2 bg-white dark:bg-gray-800 shadow-inner hidden shrink-0">
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">😀</button>
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">😂</button>
@@ -390,6 +452,22 @@
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">👍</button>
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">😢</button>
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">🎉</button>
+            </div>
+            
+            <!-- === নতুন সংযোজন: রিপ্লে প্রিভিউ বার === -->
+            <div id="reply-preview-bar" class="p-2 hidden shrink-0">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2 min-w-0">
+                        <i class="fas fa-reply text-gray-500 dark:text-gray-400"></i>
+                        <div class="min-w-0">
+                            <p id="reply-preview-name" class="text-sm font-semibold truncate text-gray-900 dark:text-gray-100">Replying to...</p>
+                            <p id="reply-preview-content" class="text-sm truncate text-gray-600 dark:text-gray-300">...</p>
+                        </div>
+                    </div>
+                    <button id="cancel-reply-btn" class="p-1 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
             
             <footer class="p-3 bg-transparent shrink-0">
@@ -407,7 +485,6 @@
                     </button>
                     
                     <input type="text" id="message-input" class="flex-1 p-2 bg-transparent text-gray-900 dark:text-gray-100 focus:outline-none" placeholder="Type a message..." disabled />
-                    <!-- === পরিবর্তন: বাটন কালার === -->
                     <button type="submit" id="send-button" class="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 ml-2 disabled:bg-blue-400 disabled:cursor-not-allowed" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -424,29 +501,69 @@
                 <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">Please set a display name to continue.</p>
                 <label for="display-name-input" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Display Name</label>
                 <input type="text" id="display-name-input" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" />
-                <!-- === পরিবর্তন: বাটন কালার === -->
                 <button id="modal-save-profile-btn" class="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Save</button>
             </div>
         </div>
 
-        <!-- === মডাল: ইউআরএল প্রম্পট === -->
-        <div id="url-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-xs shadow-2xl">
-                <h3 id="url-prompt-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Enter URL</h3>
+        <!-- === মডাল: টেক্সট/ইউআরএল প্রম্পট (পরিবর্তিত) === -->
+        <div id="text-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-sm shadow-2xl">
+                <h3 id="text-prompt-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Enter URL</h3>
                 
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                <p id="text-prompt-helper" class="text-xs text-gray-500 dark:text-gray-400 mb-3 hidden">
                     Need to upload an image? Try: 
-                    <!-- === পরিবর্তন: লিংক কালার === -->
                     <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
                         postimages.org
                     </a>
                 </p>
 
-                <input type="url" id="url-prompt-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 mb-4" placeholder="https://example.com/image.jpg" />
+                <input type="text" id="text-prompt-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 mb-4" placeholder="..." />
                 <div class="flex justify-end space-x-3">
-                    <button id="url-prompt-cancel" class="py-2 px-4 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</button>
-                    <!-- === পরিবর্তন: বাটন কালার === -->
-                    <button id="url-prompt-save" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
+                    <button id="text-prompt-cancel" class="py-2 px-4 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</button>
+                    <button id="text-prompt-save" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- === নতুন সংযোজন: মেসেজ কনটেক্সট মেনু মডাল === -->
+        <div id="message-context-menu" class="hidden">
+            <div id="message-context-backdrop" class="modal-backdrop"></div>
+            <div class="modal-content p-4">
+                <!-- রিয়্যাকশন বার -->
+                <div class="grid grid-cols-5 gap-2 mb-4">
+                    <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="👍">👍</button>
+                    <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="❤️">❤️</button>
+                    <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="😂">😂</button>
+                    <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="😢">😢</button>
+                    <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="😡">😡</button>
+                </div>
+                <hr class="border-gray-200 dark:border-gray-600 my-2"/>
+                <!-- অপশন লিস্ট -->
+                <div class="flex flex-col">
+                    <button id="menu-reply-btn" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-3">
+                        <i class="fas fa-reply w-5 text-center"></i>
+                        <span>Reply</span>
+                    </button>
+                    <button id="menu-edit-btn" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-3">
+                        <i class="fas fa-pencil-alt w-5 text-center"></i>
+                        <span>Edit</span>
+                    </button>
+                    <button id="menu-delete-btn" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-3 text-red-600 dark:text-red-400">
+                        <i class="fas fa-trash w-5 text-center"></i>
+                        <span>Delete</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- === নতুন সংযোজন: কনফার্মেশন মডাল === -->
+        <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-xs shadow-2xl">
+                <h3 id="confirm-modal-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Are you sure?</h3>
+                <p id="confirm-modal-text" class="text-sm text-gray-600 dark:text-gray-300 mb-6">This action cannot be undone.</p>
+                <div class="flex justify-end space-x-3">
+                    <button id="confirm-modal-cancel" class="py-2 px-4 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</button>
+                    <button id="confirm-modal-confirm" class="py-2 px-4 bg-red-600 text-white rounded-lg hover:bg-red-700">Delete</button>
                 </div>
             </div>
         </div>
@@ -457,7 +574,6 @@
         </div>
 
         <!-- === নেভিগেশন: বটম ন্যাভবার === -->
-        <!-- === পরিবর্তন: আইকন কালার ক্লাস সরানো হয়েছে (JS এখন কন্ট্রোল করবে) === -->
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
             <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-blue-500 dark:text-blue-400">
                 <i class="fas fa-comments text-2xl"></i>
@@ -506,7 +622,7 @@
             setLogLevel,
             getDocs,
             writeBatch,
-            addDoc
+            // addDoc - আর ব্যবহৃত হচ্ছে না
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { 
             getStorage, 
@@ -537,6 +653,7 @@
         let currentUserData = null;
         let currentChatRoomId = null;
         let currentPartnerId = null;
+        let currentPartnerInfo = {}; // === পরিবর্তিত: পার্টনারের তথ্য অবজেক্ট ===
         let unsubscribeMessages = null;
         let unsubscribeRoom = null;
         let unsubscribeUnreadCounts = null;
@@ -547,6 +664,16 @@
         let profileFileToUpload = null;
         let profilePicUrlToUse = null;
         let currentViewingFriend = null;
+        let typingTimeout = null;
+        
+        // === নতুন সংযোজন: মেসেজ অ্যাকশন ===
+        let currentReplyingMessage = null;
+        let currentSelectedMessage = {
+            id: null,
+            content: null,
+            senderId: null,
+            isMe: false
+        };
 
         // --- ফায়ারবেজ পাথ ---
         const usersCollectionPath = `artifacts/${appId}/public/data/users`;
@@ -629,17 +756,25 @@
         const sendLinkBtn = document.getElementById('send-link-btn'); 
         const chatHeaderProfileBtn = document.getElementById('chat-header-profile-btn');
 
-        // মডাল (URL প্রম্পট)
-        const urlPromptModal = document.getElementById('url-prompt-modal');
-        const urlPromptTitle = document.getElementById('url-prompt-title');
-        const urlPromptInput = document.getElementById('url-prompt-input');
-        const urlPromptCancel = document.getElementById('url-prompt-cancel');
-        const urlPromptSave = document.getElementById('url-prompt-save');
+        // === নতুন সংযোজন: রিপ্লে প্রিভিউ ===
+        const replyPreviewBar = document.getElementById('reply-preview-bar');
+        const replyPreviewName = document.getElementById('reply-preview-name');
+        const replyPreviewContent = document.getElementById('reply-preview-content');
+        const cancelReplyBtn = document.getElementById('cancel-reply-btn');
 
         // মডাল (নতুন ইউজার প্রোফাইল)
         const profileModal = document.getElementById('profile-modal');
         const displayNameInput = document.getElementById('display-name-input');
         const modalSaveProfileBtn = document.getElementById('modal-save-profile-btn');
+
+        // মডাল (টেক্সট/ইউআরএল প্রম্পট)
+        const textPromptModal = document.getElementById('text-prompt-modal');
+        const textPromptTitle = document.getElementById('text-prompt-title');
+        const textPromptHelper = document.getElementById('text-prompt-helper');
+        const textPromptInput = document.getElementById('text-prompt-input');
+        const textPromptCancel = document.getElementById('text-prompt-cancel');
+        const textPromptSave = document.getElementById('text-prompt-save');
+        let textPromptSaveCallback = null;
 
         // মডাল (বন্ধুর প্রোফাইল)
         const friendProfilePageMain = document.getElementById('friend-profile-page-main');
@@ -655,6 +790,22 @@
         const friendProfileGender = document.getElementById('friend-profile-gender');
         const friendProfileMaritalStatus = document.getElementById('friend-profile-marital-status');
         const friendProfileStartChatBtn = document.getElementById('friend-profile-start-chat-btn');
+        
+        // === নতুন সংযোজন: মেসেজ মেনু মডাল ===
+        const messageContextMenu = document.getElementById('message-context-menu');
+        const messageContextBackdrop = document.getElementById('message-context-backdrop');
+        const menuReplyBtn = document.getElementById('menu-reply-btn');
+        const menuEditBtn = document.getElementById('menu-edit-btn');
+        const menuDeleteBtn = document.getElementById('menu-delete-btn');
+        const menuReactionBtns = document.querySelectorAll('.menu-reaction-btn');
+
+        // === নতুন সংযোজন: কনফার্ম মডাল ===
+        const confirmModal = document.getElementById('confirm-modal');
+        const confirmModalTitle = document.getElementById('confirm-modal-title');
+        const confirmModalText = document.getElementById('confirm-modal-text');
+        const confirmModalCancel = document.getElementById('confirm-modal-cancel');
+        const confirmModalConfirm = document.getElementById('confirm-modal-confirm');
+        let confirmModalCallback = null;
 
         // === ইউটিলিটি ফাংশন ===
 
@@ -686,12 +837,10 @@
             } else {
                 bottomNav.classList.add('hidden');
             }
-
-            // === পরিবর্তন: ন্যাভ বাটন কালার ===
             navButtons.forEach(btn => {
                 const isActive = btn.dataset.page === pageId;
-                btn.classList.toggle('text-blue-500', isActive); // থিম কালার
-                btn.classList.toggle('dark:text-blue-400', isActive); // থিম কালার
+                btn.classList.toggle('text-blue-500', isActive);
+                btn.classList.toggle('dark:text-blue-400', isActive);
                 btn.classList.toggle('text-gray-500', !isActive);
                 btn.classList.toggle('dark:text-gray-400', !isActive);
                 btn.classList.toggle('opacity-70', !isActive);
@@ -934,7 +1083,6 @@
             profilePicLinkBtn.classList.toggle('opacity-50', !isEditing);
         }
 
-        // === পরিবর্তন: প্লেসহোল্ডার কালার ===
         function loadProfileDataToForm() {
             if (!currentUserData) return;
             profileUserId.textContent = currentUserData.pingId || '...';
@@ -1004,29 +1152,39 @@
             }
         }
 
-        // --- ইউআরএল প্রম্পট মডাল ---
-        function showUrlPrompt(title, callback) {
-            urlPromptTitle.textContent = title;
-            urlPromptInput.value = '';
-            urlPromptModal.classList.remove('hidden');
+        // --- টেক্সট/ইউআরএল প্রম্পট মডাল (পরিবর্তিত) ---
+        function showTextPrompt({ title, helperText, placeholder, initialValue, saveCallback }) {
+            textPromptTitle.textContent = title;
+            textPromptInput.placeholder = placeholder;
+            textPromptInput.value = initialValue || '';
+            
+            if (helperText) {
+                textPromptHelper.innerHTML = helperText;
+                textPromptHelper.classList.remove('hidden');
+            } else {
+                textPromptHelper.classList.add('hidden');
+            }
+            
+            textPromptModal.classList.remove('hidden');
+            
+            textPromptSaveCallback = saveCallback;
+        }
+        function hideTextPrompt() {
+            textPromptModal.classList.add('hidden');
+            textPromptSaveCallback = null;
+        }
 
-            const handleSave = () => {
-                const url = urlPromptInput.value.trim();
-                callback(url);
-                urlPromptModal.classList.add('hidden');
-                urlPromptSave.removeEventListener('click', handleSave);
-                urlPromptCancel.removeEventListener('click', handleCancel);
-            };
-
-            const handleCancel = () => {
-                callback(null);
-                urlPromptModal.classList.add('hidden');
-                urlPromptSave.removeEventListener('click', handleSave);
-                urlPromptCancel.removeEventListener('click', handleCancel);
-            };
-
-            urlPromptSave.addEventListener('click', handleSave);
-            urlPromptCancel.addEventListener('click', handleCancel);
+        // --- নতুন সংযোজন: কনফার্মেশন মডাল ---
+        function showConfirmModal({ title, text, confirmText, confirmCallback }) {
+            confirmModalTitle.textContent = title;
+            confirmModalText.textContent = text;
+            confirmModalConfirm.textContent = confirmText;
+            confirmModal.classList.remove('hidden');
+            confirmModalCallback = confirmCallback;
+        }
+        function hideConfirmModal() {
+            confirmModal.classList.add('hidden');
+            confirmModalCallback = null;
         }
 
         // --- চ্যাট লিস্ট লোড করা ---
@@ -1050,9 +1208,16 @@
 
                     const partnerInfo = room.participantInfo?.[partnerId];
                     const partnerName = partnerInfo?.displayName || 'Unknown User';
-                    // === পরিবর্তন: প্লেসহোল্ডার কালার ===
                     const partnerPhoto = partnerInfo?.photoURL || `https://placehold.co/80x80/fbc02d/ffffff?text=${partnerName.charAt(0)}`;
-                    const lastMessage = room.lastMessage?.text || 'No messages';
+                    
+                    // === নতুন সংযোজন: ডিলিটেড মেসেজ হ্যান্ডলিং ===
+                    let lastMessage = room.lastMessage?.text || 'No messages';
+                    if (room.lastMessage?.isDeleted) {
+                        lastMessage = 'Message deleted';
+                    } else if (room.lastMessage?.type === 'image') {
+                        lastMessage = 'Sent an image';
+                    }
+                    
                     const lastMessageTime = room.lastMessage?.timestamp?.toDate()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
                     const lastMessageTimestamp = room.lastMessage?.timestamp?.toDate() || new Date(0);
                     const unreadCount = room.unreadCounts?.[currentUserId] || 0;
@@ -1062,7 +1227,6 @@
                         <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer" data-partner-id="${partnerId}" data-partner-name="${partnerName}" data-partner-photo="${partnerPhoto}">
                             <div class="relative">
                                 <img src="${partnerPhoto}" alt="${partnerName}" class="w-14 h-14 rounded-full object-cover" />
-                                <!-- === পরিবর্তন: আনরিড কাউন্ট কালার === -->
                                 <span id="unread-count-${chatRoomId}" class="absolute top-0 right-0 w-5 h-5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full flex items-center justify-center ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</span>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -1070,7 +1234,8 @@
                                     <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${partnerName}</h3>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">${lastMessageTime}</p>
                                 </div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">${lastMessage}</p>
+                                <!-- === নতুন সংযোজন: ইটালিক === -->
+                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate ${room.lastMessage?.isDeleted ? 'italic' : ''}">${lastMessage}</p>
                             </div>
                         </div>
                         `,
@@ -1084,7 +1249,11 @@
 
                 chatListContainer.querySelectorAll('[data-partner-id]').forEach(chatEl => {
                     chatEl.addEventListener('click', () => {
-                        startChat(chatEl.dataset.partnerId, chatEl.dataset.partnerName, chatEl.dataset.partnerPhoto);
+                        const partnerData = chatEl.dataset;
+                        startChat(partnerData.partnerId, {
+                            displayName: partnerData.partnerName,
+                            photoURL: partnerData.partnerPhoto
+                        });
                     });
                 });
 
@@ -1134,21 +1303,49 @@
 
             unsubscribeMessages = onSnapshot(query(messagesCollection), (snapshot) => {
                 const messages = [];
-                snapshot.forEach(doc => messages.push(doc.data()));
+                snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() })); // === পরিবর্তিত: doc.id সহ পুশ ===
                 messages.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
                 renderMessages(messages);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }, (error) => console.error("Error loading messages: ", error));
 
             unsubscribeRoom = onSnapshot(chatRoomRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const room = docSnap.data();
-                    if (room.unreadCounts?.[currentUserId] > 0) {
-                        if (!chatPage.classList.contains('hidden')) {
-                            updateDoc(chatRoomRef, {
-                                [`unreadCounts.${currentUserId}`]: 0
-                            }).catch(e => console.error("Error resetting unread count: ", e));
-                        }
+                if (!docSnap.exists()) {
+                    if (!unsubscribePartnerStatus) loadPartnerStatus(partnerId);
+                    return;
+                }
+                
+                const room = docSnap.data();
+                
+                if (room.unreadCounts?.[currentUserId] > 0) {
+                    if (!chatPage.classList.contains('hidden')) {
+                        updateDoc(chatRoomRef, {
+                            [`unreadCounts.${currentUserId}`]: 0
+                        }).catch(e => console.error("Error resetting unread count: ", e));
+                    }
+                }
+                
+                // === পরিবর্তিত: পার্টনার ইনফো আপডেট ===
+                if (room.participantInfo?.[partnerId]) {
+                    currentPartnerInfo = room.participantInfo[partnerId];
+                    chatHeaderName.textContent = currentPartnerInfo.displayName;
+                    chatHeaderAvatar.src = currentPartnerInfo.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${currentPartnerInfo.displayName.charAt(0)}`;
+                }
+                
+                const isPartnerTyping = room.typingStatus?.[currentPartnerId] || false;
+                
+                if (isPartnerTyping) {
+                    chatHeaderStatus.textContent = 'Typing...';
+                    chatHeaderStatus.classList.add('text-cyan-200');
+                    chatHeaderStatus.classList.remove('text-blue-200', 'h-4');
+                    
+                    if (unsubscribePartnerStatus) {
+                        unsubscribePartnerStatus();
+                        unsubscribePartnerStatus = null;
+                    }
+                } else {
+                    if (!unsubscribePartnerStatus) {
+                        loadPartnerStatus(partnerId);
                     }
                 }
             }, (error) => console.error("Error listening to chat room: ", error));
@@ -1158,16 +1355,21 @@
         function loadPartnerStatus(partnerId) {
             if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             const partnerDocRef = doc(db, usersCollectionPath, partnerId);
+            
             unsubscribePartnerStatus = onSnapshot(partnerDocRef, (docSnap) => {
+                
+                if (chatHeaderStatus.textContent === 'Typing...') {
+                    return; 
+                }
+
                 chatHeaderStatus.classList.remove('h-4');
                 if (docSnap.exists()) {
                     const user = docSnap.data();
                     const status = user.status;
                     
-                    // === পরিবর্তন: স্ট্যাটাস কালার ===
                     if (status === 'online') {
                         chatHeaderStatus.textContent = 'Online';
-                        chatHeaderStatus.classList.add('text-cyan-200'); // হেডার গ্র্যাডিয়েন্ট-এর হালকা রঙ
+                        chatHeaderStatus.classList.add('text-cyan-200');
                         chatHeaderStatus.classList.remove('text-blue-200');
                     } else {
                         let lastSeenText = 'Offline';
@@ -1182,7 +1384,7 @@
                         }
                         chatHeaderStatus.textContent = lastSeenText;
                         chatHeaderStatus.classList.remove('text-cyan-200');
-                        chatHeaderStatus.classList.add('text-blue-200'); // হেডার গ্র্যাডিয়েন্ট-এর গাঢ় রঙ
+                        chatHeaderStatus.classList.add('text-blue-200');
                     }
                 } else {
                      chatHeaderStatus.textContent = 'Offline';
@@ -1197,9 +1399,6 @@
             messagesContainer.innerHTML = '';
             messages.forEach(msg => {
                 const isMe = msg.senderId === currentUserId;
-                const alignment = isMe ? 'justify-end' : 'justify-start';
-                // === পরিবর্তন: মেসেজ বাবল কালার ===
-                const bubbleClass = isMe ? 'bubble-me bg-blue-500 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
                 const time = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
                 
                 let statusIcon = '';
@@ -1211,30 +1410,85 @@
                     }
                 }
 
-                const messageEl = document.createElement('div');
-                messageEl.className = `flex ${alignment}`;
-                
                 let contentHTML = '';
-                if (msg.type === 'text') {
+                
+                // === নতুন সংযোজন: রিপ্লে ব্লক ===
+                if (msg.replyTo) {
+                    contentHTML += `
+                        <div class="quoted-reply">
+                            <p class="text-xs font-semibold">${msg.replyTo.senderName}</p>
+                            <p class="text-sm opacity-80 truncate">${msg.replyTo.content}</p>
+                        </div>
+                    `;
+                }
+                
+                // === নতুন সংযোজন: ডিলিটেড মেসেজ ===
+                if (msg.isDeleted) {
+                    contentHTML += `<p class="text-base break-words italic opacity-70">Message deleted</p>`;
+                } else if (msg.type === 'text') {
                     const p = document.createElement('p');
                     p.className = 'text-base break-words';
                     p.textContent = msg.content;
-                    contentHTML = p.outerHTML;
+                    contentHTML += p.outerHTML;
                 } else if (msg.type === 'image') {
-                    contentHTML = `
+                    contentHTML += `
                         <img src="${msg.content}" alt="Sent image" class="rounded-lg max-w-xs cursor-pointer" onclick="window.open('${msg.content}', '_blank')" />
                     `;
                 }
 
-                messageEl.innerHTML = `
-                    <div class="max-w-xs md:max-w-md p-3 ${bubbleClass}">
-                        ${contentHTML}
-                        <p class="text-xs ${isMe ? 'text-blue-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
-                            ${time} ${statusIcon}
-                        </p>
+                // === নতুন সংযোজন: রিয়্যাকশন লিস্ট ===
+                let reactionsHTML = '';
+                if (msg.reactions && Object.keys(msg.reactions).length > 0) {
+                    reactionsHTML = '<div class="reaction-list">';
+                    for (const [emoji, users] of Object.entries(msg.reactions)) {
+                        if (users.length > 0) {
+                            reactionsHTML += `<span class="reaction-item">${emoji} ${users.length}</span>`;
+                        }
+                    }
+                    reactionsHTML += '</div>';
+                }
+
+                const messageEl = document.createElement('div');
+                messageEl.className = `flex w-full items-end space-x-2 ${isMe ? 'justify-end' : 'justify-start'}`;
+                
+                const partnerAvatar = `
+                    <div>
+                        <img src="${currentPartnerInfo.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${currentPartnerInfo.displayName.charAt(0)}`}" alt="Avatar" class="w-8 h-8 rounded-full object-cover" />
                     </div>
                 `;
+
+                const bubbleClass = isMe ? 'bubble-me bg-blue-500 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
+                const bubbleHTML = `
+                    <div class="max-w-xs md:max-w-md p-3 ${bubbleClass} relative cursor-pointer" 
+                         data-message-id="${msg.id}" 
+                         data-message-content="${msg.content || ''}"
+                         data-message-sender-id="${msg.senderId}"
+                         data-is-me="${isMe}"
+                         data-is-deleted="${msg.isDeleted || false}"
+                         data-message-type="${msg.type || 'text'}">
+                         
+                        ${contentHTML}
+                        
+                        <p class="text-xs ${isMe ? 'text-blue-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
+                            ${msg.isEdited ? ' (edited)' : ''}
+                            ${time} ${statusIcon}
+                        </p>
+                        ${reactionsHTML}
+                    </div>
+                `;
+                
+                if (isMe) {
+                    messageEl.innerHTML = bubbleHTML;
+                } else {
+                    messageEl.innerHTML = partnerAvatar + bubbleHTML;
+                }
+                
                 messagesContainer.appendChild(messageEl);
+            });
+            
+            // === নতুন সংযোজন: মেসেজ মেনু ইভেন্ট ===
+            messagesContainer.querySelectorAll('.cursor-pointer').forEach(bubble => {
+                bubble.addEventListener('click', showMessageContextMenu);
             });
         }
 
@@ -1246,30 +1500,50 @@
 
             const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
             const messagesCollection = collection(db, chatRoomsCollectionPath, currentChatRoomId, 'messages');
+            
+            // === পরিবর্তিত: addDoc এর বদলে doc() এবং setDoc() ===
+            const messageRef = doc(messagesCollection); // নতুন মেসেজের জন্য রেফারেন্স তৈরি
 
             try {
-                await addDoc(messagesCollection, {
+                const messageData = {
+                    messageId: messageRef.id, // === নতুন সংযোজন: মেসেজ আইডি ===
                     senderId: currentUserId,
                     content: content,
                     type: type,
                     timestamp: serverTimestamp(),
-                    status: 'sent'
-                });
+                    status: 'sent',
+                    reactions: {}, // === নতুন সংযোজন ===
+                    isEdited: false, // === নতুন সংযোজন ===
+                    isDeleted: false // === নতুন সংযোজন ===
+                };
+
+                // === নতুন সংযোজন: রিপ্লে ডেটা যোগ ===
+                if (currentReplyingMessage) {
+                    messageData.replyTo = currentReplyingMessage;
+                }
+
+                await setDoc(messageRef, messageData); // ডেটা সেট করি
 
                 if (!currentUserData) {
                     console.warn("Current user data not loaded for participantInfo");
                 }
 
-                const participantInfo = {
-                    [currentUserId]: {
+                // participantInfo আপডেট করি (যদি না থাকে)
+                const roomSnap = await getDoc(chatRoomRef);
+                const participantInfo = roomSnap.data()?.participantInfo || {};
+                
+                if (!participantInfo[currentUserId]) {
+                    participantInfo[currentUserId] = {
                         displayName: currentUserData?.displayName || 'You',
                         photoURL: currentUserData?.photoURL || null
-                    },
-                    [currentPartnerId]: {
-                        displayName: chatHeaderName.textContent,
-                        photoURL: chatHeaderAvatar.src
-                    }
-                };
+                    };
+                }
+                if (!participantInfo[currentPartnerId]) {
+                    participantInfo[currentPartnerId] = {
+                        displayName: currentPartnerInfo.displayName,
+                        photoURL: currentPartnerInfo.photoURL
+                    };
+                }
 
                 await setDoc(chatRoomRef, {
                     participants: [currentUserId, currentPartnerId],
@@ -1278,13 +1552,19 @@
                         text: type === 'image' ? 'Sent an image' : content,
                         timestamp: serverTimestamp(),
                         senderId: currentUserId,
-                        status: 'sent'
+                        status: 'sent',
+                        type: type,
+                        isDeleted: false
                     },
                     unreadCounts: {
                         [currentUserId]: 0,
                         [currentPartnerId]: increment(1)
                     }
                 }, { merge: true });
+
+                // === নতুন সংযোজন: রিপ্লে রিসেট ===
+                cancelReply();
+
             } catch (error) {
                 console.error("Error sending message: ", error);
             }
@@ -1293,10 +1573,190 @@
         // --- চ্যাট ফর্ম সাবমিট ---
         async function handleChatFormSubmit(e) {
             e.preventDefault();
+
+            if (typingTimeout) clearTimeout(typingTimeout);
+            typingTimeout = null;
+            if(currentChatRoomId) {
+                const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
+                updateDoc(chatRoomRef, { [`typingStatus.${currentUserId}`]: false });
+            }
+
             const messageText = messageInput.value.trim();
             if (messageText) {
                 messageInput.value = '';
                 await sendGenericMessage(messageText, 'text');
+            }
+        }
+
+        // === নতুন সংযোজন: টাইপিং হ্যান্ডলার ===
+        function handleTyping() {
+            if (!currentChatRoomId || !currentUserId) return;
+            
+            const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
+
+            updateDoc(chatRoomRef, { [`typingStatus.${currentUserId}`]: true })
+                .catch(e => console.error("Error setting typing status:", e));
+
+            if (typingTimeout) clearTimeout(typingTimeout);
+
+            typingTimeout = setTimeout(() => {
+                updateDoc(chatRoomRef, { [`typingStatus.${currentUserId}`]: false })
+                    .catch(e => console.error("Error clearing typing status:", e));
+                typingTimeout = null;
+            }, 3000); 
+        }
+        
+        // === নতুন সংযোজন: মেসেজ অ্যাকশন ফাংশন ===
+        function showMessageContextMenu(e) {
+            const bubble = e.currentTarget;
+            const ds = bubble.dataset;
+            
+            currentSelectedMessage = {
+                id: ds.messageId,
+                content: ds.messageContent,
+                senderId: ds.messageSenderId,
+                isMe: ds.isMe === 'true',
+                isDeleted: ds.isDeleted === 'true',
+                type: ds.messageType
+            };
+
+            if (currentSelectedMessage.isDeleted) {
+                return; // ডিলিট করা মেসেজে কোনো অ্যাকশন নেই
+            }
+
+            // বাটন কন্ডিশন
+            menuReplyBtn.classList.remove('hidden');
+            menuEditBtn.classList.toggle('hidden', !currentSelectedMessage.isMe || currentSelectedMessage.type !== 'text');
+            menuDeleteBtn.classList.toggle('hidden', !currentSelectedMessage.isMe);
+
+            messageContextMenu.classList.remove('hidden');
+        }
+        
+        function hideMessageContextMenu() {
+            messageContextMenu.classList.add('hidden');
+        }
+        
+        async function handleReaction(emoji) {
+            hideMessageContextMenu();
+            const msgRef = doc(db, chatRoomsCollectionPath, currentChatRoomId, 'messages', currentSelectedMessage.id);
+            
+            try {
+                const msgSnap = await getDoc(msgRef);
+                if (!msgSnap.exists()) return;
+                
+                const msgData = msgSnap.data();
+                const reactions = msgData.reactions || {};
+                
+                if (!reactions[emoji]) {
+                    reactions[emoji] = [];
+                }
+                
+                const userIndex = reactions[emoji].indexOf(currentUserId);
+                if (userIndex > -1) {
+                    reactions[emoji].splice(userIndex, 1); // আন-রিয়্যাক্ট
+                } else {
+                    reactions[emoji].push(currentUserId); // রিয়্যাক্ট
+                }
+                
+                await updateDoc(msgRef, { reactions: reactions });
+                
+            } catch (error) {
+                console.error("Error handling reaction: ", error);
+            }
+        }
+        
+        function startReply() {
+            hideMessageContextMenu();
+            
+            const senderName = currentSelectedMessage.isMe ? 'You' : currentPartnerInfo.displayName;
+            
+            currentReplyingMessage = {
+                messageId: currentSelectedMessage.id,
+                content: currentSelectedMessage.content,
+                senderName: senderName
+            };
+            
+            replyPreviewName.textContent = `Replying to ${senderName}`;
+            replyPreviewContent.textContent = currentSelectedMessage.content;
+            replyPreviewBar.classList.remove('hidden');
+            messageInput.focus();
+        }
+        
+        function cancelReply() {
+            currentReplyingMessage = null;
+            replyPreviewBar.classList.add('hidden');
+        }
+        
+        function startEdit() {
+            hideMessageContextMenu();
+            showTextPrompt({
+                title: "Edit Message",
+                placeholder: "Enter new message...",
+                initialValue: currentSelectedMessage.content,
+                saveCallback: saveEdit
+            });
+        }
+        
+        async function saveEdit() {
+            const newContent = textPromptInput.value.trim();
+            if (!newContent) return;
+            
+            const msgRef = doc(db, chatRoomsCollectionPath, currentChatRoomId, 'messages', currentSelectedMessage.id);
+            try {
+                await updateDoc(msgRef, {
+                    content: newContent,
+                    isEdited: true
+                });
+                
+                // === নতুন সংযোজন: লাস্ট মেসেজ আপডেট ===
+                const roomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
+                const roomSnap = await getDoc(roomRef);
+                if (roomSnap.data().lastMessage.timestamp.toMillis() === (await getDoc(msgRef)).data().timestamp.toMillis()) {
+                    await updateDoc(roomRef, {
+                        "lastMessage.text": newContent
+                    });
+                }
+                
+                hideTextPrompt();
+            } catch (error) {
+                console.error("Error editing message: ", error);
+            }
+        }
+        
+        function confirmDelete() {
+            hideMessageContextMenu();
+            showConfirmModal({
+                title: "Delete Message",
+                text: "Are you sure you want to delete this message? This will delete it for everyone.",
+                confirmText: "Delete",
+                confirmCallback: deleteMessage
+            });
+        }
+        
+        async function deleteMessage() {
+            const msgRef = doc(db, chatRoomsCollectionPath, currentChatRoomId, 'messages', currentSelectedMessage.id);
+            try {
+                await updateDoc(msgRef, {
+                    content: "Message deleted",
+                    type: "text",
+                    isDeleted: true,
+                    reactions: {},
+                    replyTo: null
+                });
+                
+                // === নতুন সংযোজন: লাস্ট মেসেজ আপডেট ===
+                const roomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
+                const roomSnap = await getDoc(roomRef);
+                if (roomSnap.data().lastMessage.timestamp.toMillis() === (await getDoc(msgRef)).data().timestamp.toMillis()) {
+                    await updateDoc(roomRef, {
+                        "lastMessage.text": "Message deleted",
+                        "lastMessage.isDeleted": true
+                    });
+                }
+                
+                hideConfirmModal();
+            } catch (error) {
+                console.error("Error deleting message: ", error);
             }
         }
 
@@ -1332,7 +1792,6 @@
                     const friendEl = document.createElement('div');
                     friendEl.className = 'friend-item flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-shadow';
                     
-                    // === পরিবর্তন: প্লেসহোল্ডার কালার ===
                     const userPhoto = user.photoURL || `https://placehold.co/80x80/fbc02d/ffffff?text=${(user.displayName || '?').charAt(0)}`;
                     const userName = user.displayName || 'Unnamed User';
 
@@ -1344,7 +1803,6 @@
                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">@${user.pingId || '...'}</p>
                             </div>
                         </div>
-                        <!-- === পরিবর্তন: বাটন কালার === -->
                         <button class="start-chat-btn p-2 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
@@ -1355,7 +1813,7 @@
                     const startChatBtn = friendEl.querySelector('.start-chat-btn');
                     startChatBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        startChat(user.uid, userName, userPhoto);
+                        startChat(user.uid, { displayName: userName, photoURL: userPhoto });
                     });
                     
                     friendEl.addEventListener('click', () => {
@@ -1371,14 +1829,21 @@
         }
         
         // --- চ্যাট শুরু করা ---
-        async function startChat(partnerId, partnerName, partnerPhoto) {
+        async function startChat(partnerId, partnerData) {
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             
             showPage('chat-page');
-            chatHeaderName.textContent = partnerName;
-            chatHeaderAvatar.src = partnerPhoto;
+            
+            // === পরিবর্তিত: পার্টনার ইনফো সেট ===
+            currentPartnerInfo = {
+                displayName: partnerData.displayName,
+                photoURL: partnerData.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${partnerData.displayName.charAt(0)}`
+            };
+            
+            chatHeaderName.textContent = currentPartnerInfo.displayName;
+            chatHeaderAvatar.src = currentPartnerInfo.photoURL;
             chatHeaderStatus.textContent = "Loading status...";
             chatHeaderStatus.classList.remove('h-4');
             currentPartnerId = partnerId;
@@ -1399,7 +1864,6 @@
             friendProfilePage.dataset.origin = originPage;
 
             friendProfileHeaderName.textContent = "Loading...";
-            // === পরিবর্তন: প্লেসহোল্ডার কালার ===
             friendProfilePicPreview.src = `https://placehold.co/128x128/fbc02d/ffffff?text=?`;
             const fields = [
                 friendProfileUserId, friendProfileDisplayName, friendProfileBio, 
@@ -1416,7 +1880,6 @@
                     const user = docSnap.data();
                     
                     const displayName = user.displayName || 'Unknown User';
-                    // === পরিবর্তন: প্লেসহোল্ডার কালার ===
                     const photoURL = user.photoURL || `https://placehold.co/128x128/fbc02d/ffffff?text=${(displayName || '?').charAt(0)}`;
 
                     currentViewingFriend = {
@@ -1602,13 +2065,20 @@
         
         profilePicLinkBtn.addEventListener('click', () => { 
             if(!isProfileEditing) return;
-            showUrlPrompt("Enter Profile Image URL", (url) => {
-                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
-                    profilePicPreview.src = url;
-                    profilePicUrlToUse = url;
-                    profileFileToUpload = null;
-                } else if (url) {
-                    showToast('Invalid URL. Must start with http:// or https://', true);
+            showTextPrompt({
+                title: "Enter Profile Image URL",
+                helperText: `Need to upload an image? Try: <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">postimages.org</a>`,
+                placeholder: "https://example.com/image.jpg",
+                saveCallback: () => {
+                    const url = textPromptInput.value.trim();
+                    if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                        profilePicPreview.src = url;
+                        profilePicUrlToUse = url;
+                        profileFileToUpload = null;
+                        hideTextPrompt();
+                    } else if (url) {
+                        showToast('Invalid URL. Must start with http:// or https://', true);
+                    }
                 }
             });
         });
@@ -1625,15 +2095,28 @@
 
         // চ্যাট পেজ
         chatForm.addEventListener('submit', handleChatFormSubmit);
+        messageInput.addEventListener('input', handleTyping);
+        cancelReplyBtn.addEventListener('click', cancelReply); // === নতুন সংযোজন ===
+
         backToChatListButton.addEventListener('click', () => {
             showPage('chat-list-page');
+            
+            if (typingTimeout) clearTimeout(typingTimeout);
+            typingTimeout = null;
+            if (currentChatRoomId && currentUserId) {
+                const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
+                updateDoc(chatRoomRef, { [`typingStatus.${currentUserId}`]: false });
+            }
+
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             currentChatRoomId = null;
             currentPartnerId = null;
+            currentPartnerInfo = {}; // === পরিবর্তিত ===
             chatHeaderStatus.textContent = '\u00A0';
             chatHeaderStatus.classList.add('h-4');
+            cancelReply(); // === নতুন সংযোজন ===
         });
         
         emojiToggleBtn.addEventListener('click', () => {
@@ -1648,15 +2131,43 @@
             });
         });
 
-        // লিংক বাটন ইভেন্ট
+        // লিংক বাটন ইভেন্ট (পরিবর্তিত)
         sendLinkBtn.addEventListener('click', () => {
-            showUrlPrompt("Enter Image URL", (url) => {
-                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
-                    sendGenericMessage(url, 'image');
-                } else if (url) {
-                    showToast('Invalid URL. Must start with http:// or https://', true);
+            showTextPrompt({
+                title: "Enter Image URL",
+                helperText: `Need to upload an image? Try: <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">postimages.org</a>`,
+                placeholder: "https://example.com/image.jpg",
+                saveCallback: () => {
+                    const url = textPromptInput.value.trim();
+                    if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                        sendGenericMessage(url, 'image');
+                        hideTextPrompt();
+                    } else if (url) {
+                        showToast('Invalid URL. Must start with http:// or https://', true);
+                    }
                 }
             });
+        });
+
+        // === নতুন সংযোজন: টেক্সট প্রম্পট মডাল বাটন ===
+        textPromptCancel.addEventListener('click', hideTextPrompt);
+        textPromptSave.addEventListener('click', () => {
+            if (textPromptSaveCallback) textPromptSaveCallback();
+        });
+
+        // === নতুন সংযোজন: কনফার্ম মডাল বাটন ===
+        confirmModalCancel.addEventListener('click', hideConfirmModal);
+        confirmModalConfirm.addEventListener('click', () => {
+            if (confirmModalCallback) confirmModalCallback();
+        });
+        
+        // === নতুন সংযোজন: মেসেজ মেনু বাটন ===
+        messageContextBackdrop.addEventListener('click', hideMessageContextMenu);
+        menuReplyBtn.addEventListener('click', startReply);
+        menuEditBtn.addEventListener('click', startEdit);
+        menuDeleteBtn.addEventListener('click', confirmDelete);
+        menuReactionBtns.forEach(btn => {
+            btn.addEventListener('click', () => handleReaction(btn.dataset.emoji));
         });
 
 
@@ -1674,12 +2185,14 @@
 
         friendProfileStartChatBtn.addEventListener('click', () => {
             if (currentViewingFriend) {
-                startChat(currentViewingFriend.uid, currentViewingFriend.displayName, currentViewingFriend.photoURL);
+                startChat(currentViewingFriend.uid, {
+                    displayName: currentViewingFriend.displayName,
+                    photoURL: currentViewingFriend.photoURL
+                });
             }
         });
 
     </script>
 </body>
 </html>
-
 
