@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
+<html lang="en"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PingMe</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ... (স্ক্রলবার এবং বাবল স্টাইল অপরিবর্তিত) ... */
+        /* স্ক্রলবার স্টাইল */
         #messages-container::-webkit-scrollbar,
         #chat-list-container::-webkit-scrollbar,
         #friends-page-container::-webkit-scrollbar,
-        #groups-page-container::-webkit-scrollbar {
+        #groups-page-container::-webkit-scrollbar,
+        #profile-page-main::-webkit-scrollbar,
+        #friend-profile-page-main::-webkit-scrollbar {
             width: 6px;
         }
         #messages-container::-webkit-scrollbar-thumb,
         #chat-list-container::-webkit-scrollbar-thumb,
         #friends-page-container::-webkit-scrollbar-thumb,
-        #groups-page-container::-webkit-scrollbar-thumb {
+        #groups-page-container::-webkit-scrollbar-thumb,
+        #profile-page-main::-webkit-scrollbar-thumb,
+        #friend-profile-page-main::-webkit-scrollbar-thumb {
             background-color: #5B5BD6;
             border-radius: 10px;
         }
-        /* ... (অন্যান্য স্টাইল অপরিবর্তিত) ... */
         .bubble-me {
             border-top-left-radius: 1.125rem;
             border-top-right-radius: 1.125rem;
@@ -64,24 +64,19 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans overflow-hidden">
 
-    <!-- === Main App Container === -->
     <div class="page-container">
 
-        <!-- === নতুন পেজ: লগইন (সম্পূর্ণ আপডেটেড) === -->
+        <!-- === পেজ: লগইন === -->
         <div id="login-page" class="flex flex-col h-full">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0 text-center">
                 <h1 class="text-2xl font-bold">Welcome to PingMe</h1>
             </header>
             <main class="flex-1 flex flex-col justify-center items-center p-6 bg-gray-100 dark:bg-gray-900 overflow-y-auto">
                 
-                <!-- Login Form -->
                 <div id="login-form-container" class="w-full max-w-sm">
                     <div class="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
                         <h2 class="text-xl font-semibold text-center mb-6">Sign In</h2>
-                        
-                        <!-- Login Message Area -->
                         <div id="login-message" class="mb-4"></div>
-    
                         <div class="space-y-4">
                             <div>
                                 <label for="login-email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
@@ -95,31 +90,24 @@
                                 Sign In
                             </button>
                         </div>
-    
                         <div class="mt-4 text-sm text-center">
                             <button id="forgot-password-btn" class="text-indigo-600 dark:text-indigo-400 hover:underline">Forgot Password?</button>
                         </div>
-                        
                         <div class="my-6 flex items-center justify-center">
                             <span class="border-t border-gray-300 dark:border-gray-600 flex-grow"></span>
                             <span class="px-3 text-sm text-gray-500 dark:text-gray-400">or</span>
                             <span class="border-t border-gray-300 dark:border-gray-600 flex-grow"></span>
                         </div>
-    
                         <button id="show-register-btn" class="w-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
                             Create New Account
                         </button>
                     </div>
                 </div>
     
-                <!-- Registration Form (Hidden by default) -->
                 <div id="register-form-container" class="w-full max-w-sm hidden">
                     <div class="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
                         <h2 class="text-xl font-semibold text-center mb-6">Create Account</h2>
-                        
-                        <!-- Register Message Area -->
                         <div id="register-message" class="mb-4"></div>
-    
                         <div class="space-y-4">
                             <div>
                                 <label for="register-email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
@@ -137,7 +125,6 @@
                                 Register
                             </button>
                         </div>
-    
                         <div class="mt-6 text-sm text-center">
                             <button id="show-login-btn" class="text-indigo-600 dark:text-indigo-400 hover:underline">
                                 Already have an account? Sign In
@@ -148,21 +135,21 @@
             </main>
         </div>
 
-
-        <!-- === পেজ: চ্যাট লিস্ট (অপরিবর্তিত) === -->
+        <!-- === পেজ: চ্যাট লিস্ট === -->
         <div id="chat-list-page" class="flex flex-col h-full hidden">
-            <!-- ... (হেডার অপরিবর্তিত) ... -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-bold">PingMe</h1>
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20">
-                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                    </button>
+                    <div class="flex items-center space-x-2">
+                        <button id="theme-toggle" class="p-2 rounded-full hover:bg-white/20">
+                            <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                            <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </button>
+                        </div>
                 </div>
             </header>
             <main id="chat-list-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100 dark:bg-gray-900">
@@ -170,9 +157,8 @@
             </main>
         </div>
 
-        <!-- === পেজ: বন্ধু তালিকা (অপরিবর্তিত) === -->
+        <!-- === পেজ: বন্ধু তালিকা === -->
         <div id="friends-page" class="flex flex-col h-full hidden">
-            <!-- হেডার -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center space-x-3">
                     <button class="nav-back-btn p-1" data-target="chat-list-page">
@@ -183,31 +169,26 @@
                     <h1 class="text-2xl font-bold">Friends</h1>
                 </div>
             </header>
-            <!-- বন্ধুদের তালিকা -->
             <main id="friends-page-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100 dark:bg-gray-900">
                 
-                <!-- Friend Search Bar -->
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
                     <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Find Friends</h3>
                     <div class="flex space-x-2">
-                        <input type="email" id="friend-search-input" class="flex-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Enter user's email" />
+                        <input type="text" id="friend-search-input" class="flex-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Enter friend's Ping ID" />
                         <button id="friend-search-btn" class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                         </button>
                     </div>
                 </div>
 
-                <!-- Search Results Container -->
                 <div id="friend-search-results" class="space-y-3 mt-4">
-                    <!-- Search results will appear here -->
-                </div>
+                    </div>
 
             </main>
         </div>
 
-        <!-- === নতুন পেজ: গ্রুপস (অপরিবর্তিত) === -->
+        <!-- === পেজ: গ্রুপস === -->
         <div id="groups-page" class="flex flex-col h-full hidden">
-            <!-- ... (অপরিবর্তিত) ... -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center space-x-3">
                     <button class="nav-back-btn p-1" data-target="chat-list-page">
@@ -224,24 +205,32 @@
         </div>
 
 
-        <!-- === পেজ: প্রোফাইল (অপরিবর্তিত) === -->
+        <!-- === পেজ: প্রোফাইল === -->
         <div id="profile-page" class="flex flex-col h-full hidden">
-            <!-- ... (হেডার অপরিবর্তিত) ... -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
-                <div class="flex items-center space-x-3">
-                    <button class="nav-back-btn p-1" data-target="chat-list-page">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <button class="nav-back-btn p-1" data-target="chat-list-page">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+                        <h1 class="text-2xl font-bold">Profile</h1>
+                    </div>
+                    <button id="toggle-profile-edit-btn" class="p-2 rounded-full hover:bg-white/20">
+                        <i id="profile-edit-icon" class="fas fa-pencil-alt h-5 w-5"></i>
+                        <i id="profile-save-icon" class="fas fa-save h-5 w-5 hidden"></i>
                     </button>
-                    <h1 class="text-2xl font-bold">Profile</h1>
                 </div>
             </header>
-            <main class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
+            <main id="profile-page-main" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
                 <div class="flex flex-col items-center space-y-2">
                     <img id="profile-pic-preview" src="https://placehold.co/128x128/9333ea/ffffff?text=User" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
                     <input type="file" id="profile-pic-input" class="hidden" accept="image/*" />
-                    <button id="change-pic-btn" class="text-sm text-indigo-500 dark:text-indigo-400 hover:underline">Change Photo</button>
+                    <div class="flex space-x-3">
+                        <button id="change-pic-btn" class="text-sm text-indigo-500 dark:text-indigo-400 hover:underline">Change Photo</button>
+                        <button id="profile-pic-link-btn" class="text-sm text-green-500 dark:text-green-400 hover:underline">Use Link</button>
+                    </div>
                 </div>
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Your PingMe ID</label>
@@ -250,27 +239,27 @@
                 <div class="space-y-4">
                     <div>
                         <label for="profile-display-name" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Display Name</label>
-                        <input type="text" id="profile-display-name" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" />
+                        <input type="text" id="profile-display-name" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" disabled />
                     </div>
                     <div>
                         <label for="profile-bio" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Bio</label>
-                        <textarea id="profile-bio" rows="3" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" placeholder="Tell everyone about yourself..."></textarea>
+                        <textarea id="profile-bio" rows="3" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" placeholder="Tell everyone about yourself..." disabled></textarea>
                     </div>
                     <div>
                         <label for="profile-email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
-                        <input type="email" id="profile-email" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" placeholder="your@email.com" />
+                        <input type="email" id="profile-email" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" placeholder="your@email.com" disabled />
                     </div>
                     <div>
                         <label for="profile-phone" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
-                        <input type="tel" id="profile-phone" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" placeholder="+880..." />
+                        <input type="tel" id="profile-phone" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" placeholder="+880..." disabled />
                     </div>
                     <div>
                         <label for="profile-birthdate" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Birthdate</label>
-                        <input type="date" id="profile-birthdate" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" />
+                        <input type="date" id="profile-birthdate" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" disabled />
                     </div>
                     <div>
                         <label for="profile-gender" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Gender</label>
-                        <select id="profile-gender" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700">
+                        <select id="profile-gender" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" disabled>
                             <option value="not_specified">Prefer not to say</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -279,7 +268,7 @@
                     </div>
                     <div>
                         <label for="profile-marital-status" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Marital Status</label>
-                        <select id="profile-marital-status" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700">
+                        <select id="profile-marital-status" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 disabled:bg-gray-200 dark:disabled:bg-gray-800/50 disabled:opacity-70" disabled>
                             <option value="not_specified">Prefer not to say</option>
                             <option value="single">Single</option>
                             <option value="married">Married</option>
@@ -288,21 +277,81 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="pt-4 space-y-3">
+                    <button id="sign-out-btn" class="w-full bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 shadow-md flex items-center justify-center space-x-2 font-medium">
+                        <span>Sign Out</span>
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
             </main>
-            <footer class="p-4 bg-white dark:bg-gray-800 border-t dark:border-gray-700 shrink-0 space-y-3">
-                <button id="save-profile-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 shadow-md">
-                    Save Profile
-                </button>
-                <button id="sign-out-btn" class="w-full bg-red-600 text-white py-2.5 rounded-lg hover:bg-red-700 shadow-md">
-                    Sign Out
-                </button>
-            </footer>
+            </div>
+
+        <!-- === পেজ: বন্ধুর প্রোফাইল === -->
+        <div id="friend-profile-page" class="flex flex-col h-full hidden">
+            <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <button id="friend-profile-back-btn" class="p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </button>
+                        <h1 id="friend-profile-header-name" class="text-2xl font-bold">Friend's Profile</h1>
+                    </div>
+                </div>
+            </header>
+            <main id="friend-profile-page-main" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
+                <div class="flex flex-col items-center space-y-2">
+                    <img id="friend-profile-pic-preview" src="https://placehold.co/128x128/9333ea/ffffff?text=?" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
+                </div>
+                <div class="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Ping ID</label>
+                    <p id="friend-profile-user-id" class="text-sm text-gray-900 dark:text-gray-100 truncate">...</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Display Name</label>
+                        <p id="friend-profile-display-name" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Bio</label>
+                        <p id="friend-profile-bio" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md min-h-[40px]">...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+                        <p id="friend-profile-email" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
+                        <p id="friend-profile-phone" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Birthdate</label>
+                        <p id="friend-profile-birthdate" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Gender</label>
+                        <p id="friend-profile-gender" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Marital Status</label>
+                        <p id="friend-profile-marital-status" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button id="friend-profile-start-chat-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 shadow-md flex items-center justify-center space-x-2 font-medium">
+                        <span>Start Chat</span>
+                        <i class="fas fa-comments"></i>
+                    </button>
+                </div>
+            </main>
         </div>
 
-
-        <!-- === চ্যাট পেইজ (আপডেটেড: স্ট্যাটাস সহ) === -->
+        <!-- === পেজ: চ্যাট === -->
         <div id="chat-page" class="flex flex-col h-full hidden">
-            <!-- হেডার (আপডেটেড) -->
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -311,12 +360,13 @@
                               <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
                         </button>
-                        <img id="chat-header-avatar" src="https://placehold.co/40x40/b794f6/ffffff?text=?" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
-                        <div>
-                            <h1 id="chat-header-name" class="text-lg font-semibold">...</h1>
-                            <!-- নতুন: ইউজার স্ট্যাটাস -->
-                            <p id="chat-header-status" class="text-xs text-purple-100 h-4">&nbsp;</p> 
-                        </div>
+                        <button id="chat-header-profile-btn" class="flex items-center space-x-3 rounded-lg p-1 -ml-1 hover:bg-white/10">
+                            <img id="chat-header-avatar" src="https://placehold.co/40x40/b794f6/ffffff?text=?" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
+                            <div>
+                                <h1 id="chat-header-name" class="text-lg font-semibold text-left">...</h1>
+                                <p id="chat-header-status" class="text-xs text-purple-100 h-4 text-left">&nbsp;</p> 
+                            </div>
+                        </button>
                     </div>
                     <div class="w-10 h-10"></div>
                 </div>
@@ -330,32 +380,36 @@
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">😢</button>
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">🎉</button>
             </div>
-            <div id="image-preview-container" class="p-3 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 hidden shrink-0">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center min-w-0">
-                        <img id="image-preview" src="" class="h-12 w-12 object-cover rounded-md" alt="Image preview" />
-                        <span id="image-preview-name" class="text-sm text-gray-700 dark:text-gray-300 mx-3 truncate">image.png</span>
-                    </div>
-                    <button id="cancel-image-preview" class="p-2 rounded-full text-red-500 hover:bg-red-100 dark:hover:bg-red-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            
+            <!-- === পরিবর্তন: ইমেজ প্রিভিউ কন্টেনার মুছে ফেলা হয়েছে === -->
+            
             <footer class="p-3 bg-transparent shrink-0">
                 <form id="chat-form" class="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-xl p-2">
-                    <button type="button" id="emoji-toggle-btn" class="p-2 text-gray-500 hover:text-indigo-500"></button>
-                    <button type="button" id="attach-file-btn" class="p-2 text-gray-500 hover:text-indigo-500"></button>
-                    <input type="file" id="image-upload-input" class="hidden" accept="image/*" />
-                    <input type="text" id="message-input" placeholder="Type a message" autocomplete="off" class="flex-1 bg-transparent border-none focus:ring-0 px-3 text-gray-900 dark:text-gray-100 placeholder-gray-500" />
-                    <button type="submit" id="send-button" class="p-3 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 transition-colors"></button>
+                    <button type="button" id="emoji-toggle-btn" class="p-2 text-gray-500 dark:text-gray-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                    
+                    <!-- === পরিবর্তন: অ্যাটাচ বাটন একটি লিংক বাটন দিয়ে প্রতিস্থাপন করা হয়েছে === -->
+                    <button type="button" id="send-link-btn" class="p-2 text-gray-500 dark:text-gray-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899l4-4a4 4 0 10-5.656-5.656l-1.102 1.101" />
+                        </svg>
+                    </button>
+                    <!-- === পরিবর্তন: ফাইল ইনপুট মুছে ফেলা হয়েছে === -->
+                    
+                    <input type="text" id="message-input" class="flex-1 p-2 bg-transparent text-gray-900 dark:text-gray-100 focus:outline-none" placeholder="Type a message..." disabled />
+                    <button type="submit" id="send-button" class="p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 ml-2 disabled:bg-indigo-400 disabled:cursor-not-allowed" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
                 </form>
             </footer>
         </div>
 
-
-        <!-- === প্রোফাইল এডিট মডাল (অপরিবর্তিত) === -->
+        <!-- === মডাল: নতুন ইউজার প্রোফাইল === -->
         <div id="profile-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 hidden">
              <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-sm w-full">
                 <h2 class="text-xl font-semibold mb-4">Welcome to PingMe!</h2>
@@ -365,30 +419,47 @@
                 <button id="modal-save-profile-btn" class="w-full mt-4 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">Save</button>
             </div>
         </div>
-        
-        <!-- === সেভ নোটিফিকেশন (Toast) (অপরিবর্তিত) === -->
-        <div id="toast-notification" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-green-600 text-white px-5 py-2.5 rounded-full shadow-lg text-sm z-50 hidden transition-all duration-300 transform translate-y-10 opacity-0">
+
+        <!-- === মডাল: ইউআরএল প্রম্পট (পরিবর্তিত: postimages.org লিংক সহ) === -->
+        <div id="url-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-xs shadow-2xl">
+                <h3 id="url-prompt-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Enter URL</h3>
+                
+                <!-- === নতুন: postimages.org লিংক === -->
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    Need to upload an image? Try: 
+                    <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" class="text-indigo-500 hover:underline">
+                        postimages.org
+                    </a>
+                </p>
+                <!-- === নতুন লিংক শেষ === -->
+
+                <input type="url" id="url-prompt-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 mb-4" placeholder="https://example.com/image.jpg" />
+                <div class="flex justify-end space-x-3">
+                    <button id="url-prompt-cancel" class="py-2 px-4 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</button>
+                    <button id="url-prompt-save" class="py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- === নোটিফিকেশন: টোস্ট === -->
+        <div id="toast-notification" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-10 opacity-0">
             Profile saved successfully!
         </div>
 
-        <!-- === বটম নেভিগেশন বার (অপরিবর্তিত) === -->
+        <!-- === নেভিগেশন: বটম ন্যাভবার === -->
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
-            <!-- চ্যাট বাটন (অ্যাক্টিভ) -->
             <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-indigo-600 dark:text-indigo-400">
                 <i class="fas fa-comments text-2xl text-blue-500"></i>
                 <span class="text-xs font-medium mt-1">Chats</span>
             </button>
-            <!-- বন্ধু তালিকা বাটন (ইনঅ্যাক্টিভ) -->
             <button data-page="friends-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
                 <i class="fas fa-users text-lg text-green-500"></i>
                 <span class="text-xs font-medium mt-1">Friends</span>
             </button>
-            <!-- গ্রুপস বাটন (আপডেটেড) -->
             <button data-page="groups-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
-                <i class="fas fa-user-friends text-lg text-teal-500"></i> <!-- নতুন আইকন ও রঙ -->
-                <span class="text-xs font-medium mt-1">Groups</span>
+                <i class="fas fa-user-friends text-lg text-teal-500"></i> <span class="text-xs font-medium mt-1">Groups</span>
             </button>
-            <!-- প্রোফাইল বাটন (আইকন ঠিক করা হয়েছে) -->
             <button data-page="profile-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
                 <i class="fas fa-user-circle text-lg text-red-500"></i>
                 <span class="text-xs font-medium mt-1">Profile</span>
@@ -396,40 +467,46 @@
         </nav>
     </div>
 
-
-    <!-- Firebase JS SDK -->
+    <!-- ========= স্ক্রিপ্ট সেকশন (পরিবর্তিত) ========= -->
     <script type="module">
-        // Firebase মডিউল (আপডেটেড: Auth মডিউল)
+        // Firebase মডিউল
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
         import { 
             getAuth, 
             onAuthStateChanged, 
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword,
-            sendEmailVerification,
-            sendPasswordResetEmail,
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            sendEmailVerification, 
+            sendPasswordResetEmail, 
             signOut 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
-            collection, 
-            addDoc, 
-            query, 
-            onSnapshot, 
-            serverTimestamp, 
-            setLogLevel, 
             doc, 
             setDoc, 
             getDoc, 
             updateDoc, 
-            increment, 
+            query, 
+            collection, 
             where, 
+            onSnapshot, 
+            increment, 
+            serverTimestamp, 
+            setLogLevel,
             getDocs,
-            writeBatch // <-- মেসেজ সিন করার জন্য
+            writeBatch,
+            addDoc
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+        import { 
+            getStorage, 
+            ref, 
+            uploadBytes, 
+            getDownloadURL 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-        // --- ফায়ারবেজ কনফিগারেশন (ব্যবহারকারী প্রদত্ত) ---
+
+        // --- ফায়ারবেজ কনফিগারেশন ---
         const firebaseConfig = {
             apiKey: "AIzaSyADEk13HgPmPjiy2VD6RDYU_Z2pPJFM9gQ",
             authDomain: "pingme-7fad3.firebaseapp.com",
@@ -438,41 +515,43 @@
             storageBucket: "pingme-7fad3.firebasestorage.app",
             messagingSenderId: "8513825883",
             appId: "1:8513825883:web:b8676bbdb4818c3d4ae37e",
-            measurementId: "G-TNN3PTP5YP"
+            measurementId: "G-TNN3P5YP"
         };
         
         const appId = firebaseConfig.projectId || 'default-chat-app';
-        
-        // --- গ্লোবাল ভ্যারিয়েবল ---
-        let db, auth, storage;
+
+
+        // === গ্লোবাল ভ্যারিয়েবলস ===
+        let auth, db, storage;
         let currentUserId = null;
-        let currentUserData = {}; 
+        let currentUserData = null;
         let currentChatRoomId = null;
         let currentPartnerId = null;
-        let unsubscribeMessages = null; 
-        let unsubscribeRoom = null; 
+        let unsubscribeMessages = null;
+        let unsubscribeRoom = null;
         let unsubscribeUnreadCounts = null;
         let unsubscribeUserDoc = null;
         let unsubscribeFriendsList = null;
-        let unsubscribePartnerStatus = null; // <-- নতুন: পার্টনার স্ট্যাটাস লিসেনার
+        let unsubscribePartnerStatus = null;
+        let isProfileEditing = false;
+        let profileFileToUpload = null;
+        let profilePicUrlToUse = null;
+        // let chatFileToUpload = null; // === পরিবর্তন: মুছে ফেলা হয়েছে ===
+        let currentViewingFriend = null;
 
-        let typingTimeout = null;
-        let chatFileToUpload = null; 
-        let profileFileToUpload = null; 
-
-        // কালেকশন পাথ
+        // --- ফায়ারবেজ পাথ ---
         const usersCollectionPath = `artifacts/${appId}/public/data/users`;
         const chatRoomsCollectionPath = `artifacts/${appId}/public/data/chat_rooms`;
 
-        // --- DOM এলিমেন্ট ---
-        // পেজ
+        // === DOM এলিমেন্ট নির্বাচন ===
         const loginPage = document.getElementById('login-page');
         const chatListPage = document.getElementById('chat-list-page');
         const friendsPage = document.getElementById('friends-page');
         const groupsPage = document.getElementById('groups-page');
         const profilePage = document.getElementById('profile-page');
         const chatPage = document.getElementById('chat-page');
-        const allPages = [loginPage, chatListPage, friendsPage, groupsPage, profilePage, chatPage]; 
+        const friendProfilePage = document.getElementById('friend-profile-page');
+        const allPages = [loginPage, chatListPage, friendsPage, groupsPage, profilePage, chatPage, friendProfilePage];
         const tabPages = [chatListPage, friendsPage, groupsPage, profilePage];
 
         // লগইন পেজ
@@ -513,6 +592,7 @@
         const profilePicPreview = document.getElementById('profile-pic-preview');
         const profilePicInput = document.getElementById('profile-pic-input');
         const changePicBtn = document.getElementById('change-pic-btn');
+        const profilePicLinkBtn = document.getElementById('profile-pic-link-btn');
         const profileUserId = document.getElementById('profile-user-id');
         const profileDisplayNameInput = document.getElementById('profile-display-name');
         const profileBioInput = document.getElementById('profile-bio');
@@ -521,13 +601,10 @@
         const profileBirthdateInput = document.getElementById('profile-birthdate');
         const profileGenderSelect = document.getElementById('profile-gender');
         const profileMaritalStatusSelect = document.getElementById('profile-marital-status');
-        const saveProfileBtn = document.getElementById('save-profile-btn');
         const signOutBtn = document.getElementById('sign-out-btn');
-
-        // প্রোফাইল মডাল
-        const profileModal = document.getElementById('profile-modal');
-        const displayNameInput = document.getElementById('display-name-input');
-        const modalSaveProfileBtn = document.getElementById('modal-save-profile-btn');
+        const toggleProfileEditBtn = document.getElementById('toggle-profile-edit-btn');
+        const profileEditIcon = document.getElementById('profile-edit-icon');
+        const profileSaveIcon = document.getElementById('profile-save-icon');
 
         // চ্যাট পেজ
         const messagesContainer = document.getElementById('messages-container');
@@ -537,21 +614,43 @@
         const backToChatListButton = document.getElementById('back-to-chat-list');
         const chatHeaderName = document.getElementById('chat-header-name');
         const chatHeaderAvatar = document.getElementById('chat-header-avatar');
-        const chatHeaderStatus = document.getElementById('chat-header-status'); // <-- নতুন: চ্যাট হেডার স্ট্যাটাস
-        const typingIndicator = document.getElementById('typing-indicator'); // এটি এখন আর ব্যবহৃত হচ্ছে না, chat-header-status দ্বারা প্রতিস্থাপিত
+        const chatHeaderStatus = document.getElementById('chat-header-status');
         const emojiToggleBtn = document.getElementById('emoji-toggle-btn');
         const emojiPanel = document.getElementById('emoji-panel');
-        const attachFileBtn = document.getElementById('attach-file-btn');
-        const imageUploadInput = document.getElementById('image-upload-input');
-        const imagePreviewContainer = document.getElementById('image-preview-container');
-        const imagePreview = document.getElementById('image-preview');
-        const imagePreviewName = document.getElementById('image-preview-name');
-        const cancelImagePreviewBtn = document.getElementById('cancel-image-preview');
-        
-        // টোস্ট নোটিফিকেশন
-        const toastNotification = document.getElementById('toast-notification');
+        const sendLinkBtn = document.getElementById('send-link-btn'); // === পরিবর্তন: নতুন বাটন ===
+        // === পরিবর্তন: ফাইল আপলোড DOM এলিমেন্ট মুছে ফেলা হয়েছে ===
+        const chatHeaderProfileBtn = document.getElementById('chat-header-profile-btn');
 
-        // --- থিম টগল ফাংশন (অপরিবর্তিত) ---
+        // মডাল (URL প্রম্পট)
+        const urlPromptModal = document.getElementById('url-prompt-modal');
+        const urlPromptTitle = document.getElementById('url-prompt-title');
+        const urlPromptInput = document.getElementById('url-prompt-input');
+        const urlPromptCancel = document.getElementById('url-prompt-cancel');
+        const urlPromptSave = document.getElementById('url-prompt-save');
+
+        // মডাল (নতুন ইউজার প্রোফাইল)
+        const profileModal = document.getElementById('profile-modal');
+        const displayNameInput = document.getElementById('display-name-input');
+        const modalSaveProfileBtn = document.getElementById('modal-save-profile-btn');
+
+        // মডাল (বন্ধুর প্রোফাইল)
+        const friendProfilePageMain = document.getElementById('friend-profile-page-main');
+        const friendProfileBackBtn = document.getElementById('friend-profile-back-btn');
+        const friendProfileHeaderName = document.getElementById('friend-profile-header-name');
+        const friendProfilePicPreview = document.getElementById('friend-profile-pic-preview');
+        const friendProfileUserId = document.getElementById('friend-profile-user-id');
+        const friendProfileDisplayName = document.getElementById('friend-profile-display-name');
+        const friendProfileBio = document.getElementById('friend-profile-bio');
+        const friendProfileEmail = document.getElementById('friend-profile-email');
+        const friendProfilePhone = document.getElementById('friend-profile-phone');
+        const friendProfileBirthdate = document.getElementById('friend-profile-birthdate');
+        const friendProfileGender = document.getElementById('friend-profile-gender');
+        const friendProfileMaritalStatus = document.getElementById('friend-profile-marital-status');
+        const friendProfileStartChatBtn = document.getElementById('friend-profile-start-chat-btn');
+
+        // === ইউটিলিটি ফাংশন ===
+
+        // --- থিম টগল ---
         function applyTheme() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
@@ -567,15 +666,13 @@
             localStorage.theme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
             applyTheme();
         }
-        applyTheme();
-
         
-        // --- পেজ ন্যাভিগেশন (অপরিবর্তিত) ---
+        // --- পেজ ন্যাভিগেশন ---
         function showPage(pageId) {
             allPages.forEach(page => page.classList.add('hidden'));
             const pageToShow = document.getElementById(pageId);
             if (pageToShow) pageToShow.classList.remove('hidden');
-
+            
             if (tabPages.map(p => p.id).includes(pageId)) {
                 bottomNav.classList.remove('hidden');
             } else {
@@ -583,179 +680,29 @@
             }
 
             navButtons.forEach(btn => {
-                const icon = btn.querySelector('i'); 
-                if (btn.dataset.page === pageId) {
-                    btn.classList.remove('text-gray-500', 'dark:text-gray-400', 'opacity-70');
-                    btn.classList.add('text-indigo-600', 'dark:text-indigo-400');
-                    icon.classList.remove('text-lg'); 
-                    icon.classList.add('text-2xl'); 
-                } else {
-                    btn.classList.add('text-gray-500', 'dark:text-gray-400', 'opacity-70');
-                    btn.classList.remove('text-indigo-600', 'dark:text-indigo-400');
-                    icon.classList.add('text-lg');
-                    icon.classList.remove('text-2xl');
-                }
-            });
-
-            if (pageId === 'profile-page') {
-                loadProfileDataToForm();
-            }
-        }
-
-        // --- টোস্ট নোটিফিকেশন (অপরিবর্তিত) ---
-        function showToast(message, isError = false) {
-            toastNotification.textContent = message;
-            toastNotification.classList.remove('bg-green-600', 'bg-red-600');
-            toastNotification.classList.add(isError ? 'bg-red-600' : 'bg-green-600');
-            toastNotification.classList.add('toast-show');
-            
-            setTimeout(() => {
-                toastNotification.classList.remove('toast-show');
-            }, 3000); // 3 সেকেন্ড পর হাইড হবে
-        }
-
-        // --- প্রোফাইল মডাল (অপরিবর্তিত) ---
-        function showProfileModal() { profileModal.classList.remove('hidden'); }
-        function hideProfileModal() { profileModal.classList.add('hidden'); }
-        async function saveInitialProfile() {
-            const name = displayNameInput.value.trim();
-            if (name && currentUserId) {
-                try {
-                    const userDocRef = doc(db, usersCollectionPath, currentUserId);
-                    await updateDoc(userDocRef, { displayName: name });
-                    hideProfileModal();
-                } catch (error) {
-                    console.error("Error saving initial profile: ", error);
-                }
-            }
-        }
-
-        // --- প্রোফাইল পেজ ফাংশন (অপরিবর্তিত) ---
-        function loadProfileDataToForm() {
-            if (!currentUserData) return;
-            profileUserId.textContent = currentUserData.pingId || '...'; 
-            profilePicPreview.src = currentUserData.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(currentUserData.displayName || 'U').charAt(0)}`;
-            profileDisplayNameInput.value = currentUserData.displayName || '';
-            profileBioInput.value = currentUserData.bio || '';
-            profileEmailInput.value = currentUserData.email || (auth.currentUser ? auth.currentUser.email : '');
-            profilePhoneInput.value = currentUserData.phone || '';
-            profileBirthdateInput.value = currentUserData.birthdate || ''; 
-            profileGenderSelect.value = currentUserData.gender || 'not_specified';
-            profileMaritalStatusSelect.value = currentUserData.maritalStatus || 'not_specified';
-        }
-
-        function handleProfilePicSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                profileFileToUpload = file;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    profilePicPreview.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        async function saveProfile() {
-            saveProfileBtn.disabled = true;
-            saveProfileBtn.textContent = 'Saving...';
-            let photoURL = currentUserData.photoURL;
-
-            try {
-                if (profileFileToUpload) {
-                    const storageRef = ref(storage, `profile_pictures/${currentUserId}/${profileFileToUpload.name}`);
-                    const snapshot = await uploadBytes(storageRef, profileFileToUpload);
-                    photoURL = await getDownloadURL(snapshot.ref);
-                    profileFileToUpload = null;
-                }
-
-                const updatedData = {
-                    displayName: profileDisplayNameInput.value.trim() || `User-${currentUserId.substring(0,6)}`,
-                    bio: profileBioInput.value.trim(),
-                    email: profileEmailInput.value.trim(),
-                    phone: profilePhoneInput.value.trim(),
-                    birthdate: profileBirthdateInput.value || null, 
-                    gender: profileGenderSelect.value,
-                    maritalStatus: profileMaritalStatusSelect.value,
-                    photoURL: photoURL || null
-                };
-
-                const userDocRef = doc(db, usersCollectionPath, currentUserId);
-                await updateDoc(userDocRef, updatedData);
-                showToast("Profile saved successfully!");
-
-            } catch (error) {
-                console.error("Error saving profile: ", error);
-                showToast("Error: Could not save profile.", true); 
-            } finally {
-                saveProfileBtn.disabled = false;
-                saveProfileBtn.textContent = 'Save Profile';
-            }
-        }
-
-        async function signOutUser() {
-            await updateUserStatus('offline'); // <-- সাইন আউট করার আগে স্ট্যাটাস আপডেট
-            try {
-                await signOut(auth);
-                // onAuthStateChanged এটি হ্যান্ডেল করবে এবং লগইন পেজ দেখাবে
-            } catch (error) {
-                console.error("Error signing out: ", error);
-                showToast("Error signing out.", true);
-            }
-        }
-
-        // --- চ্যাট লিস্ট লোড করা (অপরিবর্তিত) ---
-        function loadChatList() {
-            const q = query(collection(db, chatRoomsCollectionPath), where("participants", "array-contains", currentUserId));
-
-            onSnapshot(q, (snapshot) => {
-                if (snapshot.empty) {
-                    chatListContainer.innerHTML = `<div class="text-center pt-10"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">No chats yet. Start a chat from the Friends list.</span></div>`;
-                    return;
-                }
-                chatListContainer.innerHTML = '';
-                snapshot.forEach(docSnap => {
-                    const room = docSnap.data();
-                    const chatRoomId = docSnap.id;
-                    const partnerId = room.participants.find(p => p !== currentUserId);
-                    if (!partnerId) return;
-                    const partnerInfo = room.participantInfo?.[partnerId];
-                    const partnerName = partnerInfo?.displayName || 'Unknown User';
-                    const partnerPhoto = partnerInfo?.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${partnerName.charAt(0)}`;
-                    const lastMessage = room.lastMessage?.text || 'No messages';
-                    const lastMessageTime = room.lastMessage?.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
-                    
-                    const chatEl = document.createElement('div');
-                    chatEl.className = 'flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer';
-                    chatEl.innerHTML = `
-                        <div class="relative">
-                            <img src="${partnerPhoto}" alt="${partnerName}" class="w-14 h-14 rounded-full object-cover" />
-                            <span id="unread-count-${chatRoomId}" class="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-lg font-semibold truncate text-gray-900 dark:text-gray-100">${partnerName}</h3>
-                                <span class="text-xs text-gray-500 dark:text-gray-400 shrink-0 ml-2">${lastMessageTime}</span>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 truncate">${lastMessage}</p>
-                        </div>
-                    `;
-                    chatEl.addEventListener('click', () => openChatPage(partnerId, partnerName, partnerPhoto));
-                    chatListContainer.appendChild(chatEl);
-                });
+                const isActive = btn.dataset.page === pageId;
+                btn.classList.toggle('text-indigo-600', isActive);
+                btn.classList.toggle('dark:text-indigo-400', isActive);
+                btn.classList.toggle('text-gray-500', !isActive);
+                btn.classList.toggle('dark:text-gray-400', !isActive);
+                btn.classList.toggle('opacity-70', !isActive);
             });
         }
-        
-        // --- ফ্রেন্ডস লিস্ট লোড করা (অপরিবর্তিত) ---
-        function loadFriendsList() {
-            if (unsubscribeFriendsList) unsubscribeFriendsList(); 
-            unsubscribeFriendsList = null; 
-            
-            friendSearchResults.innerHTML = 
-                `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Search for friends by their email.</span></div>`;
+
+        // --- অথ মেসেজ ---
+        function toggleLoginRegister(showLogin) {
+            loginFormContainer.classList.toggle('hidden', !showLogin);
+            registerFormContainer.classList.toggle('hidden', showLogin);
+            loginMessage.innerHTML = '';
+            registerMessage.innerHTML = '';
+        }
+        function showLoginForm() { toggleLoginRegister(true); }
+        function showRegisterForm() { toggleLoginRegister(false); }
+        function setAuthMessage(element, message, isError) {
+            element.innerHTML = `<p class="text-sm ${isError ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}">${message}</p>`;
         }
 
-        // --- PingMe ID জেনারেটর (অপরিবর্তিত) ---
+        // --- Ping ID জেনারেটর ---
         function generatePingId() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = 'pm_';
@@ -764,285 +711,20 @@
             }
             return result;
         }
-
-        // --- Unread Counts লোড করা (অপরিবর্তিত) ---
-        function loadUnreadCounts() {
-            if (unsubscribeUnreadCounts) unsubscribeUnreadCounts();
-            const q = query(collection(db, chatRoomsCollectionPath), where("participants", "array-contains", currentUserId));
-            unsubscribeUnreadCounts = onSnapshot(q, (snapshot) => {
-                snapshot.docChanges().forEach((change) => {
-                    if (change.type === "added" || change.type === "modified") {
-                        const room = change.doc.data();
-                        const chatRoomId = change.doc.id;
-                        const unreadCount = room.unreadCounts?.[currentUserId] || 0;
-                        const countEl = document.getElementById(`unread-count-${chatRoomId}`);
-                        if (countEl) {
-                            if (unreadCount > 0) {
-                                countEl.textContent = unreadCount > 9 ? '9+' : unreadCount;
-                                countEl.classList.remove('hidden');
-                            } else {
-                                countEl.classList.add('hidden');
-                            }
-                        }
-                    }
-                });
-            });
-        }
-
-        // --- চ্যাট পেজ খোলা (আপডেটেড: স্ট্যাটাস লিসেনার) ---
-        async function openChatPage(partnerId, partnerName, partnerPhoto) {
-            showPage('chat-page');
-            chatHeaderName.textContent = partnerName;
-            chatHeaderAvatar.src = partnerPhoto;
-            currentPartnerId = partnerId;
-            currentChatRoomId = currentUserId < partnerId ? `${currentUserId}_${partnerId}` : `${partnerId}_${currentUserId}`;
-            messagesContainer.innerHTML = '';
-            
-            loadMessagesAndRoom(currentChatRoomId, partnerId);
-            loadPartnerStatus(partnerId); // <-- নতুন: পার্টনার স্ট্যাটাস লোড করা
-        }
         
-        // --- নতুন: পার্টনার স্ট্যাটাস লোড ---
-        function loadPartnerStatus(partnerId) {
-            if (unsubscribePartnerStatus) unsubscribePartnerStatus(); // পুরনো লিসেনার বন্ধ
-            const partnerDocRef = doc(db, usersCollectionPath, partnerId);
-            
-            unsubscribePartnerStatus = onSnapshot(partnerDocRef, (docSnap) => {
-                chatHeaderStatus.classList.remove('h-4'); // উচ্চতা সরানো যাতে টেক্সট দেখা যায়
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.status === 'online') {
-                        chatHeaderStatus.textContent = 'Online';
-                    } else {
-                        if (data.lastSeen) {
-                            // সময়কে ফরম্যাট করা
-                            const lastSeenTime = data.lastSeen.toDate();
-                            const now = new Date();
-                            let formattedTime;
-                            
-                            if (lastSeenTime.toDateString() === now.toDateString()) {
-                                // আজ
-                                formattedTime = lastSeenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            } else {
-                                // অন্য দিন
-                                formattedTime = lastSeenTime.toLocaleDateString([], { month: 'short', day: 'numeric' });
-                            }
-                            chatHeaderStatus.textContent = `Last seen ${formattedTime}`;
-                        } else {
-                            chatHeaderStatus.textContent = 'Offline';
-                        }
-                    }
-                } else {
-                    chatHeaderStatus.textContent = 'Offline';
-                }
-            });
+        // --- টোস্ট নোটিফিকেশন ---
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.classList.remove('bg-green-500', 'bg-red-500');
+            toast.classList.add(isError ? 'bg-red-500' : 'bg-green-500');
+            toast.classList.add('toast-show');
+            setTimeout(() => {
+                toast.classList.remove('toast-show');
+            }, 3000);
         }
 
-        // --- মেসেজ রেন্ডার (আপডেটেড: সেন্ড/সিন আইকন) ---
-        function renderMessages(messages) {
-            messagesContainer.innerHTML = ''; 
-            messages.forEach(msg => {
-                const isMe = msg.senderId === currentUserId;
-                const alignment = isMe ? 'justify-end' : 'justify-start';
-                const bubbleClass = isMe ? 'bubble-me bg-indigo-600 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
-                const time = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
-
-                // --- নতুন: মেসেজ স্ট্যাটাস আইকন ---
-                let statusIcon = '';
-                if (isMe && msg.status) {
-                    if (msg.status === 'sent') {
-                        statusIcon = '<i class="fas fa-check text-xs ml-1 opacity-70"></i>';
-                    } else if (msg.status === 'seen') {
-                        statusIcon = '<i class="fas fa-check-double text-xs ml-1 text-blue-400"></i>';
-                    }
-                }
-                // --- মেসেজ স্ট্যাটাস আইকন শেষ ---
-
-                const messageEl = document.createElement('div');
-                messageEl.className = `flex ${alignment}`;
-                
-                let contentHTML = '';
-                if (msg.type === 'text') {
-                    contentHTML = `<p class="text-base break-words">${msg.content}</p>`;
-                } else if (msg.type === 'image') {
-                    contentHTML = `
-                        <img src="${msg.content}" alt="Sent image" class="rounded-lg max-w-xs cursor-pointer" onclick="window.open('${msg.content}', '_blank')" />
-                    `;
-                }
-                
-                messageEl.innerHTML = `
-                    <div class="max-w-xs md:max-w-md p-3 ${bubbleClass}">
-                        ${contentHTML}
-                        <p class="text-xs ${isMe ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
-                            ${time}
-                            ${statusIcon} <!-- আইকন এখানে যোগ করা হয়েছে -->
-                        </p>
-                    </div>
-                `;
-                messagesContainer.appendChild(messageEl);
-            });
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        // --- মেসেজ ও টাইপিং স্ট্যাটাস লোড করা (আপডেটেড: মেসেজ সিন করা) ---
-        function loadMessagesAndRoom(chatRoomId, partnerId) {
-            if (unsubscribeMessages) unsubscribeMessages();
-            if (unsubscribeRoom) unsubscribeRoom();
-            
-            const chatRoomRef = doc(db, chatRoomsCollectionPath, chatRoomId);
-            const messagesRef = collection(chatRoomRef, 'messages');
-            
-            // নতুন: মেসেজ 'seen' হিসাবে মার্ক করা
-            markMessagesAsSeen(chatRoomRef, partnerId);
-
-            const q = query(messagesRef);
-
-            unsubscribeMessages = onSnapshot(q, (snapshot) => {
-                const messages = [];
-                snapshot.forEach(doc => messages.push(doc.data()));
-                messages.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
-                renderMessages(messages);
-            });
-
-            unsubscribeRoom = onSnapshot(chatRoomRef, async (docSnap) => {
-                if (docSnap.exists()) {
-                    const roomData = docSnap.data();
-                    
-                    // টাইপিং স্ট্যাটাস এখন chatHeaderStatus দ্বারা কন্ট্রোল হচ্ছে, তাই typingIndicator সরানো হয়েছে
-                    // if (roomData.typing && roomData.typing[partnerId]) {
-                    //     typingIndicator.textContent = "typing...";
-                    // } else {
-                    //     typingIndicator.textContent = "\u00A0"; 
-                    // }
-                    
-                    if (roomData.unreadCounts && roomData.unreadCounts[currentUserId] > 0) {
-                        await updateDoc(chatRoomRef, {
-                            [`unreadCounts.${currentUserId}`]: 0
-                        });
-                    }
-                }
-            });
-        }
-
-        // --- নতুন: মেসেজ 'seen' হিসাবে মার্ক করার ফাংশন ---
-        async function markMessagesAsSeen(chatRoomRef, partnerId) {
-            const messagesRef = collection(chatRoomRef, 'messages');
-            const q = query(messagesRef, 
-                where("senderId", "==", partnerId), 
-                where("status", "==", "sent") // <-- শুধুমাত্র 'sent' মেসেজগুলো
-            );
-            
-            try {
-                const querySnapshot = await getDocs(q);
-                if (querySnapshot.empty) return; // আপডেট করার কিছু নেই
-                
-                const batch = writeBatch(db);
-                querySnapshot.forEach(doc => {
-                    batch.update(doc.ref, { status: "seen" });
-                });
-                
-                await batch.commit();
-            } catch (error) {
-                console.error("Error marking messages as seen: ", error);
-            }
-        }
-
-
-        // --- মেসেজ পাঠানো (আপডেটেড: 'status: sent') ---
-        async function sendGenericMessage(content, type) {
-            if (!currentChatRoomId || !currentUserId || !currentPartnerId) return;
-            const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
-            const messagesRef = collection(chatRoomRef, 'messages');
-            try {
-                await addDoc(messagesRef, {
-                    content: content,
-                    senderId: currentUserId,
-                    timestamp: serverTimestamp(),
-                    type: type,
-                    status: 'sent' // <-- নতুন: স্ট্যাটাস যোগ করা
-                });
-                const partnerInfo = {
-                    [currentUserId]: { displayName: currentUserData.displayName, photoURL: currentUserData.photoURL },
-                    [currentPartnerId]: { displayName: chatHeaderName.textContent, photoURL: chatHeaderAvatar.src }
-                };
-                await setDoc(chatRoomRef, {
-                    participants: [currentUserId, currentPartnerId],
-                    participantInfo: partnerInfo,
-                    lastMessage: {
-                        text: type === 'image' ? 'Sent an image' : content,
-                        timestamp: serverTimestamp(),
-                        senderId: currentUserId
-                    },
-                    unreadCounts: { [currentPartnerId]: increment(1) }
-                }, { merge: true });
-            } catch (error) {
-                console.error("Error sending message: ", error);
-            }
-        }
-
-        // --- চ্যাট ফর্ম সাবমিট (অপরিবর্তিত) ---
-        async function handleChatFormSubmit(e) {
-            e.preventDefault();
-            if (chatFileToUpload) {
-                await uploadAndSendImage();
-                cancelImagePreview();
-            } else {
-                const messageText = messageInput.value.trim();
-                if (messageText) await sendGenericMessage(messageText, 'text');
-            }
-            messageInput.value = '';
-        }
-
-        // --- চ্যাট ইমেজ প্রিভিউ (অপরিবর্তিত) ---
-        function showImagePreview(e) {
-            const file = e.target.files[0];
-            if (file) {
-                chatFileToUpload = file;
-                imagePreview.src = URL.createObjectURL(file);
-                imagePreviewName.textContent = file.name;
-                imagePreviewContainer.classList.remove('hidden');
-                emojiPanel.classList.add('hidden');
-            }
-        }
-        function cancelImagePreview() {
-            chatFileToUpload = null;
-            imageUploadInput.value = null;
-            imagePreviewContainer.classList.add('hidden');
-        }
-        async function uploadAndSendImage() {
-            if (!chatFileToUpload || !currentChatRoomId || !currentUserId) return;
-            sendButton.disabled = true;
-            try {
-                const storageRef = ref(storage, `chat_images/${currentChatRoomId}/${Date.now()}_${chatFileToUpload.name}`);
-                const snapshot = await uploadBytes(storageRef, chatFileToUpload);
-                const downloadURL = await getDownloadURL(snapshot.ref);
-                await sendGenericMessage(downloadURL, 'image');
-            } catch (error) {
-                console.error("Error uploading image: ", error);
-            } finally {
-                sendButton.disabled = false;
-            }
-        }
-
-        // --- টাইপিং স্ট্যাটাস (আপডেটেড: এটি এখন আর প্রয়োজন নেই) ---
-        async function updateTypingStatus(isTyping) {
-            // এই ফাংশনটি এখন আর UI-তে কিছু দেখায় না, 
-            // কিন্তু ভবিষ্যতে 'typing...' দেখানোর জন্য রাখা হলো।
-            if (!currentChatRoomId) return;
-            const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
-            try {
-                await setDoc(chatRoomRef, { typing: { [currentUserId]: isTyping } }, { merge: true });
-            } catch (error) {
-                console.error("Error updating typing status: ", error);
-            }
-        }
-
-
-        // --- নতুন: অথেন্টিকেশন ফাংশন ---
-
-        function setAuthMessage(element, message, isError = false) {
-            element.innerHTML = `<p class="text-sm ${isError ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}">${message}</p>`;
-        }
+        // --- Firebase/Authentication ফাংশন ---
 
         async function handleLogin() {
             const email = loginEmailInput.value.trim();
@@ -1055,7 +737,6 @@
             loginBtn.textContent = 'Signing In...';
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged সফল লগইন এবং ভেরিফিকেশন স্ট্যাটাস হ্যান্ডেল করবে
                 loginMessage.innerHTML = '';
             } catch (error) {
                 console.error("Error signing in: ", error);
@@ -1071,8 +752,8 @@
 
         async function handleRegister() {
             const email = registerEmailInput.value.trim();
-            const password = registerPasswordInput.value.trim();
-            const confirmPassword = registerConfirmPasswordInput.value.trim();
+            const password = registerPasswordInput.value;
+            const confirmPassword = registerConfirmPasswordInput.value;
 
             if (!email || !password || !confirmPassword) {
                 setAuthMessage(registerMessage, "Please fill in all fields.", true);
@@ -1090,35 +771,27 @@
             registerBtn.disabled = true;
             registerBtn.textContent = 'Registering...';
             try {
-                // 1. Auth-এ ইউজার তৈরি
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // 2. Firestore-এ ইউজার ডকুমেন্ট তৈরি
                 const userDocRef = doc(db, usersCollectionPath, user.uid);
                 const newUser = {
                     uid: user.uid,
                     displayName: `User-${user.uid.substring(0, 6)}`,
                     email: user.email,
                     photoURL: null,
-                    pingId: generatePingId(), 
+                    pingId: generatePingId(),
                     createdAt: serverTimestamp(),
-                    status: 'offline', // <-- নতুন: স্ট্যাটাস
-                    lastSeen: serverTimestamp() // <-- নতুন: স্ট্যাটাস
+                    status: 'offline',
+                    lastSeen: serverTimestamp()
                 };
                 await setDoc(userDocRef, newUser);
-
-                // 3. ভেরিফিকেশন ইমেল পাঠানো
                 await sendEmailVerification(user);
-
-                // 4. লগআউট করানো (যাতে ভেরিফাই করে লগইন করতে হয়)
                 await signOut(auth); 
-
-                // 5. লগইন পেজে সফল বার্তা দেখানো
+                
                 showLoginForm();
                 setAuthMessage(loginMessage, "Registration successful! A verification email has been sent. Please verify your email before logging in.", false);
                 registerMessage.innerHTML = '';
-
             } catch (error) {
                 console.error("Error registering: ", error);
                 let msg = "Could not create account.";
@@ -1139,162 +812,648 @@
             }
             try {
                 await sendPasswordResetEmail(auth, email);
-                setAuthMessage(loginMessage, "Password reset email sent (if account exists). Please check your inbox.", false);
+                setAuthMessage(loginMessage, "Password reset email sent. Please check your inbox.", false);
             } catch (error) {
                 console.error("Error sending password reset email: ", error);
-                setAuthMessage(loginMessage, `Error: ${error.message}`, true);
+                let msg = "Could not send reset email. Please check the email address.";
+                if(error.code === 'auth/user-not-found') msg = "No user found with that email.";
+                setAuthMessage(loginMessage, msg, true);
             }
         }
 
-        function showLoginForm() {
-            loginFormContainer.classList.remove('hidden');
-            registerFormContainer.classList.add('hidden');
-            loginMessage.innerHTML = '';
-        }
-        function showRegisterForm() {
-            loginFormContainer.classList.add('hidden');
-            registerFormContainer.classList.remove('hidden');
-            registerMessage.innerHTML = '';
+        async function signOutUser() {
+            try {
+                await updateUserStatus('offline');
+                await signOut(auth);
+            } catch (error) {
+                console.error("Error signing out: ", error);
+            }
         }
 
-        // --- নতুন: বন্ধু খোঁজার ফাংশন ---
-        async function handleFriendSearch() {
-            const emailToSearch = friendSearchInput.value.trim();
-            if (!emailToSearch) {
-                friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-sm rounded-full">Please enter an email.</span></div>`;
-                return;
+        // --- ইউজার স্ট্যাটাস ---
+        async function updateUserStatus(status) {
+            if (!currentUserId) return;
+            const userDocRef = doc(db, usersCollectionPath, currentUserId);
+            const updateData = { status: status };
+            if (status === 'offline') {
+                updateData.lastSeen = serverTimestamp();
             }
-            if (emailToSearch === (auth.currentUser ? auth.currentUser.email : '')) {
-                 friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-sm rounded-full">You cannot search for yourself.</span></div>`;
-                return;
+            try {
+                await updateDoc(userDocRef, updateData);
+            } catch (error) {
+                // প্রথমবার লগইন করার সময় এই এরর আসতে পারে
             }
+        }
 
-            friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Searching...</span></div>`;
+        // --- নতুন ইউজার প্রোফাইল মডাল ---
+        function showProfileModal() { profileModal.classList.remove('hidden'); }
+        function hideProfileModal() { profileModal.classList.add('hidden'); }
+        async function saveInitialProfile() {
+            const name = displayNameInput.value.trim();
+            if (name && currentUserId) {
+                try {
+                    const userDocRef = doc(db, usersCollectionPath, currentUserId);
+                    await updateDoc(userDocRef, { displayName: name });
+                    currentUserData.displayName = name;
+                    hideProfileModal();
+                } catch (error) {
+                    console.error("Error saving initial profile: ", error);
+                }
+            }
+        }
+
+
+        // --- ব্যবহারকারীর ডেটা লিসেনার ---
+        function setupUserDocumentListener(userId) {
+            if (unsubscribeUserDoc) unsubscribeUserDoc();
+            const userDocRef = doc(db, usersCollectionPath, userId);
+            
+            unsubscribeUserDoc = onSnapshot(userDocRef, async (docSnap) => {
+                const defaultName = `User-${userId.substring(0, 6)}`;
+                if (!docSnap.exists()) {
+                    const newUser = {
+                        uid: userId,
+                        displayName: auth.currentUser.displayName || defaultName,
+                        email: auth.currentUser.email,
+                        photoURL: auth.currentUser.photoURL || null,
+                        pingId: generatePingId(),
+                        createdAt: serverTimestamp(),
+                        status: 'online',
+                        lastSeen: serverTimestamp()
+                    };
+                    await setDoc(userDocRef, newUser);
+                    currentUserData = newUser;
+                    showProfileModal();
+                } else {
+                    currentUserData = docSnap.data();
+                    if (!currentUserData.pingId) {
+                        await updateDoc(userDocRef, { pingId: generatePingId() });
+                    }
+                    if (!currentUserData.displayName || currentUserData.displayName === defaultName) {
+                         if(auth.currentUser.displayName && auth.currentUser.displayName !== defaultName) {
+                            await updateDoc(userDocRef, { displayName: auth.currentUser.displayName });
+                            currentUserData.displayName = auth.currentUser.displayName;
+                        } else {
+                            showProfileModal();
+                        }
+                    }
+                }
+                if (!profilePage.classList.contains('hidden')) loadProfileDataToForm();
+                
+            }, (error) => console.error("Error listening to user document: ", error));
+        }
+
+        // --- প্রোফাইল পেজ ফাংশন ---
+
+        function setProfileEditMode(isEditing) {
+            isProfileEditing = isEditing;
+            const elements = [profileDisplayNameInput, profileBioInput, profilePhoneInput, profileBirthdateInput, profileGenderSelect, profileMaritalStatusSelect, profileEmailInput];
+            
+            elements.forEach(el => {
+                el.disabled = !isEditing;
+            });
+            
+            profileEmailInput.disabled = true; // ইমেল সর্বদা ডিজেবল
+
+            toggleProfileEditBtn.classList.toggle('bg-white/20', isEditing);
+            profileEditIcon.classList.toggle('hidden', isEditing);
+            profileSaveIcon.classList.toggle('hidden', !isEditing);
+            
+            changePicBtn.disabled = !isEditing;
+            profilePicLinkBtn.disabled = !isEditing;
+            changePicBtn.classList.toggle('opacity-50', !isEditing);
+            profilePicLinkBtn.classList.toggle('opacity-50', !isEditing);
+        }
+
+        function loadProfileDataToForm() {
+            if (!currentUserData) return;
+            profileUserId.textContent = currentUserData.pingId || '...';
+            profilePicPreview.src = currentUserData.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(currentUserData.displayName || 'U').charAt(0)}`;
+            profileDisplayNameInput.value = currentUserData.displayName || '';
+            profileBioInput.value = currentUserData.bio || '';
+            profileEmailInput.value = currentUserData.email || (auth.currentUser ? auth.currentUser.email : '');
+            profilePhoneInput.value = currentUserData.phone || '';
+            profileBirthdateInput.value = currentUserData.birthdate || '';
+            profileGenderSelect.value = currentUserData.gender || 'not_specified';
+            profileMaritalStatusSelect.value = currentUserData.maritalStatus || 'not_specified';
+            setProfileEditMode(false);
+        }
+
+        function handleProfilePicSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                profileFileToUpload = file;
+                profilePicUrlToUse = null;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    profilePicPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function uploadProfilePicture() {
+            if (!profileFileToUpload) return null;
+            const storageRef = ref(storage, `profile_pics/${currentUserId}/${profileFileToUpload.name}`);
+            const snapshot = await uploadBytes(storageRef, profileFileToUpload);
+            return getDownloadURL(snapshot.ref);
+        }
+
+        async function saveProfile() {
+            if (!currentUserId) return;
+            toggleProfileEditBtn.disabled = true;
 
             try {
-                // Firestore-এ ইমেল দিয়ে ইউজার খোঁজা
-                const q = query(collection(db, usersCollectionPath), where("email", "==", emailToSearch));
+                let photoURL = profilePicUrlToUse || currentUserData.photoURL;
+                if (profileFileToUpload) {
+                    showToast('Uploading photo...', false);
+                    photoURL = await uploadProfilePicture();
+                    profileFileToUpload = null;
+                }
+
+                const profileData = {
+                    displayName: profileDisplayNameInput.value.trim() || `User-${currentUserId.substring(0,6)}`,
+                    bio: profileBioInput.value.trim(),
+                    phone: profilePhoneInput.value.trim(),
+                    birthdate: profileBirthdateInput.value,
+                    gender: profileGenderSelect.value,
+                    maritalStatus: profileMaritalStatusSelect.value,
+                    photoURL: photoURL
+                };
+
+                const userDocRef = doc(db, usersCollectionPath, currentUserId);
+                await updateDoc(userDocRef, profileData);
+                
+                showToast('Profile saved successfully!');
+                setProfileEditMode(false);
+            } catch (error) {
+                console.error("Error saving profile: ", error);
+                showToast('Error saving profile data.', true);
+            } finally {
+                toggleProfileEditBtn.disabled = false;
+            }
+        }
+
+        // --- ইউআরএল প্রম্পট মডাল ---
+        function showUrlPrompt(title, callback) {
+            urlPromptTitle.textContent = title;
+            urlPromptInput.value = '';
+            urlPromptModal.classList.remove('hidden');
+
+            const handleSave = () => {
+                const url = urlPromptInput.value.trim();
+                callback(url);
+                urlPromptModal.classList.add('hidden');
+                urlPromptSave.removeEventListener('click', handleSave);
+                urlPromptCancel.removeEventListener('click', handleCancel);
+            };
+
+            const handleCancel = () => {
+                callback(null);
+                urlPromptModal.classList.add('hidden');
+                urlPromptSave.removeEventListener('click', handleSave);
+                urlPromptCancel.removeEventListener('click', handleCancel);
+            };
+
+            urlPromptSave.addEventListener('click', handleSave);
+            urlPromptCancel.addEventListener('click', handleCancel);
+        }
+
+        // --- চ্যাট লিস্ট লোড করা ---
+        function loadChatList() {
+            if (unsubscribeFriendsList) unsubscribeFriendsList();
+            
+            const q = query(collection(db, chatRoomsCollectionPath), where("participants", "array-contains", currentUserId));
+            
+            unsubscribeFriendsList = onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    chatListContainer.innerHTML = `<div class="text-center pt-10"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">No chats yet. Start a chat from the Friends list.</span></div>`;
+                    return;
+                }
+                
+                let chatItemsHTML = [];
+                snapshot.forEach(docSnap => {
+                    const room = docSnap.data();
+                    const chatRoomId = docSnap.id;
+                    const partnerId = room.participants.find(p => p !== currentUserId);
+                    if (!partnerId) return;
+
+                    const partnerInfo = room.participantInfo?.[partnerId];
+                    const partnerName = partnerInfo?.displayName || 'Unknown User';
+                    const partnerPhoto = partnerInfo?.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${partnerName.charAt(0)}`;
+                    const lastMessage = room.lastMessage?.text || 'No messages';
+                    const lastMessageTime = room.lastMessage?.timestamp?.toDate()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
+                    const lastMessageTimestamp = room.lastMessage?.timestamp?.toDate() || new Date(0);
+                    const unreadCount = room.unreadCounts?.[currentUserId] || 0;
+
+                    chatItemsHTML.push({
+                        html: `
+                        <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer" data-partner-id="${partnerId}" data-partner-name="${partnerName}" data-partner-photo="${partnerPhoto}">
+                            <div class="relative">
+                                <img src="${partnerPhoto}" alt="${partnerName}" class="w-14 h-14 rounded-full object-cover" />
+                                <span id="unread-count-${chatRoomId}" class="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${partnerName}</h3>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">${lastMessageTime}</p>
+                                </div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">${lastMessage}</p>
+                            </div>
+                        </div>
+                        `,
+                        timestamp: lastMessageTimestamp
+                    });
+                });
+
+                chatItemsHTML.sort((a, b) => b.timestamp - a.timestamp);
+                
+                chatListContainer.innerHTML = chatItemsHTML.map(item => item.html).join('');
+
+                chatListContainer.querySelectorAll('[data-partner-id]').forEach(chatEl => {
+                    chatEl.addEventListener('click', () => {
+                        startChat(chatEl.dataset.partnerId, chatEl.dataset.partnerName, chatEl.dataset.partnerPhoto);
+                    });
+                });
+
+            }, (error) => {
+                console.error("Error loading chat list: ", error);
+                chatListContainer.innerHTML = `<div class="text-center pt-10"><span class="px-3 py-1 bg-red-200 dark:bg-red-700 text-sm rounded-full">Error loading chats.</span></div>`;
+            });
+        }
+
+        // --- মেসেজ 'seen' হিসাবে মার্ক করা ---
+        async function markMessagesAsSeen(chatRoomRef, partnerId) {
+            const messagesRef = collection(chatRoomRef, 'messages');
+            const q = query(messagesRef, 
+                where("senderId", "==", partnerId), 
+                where("status", "==", "sent")
+            );
+            
+            try {
                 const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) return;
+                
+                const batch = writeBatch(db);
+                querySnapshot.forEach(doc => {
+                    batch.update(doc.ref, { status: "seen" });
+                });
+                
+                const roomDoc = await getDoc(chatRoomRef);
+                if (roomDoc.exists() && roomDoc.data().lastMessage.senderId === partnerId) {
+                    batch.update(chatRoomRef, { "lastMessage.status": "seen" });
+                }
+                
+                await batch.commit();
+            } catch (error) {
+                console.error("Error marking messages as seen: ", error);
+            }
+        }
+
+        // --- মেসেজ লোড করা ---
+        function loadMessagesAndRoom(chatRoomId, partnerId) {
+            if (unsubscribeMessages) unsubscribeMessages();
+            if (unsubscribeRoom) unsubscribeRoom();
+
+            const chatRoomRef = doc(db, chatRoomsCollectionPath, chatRoomId);
+            const messagesCollection = collection(db, chatRoomsCollectionPath, chatRoomId, 'messages');
+            
+            markMessagesAsSeen(chatRoomRef, partnerId);
+
+            unsubscribeMessages = onSnapshot(query(messagesCollection), (snapshot) => {
+                const messages = [];
+                snapshot.forEach(doc => messages.push(doc.data()));
+                messages.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
+                renderMessages(messages);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, (error) => console.error("Error loading messages: ", error));
+
+            unsubscribeRoom = onSnapshot(chatRoomRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const room = docSnap.data();
+                    if (room.unreadCounts?.[currentUserId] > 0) {
+                        if (!chatPage.classList.contains('hidden')) {
+                            updateDoc(chatRoomRef, {
+                                [`unreadCounts.${currentUserId}`]: 0
+                            }).catch(e => console.error("Error resetting unread count: ", e));
+                        }
+                    }
+                }
+            }, (error) => console.error("Error listening to chat room: ", error));
+        }
+
+        // --- পার্টনারের স্ট্যাটাস লোড করা ---
+        function loadPartnerStatus(partnerId) {
+            if (unsubscribePartnerStatus) unsubscribePartnerStatus();
+            const partnerDocRef = doc(db, usersCollectionPath, partnerId);
+            unsubscribePartnerStatus = onSnapshot(partnerDocRef, (docSnap) => {
+                chatHeaderStatus.classList.remove('h-4');
+                if (docSnap.exists()) {
+                    const user = docSnap.data();
+                    const status = user.status;
+                    
+                    if (status === 'online') {
+                        chatHeaderStatus.textContent = 'Online';
+                        chatHeaderStatus.classList.add('text-green-300');
+                        chatHeaderStatus.classList.remove('text-purple-100');
+                    } else {
+                        let lastSeenText = 'Offline';
+                        if (user.lastSeen) {
+                            const lastSeenTime = user.lastSeen.toDate();
+                            const now = new Date();
+                            if (lastSeenTime.toDateString() === now.toDateString()) {
+                                lastSeenText = `Last seen ${lastSeenTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                            } else {
+                                lastSeenText = `Last seen ${lastSeenTime.toLocaleDateString([], { month: 'short', day: 'numeric' })}`;
+                            }
+                        }
+                        chatHeaderStatus.textContent = lastSeenText;
+                        chatHeaderStatus.classList.remove('text-green-300');
+                        chatHeaderStatus.classList.add('text-purple-100');
+                    }
+                } else {
+                     chatHeaderStatus.textContent = 'Offline';
+                     chatHeaderStatus.classList.remove('text-green-300');
+                     chatHeaderStatus.classList.add('text-purple-100');
+                }
+            }, (error) => console.error("Error loading partner status: ", error));
+        }
+
+        // --- মেসেজ রেন্ডার করা ---
+        function renderMessages(messages) {
+            messagesContainer.innerHTML = '';
+            messages.forEach(msg => {
+                const isMe = msg.senderId === currentUserId;
+                const alignment = isMe ? 'justify-end' : 'justify-start';
+                const bubbleClass = isMe ? 'bubble-me bg-indigo-600 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
+                const time = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
+                
+                let statusIcon = '';
+                if (isMe && msg.status) {
+                    if (msg.status === 'sent') {
+                        statusIcon = '<i class="fas fa-check text-xs ml-1 opacity-70"></i>';
+                    } else if (msg.status === 'seen') {
+                        statusIcon = '<i class="fas fa-check-double text-xs ml-1 text-blue-400"></i>';
+                    }
+                }
+
+                const messageEl = document.createElement('div');
+                messageEl.className = `flex ${alignment}`;
+                
+                let contentHTML = '';
+                if (msg.type === 'text') {
+                    const p = document.createElement('p');
+                    p.className = 'text-base break-words';
+                    p.textContent = msg.content;
+                    contentHTML = p.outerHTML;
+                } else if (msg.type === 'image') {
+                    contentHTML = `
+                        <img src="${msg.content}" alt="Sent image" class="rounded-lg max-w-xs cursor-pointer" onclick="window.open('${msg.content}', '_blank')" />
+                    `;
+                }
+
+                messageEl.innerHTML = `
+                    <div class="max-w-xs md:max-w-md p-3 ${bubbleClass}">
+                        ${contentHTML}
+                        <p class="text-xs ${isMe ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
+                            ${time} ${statusIcon}
+                        </p>
+                    </div>
+                `;
+                messagesContainer.appendChild(messageEl);
+            });
+        }
+
+
+        // --- মেসেজ পাঠানো ---
+        async function sendGenericMessage(content, type) {
+            if (!currentUserId || !currentChatRoomId || !currentPartnerId) return;
+            if (type === 'text' && !content.trim()) return;
+
+            const chatRoomRef = doc(db, chatRoomsCollectionPath, currentChatRoomId);
+            const messagesCollection = collection(db, chatRoomsCollectionPath, currentChatRoomId, 'messages');
+
+            try {
+                await addDoc(messagesCollection, {
+                    senderId: currentUserId,
+                    content: content,
+                    type: type,
+                    timestamp: serverTimestamp(),
+                    status: 'sent'
+                });
+
+                if (!currentUserData) {
+                    console.warn("Current user data not loaded for participantInfo");
+                }
+
+                const participantInfo = {
+                    [currentUserId]: {
+                        displayName: currentUserData?.displayName || 'You',
+                        photoURL: currentUserData?.photoURL || null
+                    },
+                    [currentPartnerId]: {
+                        displayName: chatHeaderName.textContent,
+                        photoURL: chatHeaderAvatar.src
+                    }
+                };
+
+                await setDoc(chatRoomRef, {
+                    participants: [currentUserId, currentPartnerId],
+                    participantInfo: participantInfo,
+                    lastMessage: {
+                        text: type === 'image' ? 'Sent an image' : content,
+                        timestamp: serverTimestamp(),
+                        senderId: currentUserId,
+                        status: 'sent'
+                    },
+                    unreadCounts: {
+                        [currentUserId]: 0,
+                        [currentPartnerId]: increment(1)
+                    }
+                }, { merge: true });
+            } catch (error) {
+                console.error("Error sending message: ", error);
+            }
+        }
+
+        // --- চ্যাট ফর্ম সাবমিট (পরিবর্তিত: ফাইল আপলোড লজিক সরানো হয়েছে) ---
+        async function handleChatFormSubmit(e) {
+            e.preventDefault();
+            const messageText = messageInput.value.trim();
+            if (messageText) {
+                messageInput.value = '';
+                await sendGenericMessage(messageText, 'text');
+            }
+        }
+        
+        // === পরিবর্তন: ফাইল আপলোড ফাংশন মুছে ফেলা হয়েছে ===
+        // showImagePreview() মুছে ফেলা হয়েছে
+        // cancelImagePreview() মুছে ফেলা হয়েছে
+        // uploadAndSendImage() মুছে ফেলা হয়েছে
+
+        // --- বন্ধু সার্চ করা ---
+        async function searchFriends() {
+            const pingId = friendSearchInput.value.trim().toUpperCase();
+            if (!pingId) {
+                friendSearchResults.innerHTML = '';
+                return;
+            }
+            if (pingId === (currentUserData?.pingId || '')) {
+                 friendSearchResults.innerHTML = '<div class="text-center p-4 text-gray-500 dark:text-gray-400">That\'s you!</div>';
+                 return;
+            }
+
+            friendSearchResults.innerHTML = '<div class="text-center p-4 text-gray-500 dark:text-gray-400">Searching...</div>';
+
+            const q = query(collection(db, usersCollectionPath), where("pingId", "==", pingId));
+
+            try {
+                const querySnapshot = await getDocs(q);
+                
+                friendSearchResults.innerHTML = ''; 
 
                 if (querySnapshot.empty) {
-                    friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">No user found with that email.</span></div>`;
+                    friendSearchResults.innerHTML = '<div class="text-center p-4 text-gray-500 dark:text-gray-400">No user found with that Ping ID.</div>';
                     return;
                 }
 
-                friendSearchResults.innerHTML = ''; // "Searching..." মেসেজ সরানো
-                
                 querySnapshot.forEach((doc) => {
                     const user = doc.data();
-                    
                     const friendEl = document.createElement('div');
-                    friendEl.className = 'friend-item flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md';
+                    friendEl.className = 'friend-item flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-shadow';
+                    
+                    const userPhoto = user.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${(user.displayName || '?').charAt(0)}`;
+                    const userName = user.displayName || 'Unnamed User';
+
                     friendEl.innerHTML = `
                         <div class="flex items-center space-x-3 min-w-0">
-                            <img src="${user.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${(user.displayName || '?').charAt(0)}`}" alt="${user.displayName}" class="w-12 h-12 rounded-full object-cover" />
+                            <img src="${userPhoto}" alt="${userName}" class="w-12 h-12 rounded-full object-cover" />
                             <div class="min-w-0">
-                                <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${user.displayName || 'Unnamed User'}</h3>
+                                <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${userName}</h3>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">@${user.pingId || '...'}</p>
                             </div>
                         </div>
                         <button class="start-chat-btn p-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                              <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     `;
                     
-                    friendEl.querySelector('.start-chat-btn').addEventListener('click', () => {
-                        openChatPage(user.uid, user.displayName, user.photoURL);
+                    const startChatBtn = friendEl.querySelector('.start-chat-btn');
+                    startChatBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        startChat(user.uid, userName, userPhoto);
+                    });
+                    
+                    friendEl.addEventListener('click', () => {
+                        showFriendProfilePage('friends-page', user.uid);
                     });
                     
                     friendSearchResults.appendChild(friendEl);
                 });
-
             } catch (error) {
-                console.error("Error searching for friend: ", error);
-                friendSearchResults.innerHTML = `<div class="text-center pt-4"><span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-sm rounded-full">Error finding user.</span></div>`;
+                console.error("Error searching friends: ", error);
+                friendSearchResults.innerHTML = '<div class="text-center p-4 text-red-500 dark:text-red-400">An error occurred during search.</div>';
             }
         }
-
-        // --- নতুন: ইউজার স্ট্যাটাস আপডেট ফাংশন ---
-        async function updateUserStatus(status) {
-            if (!auth.currentUser) return;
-            const userDocRef = doc(db, usersCollectionPath, auth.currentUser.uid);
-            try {
-                await updateDoc(userDocRef, {
-                    status: status,
-                    lastSeen: serverTimestamp()
-                });
-            } catch (error) {
-                console.error("Error updating user status: ", error);
-            }
-        }
-
-
-        // --- রিয়েল-টাইম ইউজার ডক লিসেনার (অপরিবর্তিত) ---
-        function setupUserDocumentListener(uid) {
-            if (unsubscribeUserDoc) unsubscribeUserDoc();
-            const userDocRef = doc(db, usersCollectionPath, uid);
+        
+        // --- চ্যাট শুরু করা ---
+        async function startChat(partnerId, partnerName, partnerPhoto) {
+            if (unsubscribeMessages) unsubscribeMessages();
+            if (unsubscribeRoom) unsubscribeRoom();
+            if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             
-            unsubscribeUserDoc = onSnapshot(userDocRef, async (userDoc) => {
-                const defaultName = `User-${uid.substring(0, 6)}`;
-                if (!userDoc.exists()) {
-                    const newUser = {
-                        uid: uid,
-                        displayName: auth.currentUser.displayName || defaultName,
-                        photoURL: auth.currentUser.photoURL || null,
-                        email: auth.currentUser.email || null,
-                        pingId: generatePingId(), 
-                        createdAt: serverTimestamp(),
-                        status: 'online', // <-- নতুন: স্ট্যাটাস
-                        lastSeen: serverTimestamp() // <-- নতুন: স্ট্যাটাস
-                    };
-                    await setDoc(userDocRef, newUser, { merge: true });
-                    currentUserData = newUser;
-                    showProfileModal();
-                } else {
-                    currentUserData = userDoc.data();
-                    if (!currentUserData.pingId) {
-                        const newPingId = generatePingId();
-                        try {
-                            await updateDoc(userDocRef, { pingId: newPingId });
-                            currentUserData.pingId = newPingId; 
-                        } catch (e) {
-                            console.error("Error adding pingId: ", e);
-                        }
-                    }
-                    if (!currentUserData.displayName || currentUserData.displayName === defaultName) {
-                        if(auth.currentUser.displayName && auth.currentUser.displayName !== defaultName) {
-                            await updateDoc(userDocRef, { displayName: auth.currentUser.displayName });
-                            currentUserData.displayName = auth.currentUser.displayName;
-                        } else {
-                            showProfileModal(); 
-                        }
-                    }
-                }
-                if (!profilePage.classList.contains('hidden')) loadProfileDataToForm();
-            }, (error) => console.error("Error listening to user document: ", error));
+            showPage('chat-page');
+            chatHeaderName.textContent = partnerName;
+            chatHeaderAvatar.src = partnerPhoto;
+            chatHeaderStatus.textContent = "Loading status...";
+            chatHeaderStatus.classList.remove('h-4');
+            currentPartnerId = partnerId;
+            
+            currentChatRoomId = currentUserId < partnerId ? `${currentUserId}_${partnerId}` : `${partnerId}_${currentUserId}`;
+
+            messagesContainer.innerHTML = '';
+            loadMessagesAndRoom(currentChatRoomId, partnerId);
+            loadPartnerStatus(partnerId);
         }
 
-        // --- সকল লিসেনার বন্ধ করা (আপডেটেড) ---
+        // --- বন্ধুর প্রোফাইল পেজ দেখানো ---
+        async function showFriendProfilePage(originPage, userId) {
+            if (!userId) return;
+
+            currentViewingFriend = { uid: userId };
+            showPage('friend-profile-page');
+            friendProfilePage.dataset.origin = originPage;
+
+            friendProfileHeaderName.textContent = "Loading...";
+            friendProfilePicPreview.src = `https://placehold.co/128x128/9333ea/ffffff?text=?`;
+            const fields = [
+                friendProfileUserId, friendProfileDisplayName, friendProfileBio, 
+                friendProfileEmail, friendProfilePhone, friendProfileBirthdate, 
+                friendProfileGender, friendProfileMaritalStatus
+            ];
+            fields.forEach(f => { f.textContent = '...'; });
+
+            try {
+                const userDocRef = doc(db, usersCollectionPath, userId);
+                const docSnap = await getDoc(userDocRef);
+                
+                if (docSnap.exists()) {
+                    const user = docSnap.data();
+                    
+                    const displayName = user.displayName || 'Unknown User';
+                    const photoURL = user.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(displayName || '?').charAt(0)}`;
+
+                    currentViewingFriend = {
+                        uid: user.uid,
+                        displayName: displayName,
+                        photoURL: photoURL
+                    };
+
+                    friendProfileHeaderName.textContent = `${displayName}'s Profile`;
+                    friendProfilePicPreview.src = photoURL;
+                    friendProfileUserId.textContent = user.pingId || 'N/A';
+                    friendProfileDisplayName.textContent = displayName || 'N/A';
+                    friendProfileBio.textContent = user.bio || 'No bio provided.';
+                    friendProfileEmail.textContent = user.email || 'N/A';
+                    friendProfilePhone.textContent = user.phone || 'N/A';
+                    friendProfileBirthdate.textContent = user.birthdate || 'N/A';
+                    
+                    const genderMap = { 'male': 'Male', 'female': 'Female', 'other': 'Other', 'not_specified': 'Prefer not to say' };
+                    const maritalMap = { 'single': 'Single', 'married': 'Married', 'divorced': 'Divorced', 'widowed': 'Widowed', 'not_specified': 'Prefer not to say' };
+
+                    friendProfileGender.textContent = genderMap[user.gender] || genderMap['not_specified'];
+                    friendProfileMaritalStatus.textContent = maritalMap[user.maritalStatus] || maritalMap['not_specified'];
+                } else {
+                    friendProfileHeaderName.textContent = "User Not Found";
+                    friendProfileBio.textContent = "The user profile could not be loaded.";
+                }
+            } catch (error) {
+                console.error("Error loading friend profile: ", error);
+                friendProfileHeaderName.textContent = "Error";
+                friendProfileBio.textContent = "An error occurred while loading the profile.";
+            }
+        }
+
+        // --- সকল লিসেনার বন্ধ করা ---
         function cleanupAllListeners() {
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             if (unsubscribeUnreadCounts) unsubscribeUnreadCounts();
             if (unsubscribeUserDoc) unsubscribeUserDoc();
             if (unsubscribeFriendsList) unsubscribeFriendsList();
-            if (unsubscribePartnerStatus) unsubscribePartnerStatus(); // <-- নতুন
+            if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             
             unsubscribeMessages = null;
             unsubscribeRoom = null;
             unsubscribeUnreadCounts = null;
             unsubscribeUserDoc = null;
             unsubscribeFriendsList = null;
-            unsubscribePartnerStatus = null; // <-- নতুন
+            unsubscribePartnerStatus = null;
         }
 
-
-        // --- অ্যাপ চালু করা (আপডেটেড: Auth ফ্লো + স্ট্যাটাস) ---
+        // --- অ্যাপ চালু করা ---
         async function initApp() {
             if (!firebaseConfig.apiKey) {
                 document.body.innerHTML = '<div style="color: red; padding: 20px;">Error: Firebase configuration is missing.</div>';
@@ -1305,10 +1464,10 @@
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
-                storage = getStorage(app); 
-                setLogLevel('Debug'); 
+                storage = getStorage(app);
+                setLogLevel('Debug');
+                const analytics = getAnalytics(app);
 
-                // নতুন: পেজ হাইড/শো হলে স্ট্যাটাস আপডেট
                 document.addEventListener("visibilitychange", () => {
                     if (auth.currentUser) {
                         if (document.visibilityState === "visible") {
@@ -1319,38 +1478,27 @@
                     }
                 });
 
-                // নতুন: ব্রাউজার বন্ধ করার চেষ্টা
                 window.addEventListener('beforeunload', (e) => {
                     if (auth.currentUser) {
-                        // নির্ভরযোগ্য নয়, কিন্তু চেষ্টার জন্য
                         updateUserStatus('offline');
                     }
                 });
 
-
                 onAuthStateChanged(auth, async (user) => {
-                    cleanupAllListeners(); 
-
+                    cleanupAllListeners();
                     if (user) {
                         if (user.emailVerified) {
-                            // --- ইউজার লগড ইন এবং ভেরিফাইড ---
                             currentUserId = user.uid;
-                            await updateUserStatus('online'); // <-- লগইন করলে অনলাইন
-                            setupUserDocumentListener(user.uid); 
-                            
+                            await updateUserStatus('online');
+                            setupUserDocumentListener(user.uid);
                             messageInput.disabled = false;
                             sendButton.disabled = false;
-                            
                             loadChatList();
-                            loadUnreadCounts(); 
-                            loadFriendsList();
-                            
+                            friendSearchInput.placeholder = "Enter friend's Ping ID";
                             showPage('chat-list-page');
                         } else {
-                            // --- ইউজার লগড ইন কিন্তু ভেরিফাইড নয় ---
-                            currentUserId = null; 
+                            currentUserId = null;
                             showPage('login-page');
-                            
                             loginMessage.innerHTML = `
                                 <p class="text-sm text-yellow-600 dark:text-yellow-400">
                                     A verification email was sent to <strong>${user.email}</strong>. 
@@ -1360,95 +1508,163 @@
                                     Resend verification email
                                 </button>
                             `;
-                            document.getElementById('resend-verification-btn').addEventListener('click', async () => {
-                                try {
-                                    await sendEmailVerification(user);
-                                    showToast("Verification email resent!");
-                                    setAuthMessage(loginMessage, `Verification email resent to <strong>${user.email}</strong>. Please check your inbox.`, false);
-                                } catch (error) {
-                                    console.error("Error resending verification: ", error);
-                                    setAuthMessage(loginMessage, `Error: ${error.message}`, true);
-                                }
-                            });
+                            if(document.getElementById('resend-verification-btn')) {
+                                document.getElementById('resend-verification-btn').addEventListener('click', async () => {
+                                    try {
+                                        await sendEmailVerification(user);
+                                        setAuthMessage(loginMessage, `Verification email resent to <strong>${user.email}</strong>.`, false);
+                                    } catch (error) {
+                                        console.error("Error resending verification: ", error);
+                                        setAuthMessage(loginMessage, `Error: ${error.message}`, true);
+                                    }
+                                });
+                            }
                         }
                     } else {
-                        // --- ইউজার লগড আউট ---
                         currentUserId = null;
-                        currentUserData = {};
-                        
-                        messageInput.disabled = true;
-                        sendButton.disabled = true;
-
-                        showPage('login-page'); 
-                        loginMessage.innerHTML = ''; 
-                        showLoginForm(); 
+                        currentUserData = null;
+                        showPage('login-page');
+                        bottomNav.classList.add('hidden');
+                        loginMessage.innerHTML = '';
+                        showLoginForm();
                     }
                 });
-
             } catch (error) {
-                console.error("Error initializing Firebase: ", error);
-                document.body.innerHTML = `<div style="color: red; padding: 20px;">Error initializing app: ${error.message}</div>`;
+                console.error("Firebase initialization failed: ", error);
+                document.body.innerHTML = `<div style="color: red; padding: 20px;">Error: Firebase initialization failed. Check your console for details.</div>`;
             }
         }
 
-        // --- ইভেন্ট লিসেনার সেটআপ (আপডেটেড) ---
-        // থিম
+
+        // === ইভেন্ট লিসেনার্স ===
+
+        initApp();
+        applyTheme();
+
+        // থিম টগল
         themeToggle.addEventListener('click', toggleTheme);
 
-        // লগইন ও রেজিস্ট্রেশন পেজ
+        // লগইন/রেজিস্ট্রেশন টগল
         showRegisterBtn.addEventListener('click', showRegisterForm);
         showLoginBtn.addEventListener('click', showLoginForm);
+
+        // লগইন/রেজিস্ট্রেশন বাটন
         loginBtn.addEventListener('click', handleLogin);
         registerBtn.addEventListener('click', handleRegister);
         forgotPasswordBtn.addEventListener('click', handleForgotPassword);
-        friendSearchBtn.addEventListener('click', handleFriendSearch); 
-
-        // নেভিগেশন
-        navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
-        document.querySelectorAll('.nav-back-btn').forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.target)));
-
-        // প্রোফাইল মডাল
-        modalSaveProfileBtn.addEventListener('click', saveInitialProfile);
         
+        // নতুন ইউজার প্রোফাইল মডাল সেভ
+        modalSaveProfileBtn.addEventListener('click', saveInitialProfile);
+
+        // বটম নেভিগেশন
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pageId = btn.dataset.page;
+                showPage(pageId);
+                if (pageId === 'profile-page') loadProfileDataToForm();
+            });
+        });
+
+        // জেনেরিক ব্যাক বাটন
+        document.querySelectorAll('.nav-back-btn').forEach(btn => {
+             btn.addEventListener('click', () => {
+                const targetPage = btn.dataset.target || 'chat-list-page';
+                showPage(targetPage);
+             });
+        });
+
+        // ফ্রেন্ডস পেজ
+        friendSearchBtn.addEventListener('click', searchFriends);
+        friendSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchFriends();
+            }
+        });
+
         // প্রোফাইল পেজ
-        changePicBtn.addEventListener('click', () => profilePicInput.click());
+        changePicBtn.addEventListener('click', () => { if(isProfileEditing) profilePicInput.click() });
         profilePicInput.addEventListener('change', handleProfilePicSelect);
-        saveProfileBtn.addEventListener('click', saveProfile);
+        profilePicLinkBtn.addEventListener('click', () => { 
+            if(!isProfileEditing) return;
+            showUrlPrompt("Enter Profile Image URL", (url) => {
+                if (url) {
+                    profilePicPreview.src = url;
+                    profilePicUrlToUse = url;
+                    profileFileToUpload = null;
+                }
+            });
+        });
         signOutBtn.addEventListener('click', signOutUser);
+        
+        toggleProfileEditBtn.addEventListener('click', async () => {
+            if (isProfileEditing) {
+                await saveProfile(); 
+            } else {
+                setProfileEditMode(true);
+            }
+        });
 
         // চ্যাট পেজ
         chatForm.addEventListener('submit', handleChatFormSubmit);
         backToChatListButton.addEventListener('click', () => {
             showPage('chat-list-page');
-            // --- নতুন: চ্যাট পেজ ছাড়ার সময় লিসেনার ক্লিনআপ ---
             if (unsubscribeMessages) unsubscribeMessages();
             if (unsubscribeRoom) unsubscribeRoom();
             if (unsubscribePartnerStatus) unsubscribePartnerStatus();
-            unsubscribeMessages = null;
-            unsubscribeRoom = null;
-            unsubscribePartnerStatus = null;
-            chatHeaderStatus.textContent = '\u00A0'; // স্ট্যাটাস রিসেট
+            currentChatRoomId = null;
+            currentPartnerId = null;
+            // cancelImagePreview(); // === পরিবর্তন: মুছে ফেলা হয়েছে ===
+            chatHeaderStatus.textContent = '\u00A0';
             chatHeaderStatus.classList.add('h-4');
-            // --- ক্লিনআপ শেষ ---
         });
-        emojiToggleBtn.addEventListener('click', () => emojiPanel.classList.toggle('hidden'));
-        document.querySelectorAll('.emoji-btn').forEach(btn => btn.addEventListener('click', () => messageInput.value += btn.textContent));
-        attachFileBtn.addEventListener('click', () => imageUploadInput.click());
-        imageUploadInput.addEventListener('change', showImagePreview);
-        cancelImagePreviewBtn.addEventListener('click', cancelImagePreview);
-        messageInput.addEventListener('input', () => {
-            if (typingTimeout) clearTimeout(typingTimeout);
-            updateTypingStatus(true);
-            typingTimeout = setTimeout(() => updateTypingStatus(false), 2000); 
+        
+        emojiToggleBtn.addEventListener('click', () => {
+            emojiPanel.classList.toggle('hidden');
         });
 
-        // DOM লোড হলে অ্যাপ চালু করা
-        document.addEventListener('DOMContentLoaded', initApp);
+        document.querySelectorAll('.emoji-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                messageInput.value += btn.textContent;
+                messageInput.focus();
+                emojiPanel.classList.add('hidden');
+            });
+        });
 
-        // আইকনগুলোর SVG কোড যোগ করা (অপরিবর্তিত)
-        document.getElementById('emoji-toggle-btn').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
-        document.getElementById('attach-file-btn').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414a4 4 0 00-5.656-5.656l-6.415 6.415a6 6 0 108.486 8.486L20.5 13" /></svg>`;
-        document.getElementById('send-button').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>`;
+        // === পরিবর্তন: ফাইল আপলোড ইভেন্ট মুছে ফেলা হয়েছে ===
+        // attachFileBtn.addEventListener(...) মুছে ফেলা হয়েছে
+        // imageUploadInput.addEventListener(...) মুছে ফেলা হয়েছে
+        // cancelImagePreviewBtn.addEventListener(...) মুছে ফেলা হয়েছে
+
+        // === নতুন: লিংক বাটন ইভেন্ট ===
+        sendLinkBtn.addEventListener('click', () => {
+            showUrlPrompt("Enter Image URL", (url) => {
+                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    sendGenericMessage(url, 'image');
+                } else if (url) { // যদি ইউজার কিছু দেয় কিন্তু সেটা অবৈধ হয়
+                    showToast('Invalid URL. Must start with http:// or https://', true);
+                }
+            });
+        });
+
+
+        chatHeaderProfileBtn.addEventListener('click', () => {
+            if (currentPartnerId) {
+                showFriendProfilePage('chat-page', currentPartnerId);
+            }
+        });
+
+        // বন্ধুর প্রোফাইল পেজ
+        friendProfileBackBtn.addEventListener('click', () => {
+            const originPage = friendProfilePage.dataset.origin || 'chat-list-page';
+            showPage(originPage);
+        });
+
+        friendProfileStartChatBtn.addEventListener('click', () => {
+            if (currentViewingFriend) {
+                startChat(currentViewingFriend.uid, currentViewingFriend.displayName, currentViewingFriend.photoURL);
+            }
+        });
 
     </script>
 </body>
