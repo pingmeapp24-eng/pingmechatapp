@@ -137,7 +137,6 @@
 
     <div class="page-container">
 
-        <!-- === পেজ: লগইন === -->
         <div id="login-page" class="flex flex-col h-full">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0 text-center">
                 <h1 class="text-2xl font-bold">Welcome to PingMe</h1>
@@ -206,7 +205,6 @@
             </main>
         </div>
 
-        <!-- === পেজ: চ্যাট লিস্ট === -->
         <div id="chat-list-page" class="flex flex-col h-full hidden">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
@@ -228,7 +226,6 @@
             </main>
         </div>
 
-        <!-- === পেজ: বন্ধু তালিকা === -->
         <div id="friends-page" class="flex flex-col h-full hidden">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center space-x-3">
@@ -258,7 +255,6 @@
             </main>
         </div>
 
-        <!-- === পেজ: গ্রুপস === -->
         <div id="groups-page" class="flex flex-col h-full hidden">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center space-x-3">
@@ -276,7 +272,6 @@
         </div>
 
 
-        <!-- === পেজ: প্রোফাইল === -->
         <div id="profile-page" class="flex flex-col h-full hidden">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
@@ -358,7 +353,6 @@
             </main>
             </div>
 
-        <!-- === পেজ: বন্ধুর প্রোফাইল === -->
         <div id="friend-profile-page" class="flex flex-col h-full hidden">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
@@ -412,16 +406,19 @@
                     </div>
                 </div>
 
-                <div class="pt-4">
+                <div class="pt-4 space-y-3">
                     <button id="friend-profile-start-chat-btn" class="w-full bg-blue-500 text-white py-2.5 rounded-lg hover:bg-blue-600 shadow-md flex items-center justify-center space-x-2 font-medium">
                         <span>Start Chat</span>
                         <i class="fas fa-comments"></i>
+                    </button>
+                    <button id="friend-profile-delete-chat-btn" class="w-full bg-red-600 text-white py-2.5 rounded-lg hover:bg-red-700 shadow-md flex items-center justify-center space-x-2 font-medium">
+                        <span>Delete Chat History</span>
+                        <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
             </main>
         </div>
 
-        <!-- === পেজ: চ্যাট === -->
         <div id="chat-page" class="flex flex-col h-full hidden">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
@@ -454,7 +451,6 @@
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">🎉</button>
             </div>
             
-            <!-- === নতুন সংযোজন: রিপ্লে প্রিভিউ বার === -->
             <div id="reply-preview-bar" class="p-2 hidden shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2 min-w-0">
@@ -494,7 +490,6 @@
             </footer>
         </div>
 
-        <!-- === মডাল: নতুন ইউজার প্রোফাইল === -->
         <div id="profile-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 hidden">
              <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-sm w-full">
                 <h2 class="text-xl font-semibold mb-4">Welcome to PingMe!</h2>
@@ -505,7 +500,6 @@
             </div>
         </div>
 
-        <!-- === মডাল: টেক্সট/ইউআরএল প্রম্পট (পরিবর্তিত) === -->
         <div id="text-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-sm shadow-2xl">
                 <h3 id="text-prompt-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Enter URL</h3>
@@ -525,11 +519,9 @@
             </div>
         </div>
 
-        <!-- === নতুন সংযোজন: মেসেজ কনটেক্সট মেনু মডাল === -->
         <div id="message-context-menu" class="hidden">
             <div id="message-context-backdrop" class="modal-backdrop"></div>
             <div class="modal-content p-4">
-                <!-- রিয়্যাকশন বার -->
                 <div class="grid grid-cols-5 gap-2 mb-4">
                     <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="👍">👍</button>
                     <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="❤️">❤️</button>
@@ -538,7 +530,6 @@
                     <button class="menu-reaction-btn text-2xl p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" data-emoji="😡">😡</button>
                 </div>
                 <hr class="border-gray-200 dark:border-gray-600 my-2"/>
-                <!-- অপশন লিস্ট -->
                 <div class="flex flex-col">
                     <button id="menu-reply-btn" class="w-full text-left p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-3">
                         <i class="fas fa-reply w-5 text-center"></i>
@@ -556,7 +547,6 @@
             </div>
         </div>
         
-        <!-- === নতুন সংযোজন: কনফার্মেশন মডাল === -->
         <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-xs shadow-2xl">
                 <h3 id="confirm-modal-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Are you sure?</h3>
@@ -568,12 +558,10 @@
             </div>
         </div>
 
-        <!-- === নোটিফিকেশন: টোস্ট === -->
         <div id="toast-notification" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-10 opacity-0">
             Profile saved successfully!
         </div>
 
-        <!-- === নেভিগেশন: বটম ন্যাভবার === -->
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
             <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-blue-500 dark:text-blue-400">
                 <i class="fas fa-comments text-2xl"></i>
@@ -593,7 +581,6 @@
         </nav>
     </div>
 
-    <!-- ========= স্ক্রিপ্ট সেকশন (পরিবর্তিত) ========= -->
     <script type="module">
         // Firebase মডিউল
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -622,6 +609,7 @@
             setLogLevel,
             getDocs,
             writeBatch,
+            deleteDoc, // === নতুন সংযোজন: ডিলিট ইমপোর্ট ===
             // addDoc - আর ব্যবহৃত হচ্ছে না
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { 
@@ -790,6 +778,7 @@
         const friendProfileGender = document.getElementById('friend-profile-gender');
         const friendProfileMaritalStatus = document.getElementById('friend-profile-marital-status');
         const friendProfileStartChatBtn = document.getElementById('friend-profile-start-chat-btn');
+        const friendProfileDeleteChatBtn = document.getElementById('friend-profile-delete-chat-btn'); // === নতুন সংযোজন ===
         
         // === নতুন সংযোজন: মেসেজ মেনু মডাল ===
         const messageContextMenu = document.getElementById('message-context-menu');
@@ -1234,7 +1223,6 @@
                                     <h3 class="text-base font-semibold truncate text-gray-900 dark:text-gray-100">${partnerName}</h3>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">${lastMessageTime}</p>
                                 </div>
-                                <!-- === নতুন সংযোজন: ইটালিক === -->
                                 <p class="text-sm text-gray-500 dark:text-gray-400 truncate ${room.lastMessage?.isDeleted ? 'italic' : ''}">${lastMessage}</p>
                             </div>
                         </div>
@@ -1913,6 +1901,54 @@
             }
         }
 
+        // === নতুন সংযোজন: চ্যাট ডিলিট ফাংশন ===
+        function confirmDeleteChat(partnerId, partnerName) {
+            showConfirmModal({
+                title: "Delete Chat History?",
+                text: `Are you sure you want to delete your entire chat history with ${partnerName}? This action cannot be undone.`,
+                confirmText: "Delete",
+                confirmCallback: () => deleteChatHistory(partnerId)
+            });
+        }
+
+        async function deleteChatHistory(partnerId) {
+            if (!currentUserId || !partnerId) return;
+
+            const confirmBtn = document.getElementById('confirm-modal-confirm');
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Deleting...';
+            
+            const chatRoomId = currentUserId < partnerId ? `${currentUserId}_${partnerId}` : `${partnerId}_${currentUserId}`;
+            const chatRoomRef = doc(db, chatRoomsCollectionPath, chatRoomId);
+            const messagesCollectionRef = collection(db, chatRoomsCollectionPath, chatRoomId, 'messages');
+
+            try {
+                // 1. Delete all messages in the subcollection
+                const messagesSnapshot = await getDocs(messagesCollectionRef);
+                if (!messagesSnapshot.empty) {
+                    const batch = writeBatch(db);
+                    messagesSnapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                }
+
+                // 2. Delete the chat room document
+                await deleteDoc(chatRoomRef);
+
+                showToast('Chat history deleted.', false);
+                
+            } catch (error) {
+                console.error("Error deleting chat history: ", error);
+                showToast('Error deleting chat history.', true);
+            } finally {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Delete';
+                hideConfirmModal();
+                showPage('chat-list-page'); // Go back to chat list
+            }
+        }
+
         // --- সকল লিসেনার বন্ধ করা ---
         function cleanupAllListeners() {
             if (unsubscribeMessages) unsubscribeMessages();
@@ -2191,8 +2227,14 @@
                 });
             }
         });
+        
+        // === নতুন সংযোজন: চ্যাট ডিলিট ইভেন্ট ===
+        friendProfileDeleteChatBtn.addEventListener('click', () => {
+            if (currentViewingFriend && currentUserId) {
+                confirmDeleteChat(currentViewingFriend.uid, currentViewingFriend.displayName);
+            }
+        });
 
     </script>
 </body>
 </html>
-
