@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* স্ক্রলবার স্টাইল */
+        /* === পরিবর্তন: লোগো থিম কালার === */
         #messages-container::-webkit-scrollbar,
         #chat-list-container::-webkit-scrollbar,
         #friends-page-container::-webkit-scrollbar,
@@ -21,7 +21,7 @@
         #groups-page-container::-webkit-scrollbar-thumb,
         #profile-page-main::-webkit-scrollbar-thumb,
         #friend-profile-page-main::-webkit-scrollbar-thumb {
-            background-color: #5B5BD6;
+            background-color: #fbc02d; /* লোগো হলুদ */
             border-radius: 10px;
         }
         .bubble-me {
@@ -49,8 +49,9 @@
             overflow: hidden;
             position: relative;
         }
+        /* === পরিবর্তন: লোগো গ্র্যাডিয়েন্ট === */
         .header-gradient {
-            background-image: linear-gradient(to right, #7A5AF8, #B794F6);
+            background-image: linear-gradient(to right, #22d3ee, #3b82f6); /* সায়ান থেকে নীল */
         }
         .toast-show {
             display: block !important;
@@ -86,12 +87,14 @@
                                 <label for="login-password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
                                 <input type="password" id="login-password" class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="••••••••" />
                             </div>
-                            <button id="login-btn" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 shadow-md">
+                            <!-- === পরিবর্তন: বাটন কালার === -->
+                            <button id="login-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 shadow-md">
                                 Sign In
                             </button>
                         </div>
                         <div class="mt-4 text-sm text-center">
-                            <button id="forgot-password-btn" class="text-indigo-600 dark:text-indigo-400 hover:underline">Forgot Password?</button>
+                            <!-- === পরিবর্তন: লিংক কালার === -->
+                            <button id="forgot-password-btn" class="text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</button>
                         </div>
                         <div class="my-6 flex items-center justify-center">
                             <span class="border-t border-gray-300 dark:border-gray-600 flex-grow"></span>
@@ -121,12 +124,14 @@
                                 <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Confirm Password</label>
                                 <input type="password" id="register-confirm-password" class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Repeat password" />
                             </div>
-                            <button id="register-btn" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 shadow-md">
+                            <!-- === পরিবর্তন: বাটন কালার === -->
+                            <button id="register-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 shadow-md">
                                 Register
                             </button>
                         </div>
                         <div class="mt-6 text-sm text-center">
-                            <button id="show-login-btn" class="text-indigo-600 dark:text-indigo-400 hover:underline">
+                            <!-- === পরিবর্তন: লিংক কালার === -->
+                            <button id="show-login-btn" class="text-blue-600 dark:text-blue-400 hover:underline">
                                 Already have an account? Sign In
                             </button>
                         </div>
@@ -175,7 +180,8 @@
                     <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Find Friends</h3>
                     <div class="flex space-x-2">
                         <input type="text" id="friend-search-input" class="flex-1 w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700" placeholder="Enter friend's Ping ID" />
-                        <button id="friend-search-btn" class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                        <!-- === পরিবর্তন: বাটন কালার === -->
+                        <button id="friend-search-btn" class="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                         </button>
                     </div>
@@ -225,11 +231,13 @@
             </header>
             <main id="profile-page-main" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
                 <div class="flex flex-col items-center space-y-2">
-                    <img id="profile-pic-preview" src="https://placehold.co/128x128/9333ea/ffffff?text=User" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
+                    <!-- === পরিবর্তন: প্লেসহোল্ডার কালার === -->
+                    <img id="profile-pic-preview" src="https://placehold.co/128x128/fbc02d/ffffff?text=User" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
                     <input type="file" id="profile-pic-input" class="hidden" accept="image/*" />
                     <div class="flex space-x-3">
-                        <button id="change-pic-btn" class="text-sm text-indigo-500 dark:text-indigo-400 hover:underline">Change Photo</button>
-                        <button id="profile-pic-link-btn" class="text-sm text-green-500 dark:text-green-400 hover:underline">Use Link</button>
+                        <!-- === পরিবর্তন: লিংক কালার === -->
+                        <button id="change-pic-btn" class="text-sm text-blue-500 dark:text-blue-400 hover:underline">Change Photo</button>
+                        <button id="profile-pic-link-btn" class="text-sm text-yellow-500 dark:text-yellow-400 hover:underline">Use Link</button>
                     </div>
                 </div>
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -303,7 +311,8 @@
             </header>
             <main id="friend-profile-page-main" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-100 dark:bg-gray-900">
                 <div class="flex flex-col items-center space-y-2">
-                    <img id="friend-profile-pic-preview" src="https://placehold.co/128x128/9333ea/ffffff?text=?" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
+                    <!-- === পরিবর্তন: প্লেসহোল্ডার কালার === -->
+                    <img id="friend-profile-pic-preview" src="https://placehold.co/128x128/fbc02d/ffffff?text=?" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover shadow-lg" />
                 </div>
                 <div class="p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400">Ping ID</label>
@@ -342,7 +351,8 @@
                 </div>
 
                 <div class="pt-4">
-                    <button id="friend-profile-start-chat-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 shadow-md flex items-center justify-center space-x-2 font-medium">
+                    <!-- === পরিবর্তন: বাটন কালার === -->
+                    <button id="friend-profile-start-chat-btn" class="w-full bg-blue-500 text-white py-2.5 rounded-lg hover:bg-blue-600 shadow-md flex items-center justify-center space-x-2 font-medium">
                         <span>Start Chat</span>
                         <i class="fas fa-comments"></i>
                     </button>
@@ -361,10 +371,11 @@
                             </svg>
                         </button>
                         <button id="chat-header-profile-btn" class="flex items-center space-x-3 rounded-lg p-1 -ml-1 hover:bg-white/10">
-                            <img id="chat-header-avatar" src="https://placehold.co/40x40/b794f6/ffffff?text=?" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
+                            <!-- === পরিবর্তন: প্লেসহোল্ডার কালার === -->
+                            <img id="chat-header-avatar" src="https://placehold.co/40x40/fbc02d/ffffff?text=?" alt="Avatar" class="w-10 h-10 rounded-full object-cover" />
                             <div>
                                 <h1 id="chat-header-name" class="text-lg font-semibold text-left">...</h1>
-                                <p id="chat-header-status" class="text-xs text-purple-100 h-4 text-left">&nbsp;</p> 
+                                <p id="chat-header-status" class="text-xs text-blue-200 h-4 text-left">&nbsp;</p> 
                             </div>
                         </button>
                     </div>
@@ -381,8 +392,6 @@
                 <button class="emoji-btn text-2xl hover:bg-gray-200 dark:hover:bg-gray-700 rounded">🎉</button>
             </div>
             
-            <!-- === পরিবর্তন: ইমেজ প্রিভিউ কন্টেনার মুছে ফেলা হয়েছে === -->
-            
             <footer class="p-3 bg-transparent shrink-0">
                 <form id="chat-form" class="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-xl p-2">
                     <button type="button" id="emoji-toggle-btn" class="p-2 text-gray-500 dark:text-gray-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -391,16 +400,15 @@
                         </svg>
                     </button>
                     
-                    <!-- === পরিবর্তন: অ্যাটাচ বাটন একটি লিংক বাটন দিয়ে প্রতিস্থাপন করা হয়েছে === -->
                     <button type="button" id="send-link-btn" class="p-2 text-gray-500 dark:text-gray-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899l4-4a4 4 0 10-5.656-5.656l-1.102 1.101" />
                         </svg>
                     </button>
-                    <!-- === পরিবর্তন: ফাইল ইনপুট মুছে ফেলা হয়েছে === -->
                     
                     <input type="text" id="message-input" class="flex-1 p-2 bg-transparent text-gray-900 dark:text-gray-100 focus:outline-none" placeholder="Type a message..." disabled />
-                    <button type="submit" id="send-button" class="p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 ml-2 disabled:bg-indigo-400 disabled:cursor-not-allowed" disabled>
+                    <!-- === পরিবর্তন: বাটন কালার === -->
+                    <button type="submit" id="send-button" class="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 ml-2 disabled:bg-blue-400 disabled:cursor-not-allowed" disabled>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
@@ -416,28 +424,29 @@
                 <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">Please set a display name to continue.</p>
                 <label for="display-name-input" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Display Name</label>
                 <input type="text" id="display-name-input" class="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" />
-                <button id="modal-save-profile-btn" class="w-full mt-4 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">Save</button>
+                <!-- === পরিবর্তন: বাটন কালার === -->
+                <button id="modal-save-profile-btn" class="w-full mt-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Save</button>
             </div>
         </div>
 
-        <!-- === মডাল: ইউআরএল প্রম্পট (পরিবর্তিত: postimages.org লিংক সহ) === -->
+        <!-- === মডাল: ইউআরএল প্রম্পট === -->
         <div id="url-prompt-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 dark:bg-opacity-80 flex items-center justify-center p-4 z-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-xs shadow-2xl">
                 <h3 id="url-prompt-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">Enter URL</h3>
                 
-                <!-- === নতুন: postimages.org লিংক === -->
                 <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
                     Need to upload an image? Try: 
-                    <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" class="text-indigo-500 hover:underline">
+                    <!-- === পরিবর্তন: লিংক কালার === -->
+                    <a href="https://postimages.org/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">
                         postimages.org
                     </a>
                 </p>
-                <!-- === নতুন লিংক শেষ === -->
 
                 <input type="url" id="url-prompt-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 mb-4" placeholder="https://example.com/image.jpg" />
                 <div class="flex justify-end space-x-3">
                     <button id="url-prompt-cancel" class="py-2 px-4 text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">Cancel</button>
-                    <button id="url-prompt-save" class="py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Save</button>
+                    <!-- === পরিবর্তন: বাটন কালার === -->
+                    <button id="url-prompt-save" class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Save</button>
                 </div>
             </div>
         </div>
@@ -448,20 +457,21 @@
         </div>
 
         <!-- === নেভিগেশন: বটম ন্যাভবার === -->
+        <!-- === পরিবর্তন: আইকন কালার ক্লাস সরানো হয়েছে (JS এখন কন্ট্রোল করবে) === -->
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
-            <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-indigo-600 dark:text-indigo-400">
-                <i class="fas fa-comments text-2xl text-blue-500"></i>
+            <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-blue-500 dark:text-blue-400">
+                <i class="fas fa-comments text-2xl"></i>
                 <span class="text-xs font-medium mt-1">Chats</span>
             </button>
             <button data-page="friends-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
-                <i class="fas fa-users text-lg text-green-500"></i>
+                <i class="fas fa-users text-lg"></i>
                 <span class="text-xs font-medium mt-1">Friends</span>
             </button>
             <button data-page="groups-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
-                <i class="fas fa-user-friends text-lg text-teal-500"></i> <span class="text-xs font-medium mt-1">Groups</span>
+                <i class="fas fa-user-friends text-lg"></i> <span class="text-xs font-medium mt-1">Groups</span>
             </button>
             <button data-page="profile-page" class="nav-btn flex flex-col items-center text-gray-500 dark:text-gray-400 opacity-70">
-                <i class="fas fa-user-circle text-lg text-red-500"></i>
+                <i class="fas fa-user-circle text-lg"></i>
                 <span class="text-xs font-medium mt-1">Profile</span>
             </button>
         </nav>
@@ -536,7 +546,6 @@
         let isProfileEditing = false;
         let profileFileToUpload = null;
         let profilePicUrlToUse = null;
-        // let chatFileToUpload = null; // === পরিবর্তন: মুছে ফেলা হয়েছে ===
         let currentViewingFriend = null;
 
         // --- ফায়ারবেজ পাথ ---
@@ -617,8 +626,7 @@
         const chatHeaderStatus = document.getElementById('chat-header-status');
         const emojiToggleBtn = document.getElementById('emoji-toggle-btn');
         const emojiPanel = document.getElementById('emoji-panel');
-        const sendLinkBtn = document.getElementById('send-link-btn'); // === পরিবর্তন: নতুন বাটন ===
-        // === পরিবর্তন: ফাইল আপলোড DOM এলিমেন্ট মুছে ফেলা হয়েছে ===
+        const sendLinkBtn = document.getElementById('send-link-btn'); 
         const chatHeaderProfileBtn = document.getElementById('chat-header-profile-btn');
 
         // মডাল (URL প্রম্পট)
@@ -679,10 +687,11 @@
                 bottomNav.classList.add('hidden');
             }
 
+            // === পরিবর্তন: ন্যাভ বাটন কালার ===
             navButtons.forEach(btn => {
                 const isActive = btn.dataset.page === pageId;
-                btn.classList.toggle('text-indigo-600', isActive);
-                btn.classList.toggle('dark:text-indigo-400', isActive);
+                btn.classList.toggle('text-blue-500', isActive); // থিম কালার
+                btn.classList.toggle('dark:text-blue-400', isActive); // থিম কালার
                 btn.classList.toggle('text-gray-500', !isActive);
                 btn.classList.toggle('dark:text-gray-400', !isActive);
                 btn.classList.toggle('opacity-70', !isActive);
@@ -925,10 +934,11 @@
             profilePicLinkBtn.classList.toggle('opacity-50', !isEditing);
         }
 
+        // === পরিবর্তন: প্লেসহোল্ডার কালার ===
         function loadProfileDataToForm() {
             if (!currentUserData) return;
             profileUserId.textContent = currentUserData.pingId || '...';
-            profilePicPreview.src = currentUserData.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(currentUserData.displayName || 'U').charAt(0)}`;
+            profilePicPreview.src = currentUserData.photoURL || `https://placehold.co/128x128/fbc02d/ffffff?text=${(currentUserData.displayName || 'U').charAt(0)}`;
             profileDisplayNameInput.value = currentUserData.displayName || '';
             profileBioInput.value = currentUserData.bio || '';
             profileEmailInput.value = currentUserData.email || (auth.currentUser ? auth.currentUser.email : '');
@@ -1040,7 +1050,8 @@
 
                     const partnerInfo = room.participantInfo?.[partnerId];
                     const partnerName = partnerInfo?.displayName || 'Unknown User';
-                    const partnerPhoto = partnerInfo?.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${partnerName.charAt(0)}`;
+                    // === পরিবর্তন: প্লেসহোল্ডার কালার ===
+                    const partnerPhoto = partnerInfo?.photoURL || `https://placehold.co/80x80/fbc02d/ffffff?text=${partnerName.charAt(0)}`;
                     const lastMessage = room.lastMessage?.text || 'No messages';
                     const lastMessageTime = room.lastMessage?.timestamp?.toDate()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
                     const lastMessageTimestamp = room.lastMessage?.timestamp?.toDate() || new Date(0);
@@ -1051,7 +1062,8 @@
                         <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer" data-partner-id="${partnerId}" data-partner-name="${partnerName}" data-partner-photo="${partnerPhoto}">
                             <div class="relative">
                                 <img src="${partnerPhoto}" alt="${partnerName}" class="w-14 h-14 rounded-full object-cover" />
-                                <span id="unread-count-${chatRoomId}" class="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</span>
+                                <!-- === পরিবর্তন: আনরিড কাউন্ট কালার === -->
+                                <span id="unread-count-${chatRoomId}" class="absolute top-0 right-0 w-5 h-5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full flex items-center justify-center ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
@@ -1152,10 +1164,11 @@
                     const user = docSnap.data();
                     const status = user.status;
                     
+                    // === পরিবর্তন: স্ট্যাটাস কালার ===
                     if (status === 'online') {
                         chatHeaderStatus.textContent = 'Online';
-                        chatHeaderStatus.classList.add('text-green-300');
-                        chatHeaderStatus.classList.remove('text-purple-100');
+                        chatHeaderStatus.classList.add('text-cyan-200'); // হেডার গ্র্যাডিয়েন্ট-এর হালকা রঙ
+                        chatHeaderStatus.classList.remove('text-blue-200');
                     } else {
                         let lastSeenText = 'Offline';
                         if (user.lastSeen) {
@@ -1168,13 +1181,13 @@
                             }
                         }
                         chatHeaderStatus.textContent = lastSeenText;
-                        chatHeaderStatus.classList.remove('text-green-300');
-                        chatHeaderStatus.classList.add('text-purple-100');
+                        chatHeaderStatus.classList.remove('text-cyan-200');
+                        chatHeaderStatus.classList.add('text-blue-200'); // হেডার গ্র্যাডিয়েন্ট-এর গাঢ় রঙ
                     }
                 } else {
                      chatHeaderStatus.textContent = 'Offline';
-                     chatHeaderStatus.classList.remove('text-green-300');
-                     chatHeaderStatus.classList.add('text-purple-100');
+                     chatHeaderStatus.classList.remove('text-cyan-200');
+                     chatHeaderStatus.classList.add('text-blue-200');
                 }
             }, (error) => console.error("Error loading partner status: ", error));
         }
@@ -1185,7 +1198,8 @@
             messages.forEach(msg => {
                 const isMe = msg.senderId === currentUserId;
                 const alignment = isMe ? 'justify-end' : 'justify-start';
-                const bubbleClass = isMe ? 'bubble-me bg-indigo-600 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
+                // === পরিবর্তন: মেসেজ বাবল কালার ===
+                const bubbleClass = isMe ? 'bubble-me bg-blue-500 text-white' : 'bubble-other bg-white dark:bg-gray-700 shadow-md';
                 const time = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
                 
                 let statusIcon = '';
@@ -1215,7 +1229,7 @@
                 messageEl.innerHTML = `
                     <div class="max-w-xs md:max-w-md p-3 ${bubbleClass}">
                         ${contentHTML}
-                        <p class="text-xs ${isMe ? 'text-indigo-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
+                        <p class="text-xs ${isMe ? 'text-blue-200' : 'text-gray-500 dark:text-gray-400'} mt-1 text-right">
                             ${time} ${statusIcon}
                         </p>
                     </div>
@@ -1276,7 +1290,7 @@
             }
         }
 
-        // --- চ্যাট ফর্ম সাবমিট (পরিবর্তিত: ফাইল আপলোড লজিক সরানো হয়েছে) ---
+        // --- চ্যাট ফর্ম সাবমিট ---
         async function handleChatFormSubmit(e) {
             e.preventDefault();
             const messageText = messageInput.value.trim();
@@ -1285,15 +1299,11 @@
                 await sendGenericMessage(messageText, 'text');
             }
         }
-        
-        // === পরিবর্তন: ফাইল আপলোড ফাংশন মুছে ফেলা হয়েছে ===
-        // showImagePreview() মুছে ফেলা হয়েছে
-        // cancelImagePreview() মুছে ফেলা হয়েছে
-        // uploadAndSendImage() মুছে ফেলা হয়েছে
 
         // --- বন্ধু সার্চ করা ---
         async function searchFriends() {
-            const pingId = friendSearchInput.value.trim().toUpperCase();
+            const pingId = friendSearchInput.value.trim(); 
+            
             if (!pingId) {
                 friendSearchResults.innerHTML = '';
                 return;
@@ -1322,7 +1332,8 @@
                     const friendEl = document.createElement('div');
                     friendEl.className = 'friend-item flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md cursor-pointer hover:shadow-lg transition-shadow';
                     
-                    const userPhoto = user.photoURL || `https://placehold.co/80x80/b794f6/ffffff?text=${(user.displayName || '?').charAt(0)}`;
+                    // === পরিবর্তন: প্লেসহোল্ডার কালার ===
+                    const userPhoto = user.photoURL || `https://placehold.co/80x80/fbc02d/ffffff?text=${(user.displayName || '?').charAt(0)}`;
                     const userName = user.displayName || 'Unnamed User';
 
                     friendEl.innerHTML = `
@@ -1333,7 +1344,8 @@
                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">@${user.pingId || '...'}</p>
                             </div>
                         </div>
-                        <button class="start-chat-btn p-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800">
+                        <!-- === পরিবর্তন: বাটন কালার === -->
+                        <button class="start-chat-btn p-2 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
                             </svg>
@@ -1387,7 +1399,8 @@
             friendProfilePage.dataset.origin = originPage;
 
             friendProfileHeaderName.textContent = "Loading...";
-            friendProfilePicPreview.src = `https://placehold.co/128x128/9333ea/ffffff?text=?`;
+            // === পরিবর্তন: প্লেসহোল্ডার কালার ===
+            friendProfilePicPreview.src = `https://placehold.co/128x128/fbc02d/ffffff?text=?`;
             const fields = [
                 friendProfileUserId, friendProfileDisplayName, friendProfileBio, 
                 friendProfileEmail, friendProfilePhone, friendProfileBirthdate, 
@@ -1403,7 +1416,8 @@
                     const user = docSnap.data();
                     
                     const displayName = user.displayName || 'Unknown User';
-                    const photoURL = user.photoURL || `https://placehold.co/128x128/9333ea/ffffff?text=${(displayName || '?').charAt(0)}`;
+                    // === পরিবর্তন: প্লেসহোল্ডার কালার ===
+                    const photoURL = user.photoURL || `https://placehold.co/128x128/fbc02d/ffffff?text=${(displayName || '?').charAt(0)}`;
 
                     currentViewingFriend = {
                         uid: user.uid,
@@ -1504,7 +1518,7 @@
                                     A verification email was sent to <strong>${user.email}</strong>. 
                                     Please check your inbox (and spam folder) to verify your account.
                                 </p>
-                                <button id="resend-verification-btn" class="w-full mt-2 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                                <button id="resend-verification-btn" class="w-full mt-2 text-sm text-blue-600 dark:text-blue-400 hover:underline">
                                     Resend verification email
                                 </button>
                             `;
@@ -1585,16 +1599,20 @@
         // প্রোফাইল পেজ
         changePicBtn.addEventListener('click', () => { if(isProfileEditing) profilePicInput.click() });
         profilePicInput.addEventListener('change', handleProfilePicSelect);
+        
         profilePicLinkBtn.addEventListener('click', () => { 
             if(!isProfileEditing) return;
             showUrlPrompt("Enter Profile Image URL", (url) => {
-                if (url) {
+                if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
                     profilePicPreview.src = url;
                     profilePicUrlToUse = url;
                     profileFileToUpload = null;
+                } else if (url) {
+                    showToast('Invalid URL. Must start with http:// or https://', true);
                 }
             });
         });
+
         signOutBtn.addEventListener('click', signOutUser);
         
         toggleProfileEditBtn.addEventListener('click', async () => {
@@ -1614,7 +1632,6 @@
             if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             currentChatRoomId = null;
             currentPartnerId = null;
-            // cancelImagePreview(); // === পরিবর্তন: মুছে ফেলা হয়েছে ===
             chatHeaderStatus.textContent = '\u00A0';
             chatHeaderStatus.classList.add('h-4');
         });
@@ -1631,17 +1648,12 @@
             });
         });
 
-        // === পরিবর্তন: ফাইল আপলোড ইভেন্ট মুছে ফেলা হয়েছে ===
-        // attachFileBtn.addEventListener(...) মুছে ফেলা হয়েছে
-        // imageUploadInput.addEventListener(...) মুছে ফেলা হয়েছে
-        // cancelImagePreviewBtn.addEventListener(...) মুছে ফেলা হয়েছে
-
-        // === নতুন: লিংক বাটন ইভেন্ট ===
+        // লিংক বাটন ইভেন্ট
         sendLinkBtn.addEventListener('click', () => {
             showUrlPrompt("Enter Image URL", (url) => {
                 if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
                     sendGenericMessage(url, 'image');
-                } else if (url) { // যদি ইউজার কিছু দেয় কিন্তু সেটা অবৈধ হয়
+                } else if (url) {
                     showToast('Invalid URL. Must start with http:// or https://', true);
                 }
             });
