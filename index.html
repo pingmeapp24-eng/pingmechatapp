@@ -1764,6 +1764,7 @@
         }
 
         // --- বন্ধু সার্চ করা ---
+        // === পরিবর্তিত: searchFriends ফাংশন ===
         async function searchFriends() {
             const pingId = friendSearchInput.value.trim(); 
             
@@ -1798,6 +1799,7 @@
                     const userPhoto = user.photoURL || `https://placehold.co/80x80/fbc02d/ffffff?text=${(user.displayName || '?').charAt(0)}`;
                     const userName = user.displayName || 'Unnamed User';
 
+                    // === পরিবর্তিত: স্টার্ট চ্যাট বাটন অপসারণ করা হয়েছে ===
                     friendEl.innerHTML = `
                         <div class="flex items-center space-x-3 min-w-0">
                             <img src="${userPhoto}" alt="${userName}" class="w-12 h-12 rounded-full object-cover" />
@@ -1806,19 +1808,12 @@
                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">@${user.pingId || '...'}</p>
                             </div>
                         </div>
-                        <button class="start-chat-btn p-2 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
+                        <i class="fas fa-chevron-right text-gray-400 dark:text-gray-500"></i>
                     `;
                     
-                    const startChatBtn = friendEl.querySelector('.start-chat-btn');
-                    startChatBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        startChat(user.uid, { displayName: userName, photoURL: userPhoto });
-                    });
+                    // === অপসারিত: স্টার্ট চ্যাট বাটনের ইভেন্ট লিসেনার ===
                     
+                    // প্রোফাইল পেজে যাওয়ার জন্য এই লিসেনারটি থাকবে
                     friendEl.addEventListener('click', () => {
                         showFriendProfilePage('friends-page', user.uid);
                     });
