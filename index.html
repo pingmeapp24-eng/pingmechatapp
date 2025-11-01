@@ -1385,6 +1385,11 @@
         // --- মেসেজ রেন্ডার করা ---
         function renderMessages(messages) {
             messagesContainer.innerHTML = '';
+            
+            // === নতুন সংযোজন: প্রোফাইল পিকচার ইউআরএল ===
+            const myPhoto = currentUserData?.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${(currentUserData?.displayName || 'U').charAt(0)}`;
+            const partnerPhoto = currentPartnerInfo.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${(currentPartnerInfo.displayName || '?').charAt(0)}`;
+
             messages.forEach(msg => {
                 const isMe = msg.senderId === currentUserId;
                 const time = msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '';
@@ -1437,11 +1442,20 @@
                 }
 
                 const messageEl = document.createElement('div');
+                // === পরিবর্তিত: isMe অনুযায়ী justify-end বা justify-start ===
                 messageEl.className = `flex w-full items-end space-x-2 ${isMe ? 'justify-end' : 'justify-start'}`;
                 
+                // === পরিবর্তিত: পার্টনারের অ্যাভাটার ===
                 const partnerAvatar = `
                     <div>
-                        <img src="${currentPartnerInfo.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${currentPartnerInfo.displayName.charAt(0)}`}" alt="Avatar" class="w-8 h-8 rounded-full object-cover" />
+                        <img src="${partnerPhoto}" alt="Avatar" class="w-8 h-8 rounded-full object-cover" />
+                    </div>
+                `;
+
+                // === নতুন সংযোজন: নিজের অ্যাভাটার ===
+                const myAvatar = `
+                    <div>
+                        <img src="${myPhoto}" alt="Avatar" class="w-8 h-8 rounded-full object-cover" />
                     </div>
                 `;
 
@@ -1465,8 +1479,9 @@
                     </div>
                 `;
                 
+                // === পরিবর্তিত: নিজের মেসেজের সাথে নিজের অ্যাভাটার যোগ ===
                 if (isMe) {
-                    messageEl.innerHTML = bubbleHTML;
+                    messageEl.innerHTML = bubbleHTML + myAvatar;
                 } else {
                     messageEl.innerHTML = partnerAvatar + bubbleHTML;
                 }
