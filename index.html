@@ -131,13 +131,60 @@
             border-color: #4b5563; /* gray-600 */
         }
 
+        /* === শুরু: লগইন সিস্টেম আপডেট (CSS) === */
+        #app-loader {
+            display: flex; /* ডিফল্টরূপে দেখান */
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            background-color: #f3f4f6; /* gray-100 */
+            transition: opacity 0.3s ease-in-out;
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .dark #app-loader {
+            background-color: #111827; /* gray-900 */
+        }
+        #app-loader.loader-hidden {
+            opacity: 0;
+            pointer-events: none; /* লুকানো অবস্থায় এটিকে অ-ইন্টারেক্টিভ করুন */
+        }
+
+        .page {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            /* 'hidden' ক্লাস (display: none) লেআউট থেকে সরানোর জন্য এখনও ব্যবহৃত হয় */
+        }
+        .page-visible {
+            opacity: 1;
+            /* পেজটি দেখানোর জন্য 'hidden' ক্লাস (display: none) অবশ্যই সরাতে হবে */
+        }
+        /* === শেষ: লগইন সিস্টেম আপডেট (CSS) === */
+
+
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans overflow-hidden">
 
     <div class="page-container">
 
-        <div id="login-page" class="flex flex-col h-full">
+        <!-- === শুরু: অ্যাপ লোডার === -->
+        <div id="app-loader">
+            <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">PingMe এর সাথে সংযোগ করা হচ্ছে...</p>
+        </div>
+        <!-- === শেষ: অ্যাপ লোডার === -->
+
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="login-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0 text-center">
                 <h1 class="text-2xl font-bold">Welcome to PingMe</h1>
             </header>
@@ -205,7 +252,8 @@
             </main>
         </div>
 
-        <div id="chat-list-page" class="flex flex-col h-full hidden">
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="chat-list-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-bold">PingMe</h1>
@@ -226,7 +274,8 @@
             </main>
         </div>
 
-        <div id="friends-page" class="flex flex-col h-full hidden">
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="friends-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center space-x-3">
                     <button class="nav-back-btn p-1" data-target="chat-list-page">
@@ -255,7 +304,8 @@
             </main>
         </div>
 
-        <div id="groups-page" class="flex flex-col h-full hidden">
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="groups-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center space-x-3">
                     <button class="nav-back-btn p-1" data-target="chat-list-page">
@@ -271,8 +321,8 @@
             </main>
         </div>
 
-
-        <div id="profile-page" class="flex flex-col h-full hidden">
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="profile-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -353,7 +403,8 @@
             </main>
             </div>
 
-        <div id="friend-profile-page" class="flex flex-col h-full hidden">
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="friend-profile-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -419,7 +470,8 @@
             </main>
         </div>
 
-        <div id="chat-page" class="flex flex-col h-full hidden">
+        <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
+        <div id="chat-page" class="flex flex-col h-full hidden page">
             <header class="header-gradient text-white p-4 shadow-lg rounded-b-3xl z-10 shrink-0">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -592,7 +644,9 @@
             signInWithEmailAndPassword, 
             sendEmailVerification, 
             sendPasswordResetEmail, 
-            signOut 
+            signOut,
+            setPersistence, // === নতুন সংযোজন ===
+            browserLocalPersistence // === নতুন সংযোজন ===
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
@@ -816,10 +870,21 @@
         }
         
         // --- পেজ ন্যাভিগেশন ---
+        // === পরিবর্তিত: showPage ফাংশন ===
         function showPage(pageId) {
-            allPages.forEach(page => page.classList.add('hidden'));
+            allPages.forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('page-visible'); // অপাসিটি সরান
+            });
             const pageToShow = document.getElementById(pageId);
-            if (pageToShow) pageToShow.classList.remove('hidden');
+            
+            if (pageToShow) {
+                pageToShow.classList.remove('hidden'); // জায়গা নিতে দিন
+                // অপাসিটি ট্রানজিশনের আগে 'display' প্রয়োগ করার জন্য একটি ছোট টাইমআউট ব্যবহার করুন
+                setTimeout(() => {
+                    pageToShow.classList.add('page-visible'); // ফেড ইন করুন
+                }, 20); 
+            }
             
             if (tabPages.map(p => p.id).includes(pageId)) {
                 bottomNav.classList.remove('hidden');
@@ -835,6 +900,7 @@
                 btn.classList.toggle('opacity-70', !isActive);
             });
         }
+        // === শেষ পরিবর্তন ===
 
         // --- অথ মেসেজ ---
         function toggleLoginRegister(showLogin) {
@@ -1977,6 +2043,7 @@
         }
 
         // --- অ্যাপ চালু করা ---
+        // === পরিবর্তিত: initApp ফাংশন ===
         async function initApp() {
             if (!firebaseConfig.apiKey) {
                 document.body.innerHTML = '<div style="color: red; padding: 20px;">Error: Firebase configuration is missing.</div>';
@@ -1990,6 +2057,15 @@
                 storage = getStorage(app);
                 setLogLevel('Debug');
                 const analytics = getAnalytics(app);
+
+                // === নতুন সংযোজন: সেশন পার্সিসটেন্স সেট করা ===
+                try {
+                    await setPersistence(auth, browserLocalPersistence);
+                    console.log("Auth persistence set to local.");
+                } catch (error) {
+                    console.error("Error setting auth persistence: ", error);
+                }
+                // === শেষ সংযোজন ===
 
                 document.addEventListener("visibilitychange", () => {
                     if (auth.currentUser) {
@@ -2007,7 +2083,20 @@
                     }
                 });
 
+                // === পরিবর্তিত: onAuthStateChanged লোডার হ্যান্ডলিং সহ ===
                 onAuthStateChanged(auth, async (user) => {
+                    
+                    const appLoader = document.getElementById('app-loader'); // লোডার পান
+                    
+                    // লোডার লুকান
+                    if (appLoader) {
+                        appLoader.classList.add('loader-hidden');
+                        // ট্রানজিশনের পরে DOM থেকে সরান
+                        setTimeout(() => {
+                            if (appLoader) appLoader.style.display = 'none'; 
+                        }, 300); 
+                    }
+
                     cleanupAllListeners();
                     if (user) {
                         if (user.emailVerified) {
@@ -2018,10 +2107,10 @@
                             sendButton.disabled = false;
                             loadChatList();
                             friendSearchInput.placeholder = "Enter friend's Ping ID";
-                            showPage('chat-list-page');
+                            showPage('chat-list-page'); // প্রধান অ্যাপ পেজ দেখান
                         } else {
                             currentUserId = null;
-                            showPage('login-page');
+                            showPage('login-page'); // লগইন পেজ দেখান
                             loginMessage.innerHTML = `
                                 <p class="text-sm text-yellow-600 dark:text-yellow-400">
                                     A verification email was sent to <strong>${user.email}</strong>. 
@@ -2046,17 +2135,19 @@
                     } else {
                         currentUserId = null;
                         currentUserData = null;
-                        showPage('login-page');
+                        showPage('login-page'); // লগইন পেজ দেখান
                         bottomNav.classList.add('hidden');
                         loginMessage.innerHTML = '';
                         showLoginForm();
                     }
                 });
+                // === শেষ পরিবর্তন ===
             } catch (error) {
                 console.error("Firebase initialization failed: ", error);
                 document.body.innerHTML = `<div style="color: red; padding: 20px;">Error: Firebase initialization failed. Check your console for details.</div>`;
             }
         }
+        // === শেষ পরিবর্তন ===
 
 
         // === ইভেন্ট লিসেনার্স ===
@@ -2248,3 +2339,4 @@
     </script>
 </body>
 </html>
+s
