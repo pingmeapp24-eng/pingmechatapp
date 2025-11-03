@@ -166,6 +166,87 @@
         }
         /* === শেষ: লগইন সিস্টেম আপডেট (CSS) === */
 
+        /* === অপসারিত: কল বাটন === */
+        /* .call-btn স্টাইলগুলো সরানো হয়েছে কারণ এটি আর চ্যাট লিস্টে নেই */
+        
+        /* === শুরু: কলিং UI স্টাইল === */
+        @keyframes slide-up {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        @keyframes slide-down {
+            from { transform: translate(-50%, 0); opacity: 1; }
+            to { transform: translate(-50%, 100%); opacity: 0; }
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* === নতুন সংযোজন: হেডার কল বাটন অ্যানিমেশন === */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } /* red-500 */
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .call-active-header {
+            animation: pulse-red 1.5s infinite;
+        }
+
+
+        #incoming-call-modal {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 100%);
+            width: 100%;
+            max-width: 420px;
+            z-index: 60;
+            background-image: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+            padding: 24px;
+            color: white;
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.3);
+            animation: slide-up 0.3s ease-out forwards;
+        }
+        #incoming-call-modal.modal-hidden {
+            animation: slide-down 0.3s ease-in forwards;
+        }
+        
+        #in-call-ui {
+            position: fixed;
+            bottom: 80px; /* nav bar এর উপরে */
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 400px;
+            z-index: 45; /* modal-backdrop (40) এর উপরে, modal-content (50) এর নিচে */
+            background-color: rgba(30, 41, 59, 0.9); /* slate-800/90 */
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            transform: translate(-50%, 20px);
+            pointer-events: none;
+        }
+        #in-call-ui.visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+            pointer-events: auto;
+        }
+        /* === শেষ: কলিং UI স্টাইল === */
 
     </style>
 </head>
@@ -269,9 +350,7 @@
                         </div>
                 </div>
             </header>
-            <main id="chat-list-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100 dark:bg-gray-900">
-                <div class="text-center pt-10"><span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-sm rounded-full">Loading chats...</span></div>
-            </main>
+            <main id="chat-list-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-100 dark:bg-gray-900"></main>
         </div>
 
         <!-- === পরিবর্তিত: 'page' ক্লাস যোগ করা হয়েছে === -->
@@ -441,7 +520,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone</label>
-                        <p id="friend-profile-phone" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/50 rounded-md">...</p>
+                        <p id="friend-profile-phone" class="w-full mt-1 p-2 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-800/5Both">...</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Birthdate</label>
@@ -488,7 +567,11 @@
                             </div>
                         </button>
                     </div>
-                    <div class="w-10 h-10"></div>
+                    <!-- === পরিবর্তিত: প্লেসহোল্ডারের বদলে কল বাটন === -->
+                    <button id="chat-header-call-btn" class="p-2 rounded-full hover:bg-white/20 hidden">
+                        <i id="chat-header-call-icon" class="fas fa-phone text-lg"></i>
+                    </button>
+                    <!-- === শেষ === -->
                 </div>
             </header>
             
@@ -614,6 +697,55 @@
             Profile saved successfully!
         </div>
 
+        <!-- === শুরু: ইনকামিং কল মডাল === -->
+        <div id="incoming-call-modal" class="hidden">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <img id="incoming-caller-avatar" src="https://placehold.co/40x40/fbc02d/ffffff?text=?" alt="Caller" class="w-10 h-10 rounded-full object-cover">
+                    <div>
+                        <h3 id="incoming-caller-name" class="font-semibold">Unknown Caller</h3>
+                        <p class="text-sm text-gray-200">PingMe Audio Call</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-around items-center pt-4">
+                <button id="incoming-decline-btn" class="flex flex-col items-center space-y-1">
+                    <span class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
+                        <i class="fas fa-phone-slash fa-lg"></i>
+                    </span>
+                    <span class="text-xs">Decline</span>
+                </button>
+                <button id="incoming-accept-btn" class="flex flex-col items-center space-y-1">
+                    <span class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg animate-pulse-green">
+                        <i class="fas fa-phone fa-lg"></i>
+                    </span>
+                    <span class="text-xs">Accept</span>
+                </button>
+            </div>
+        </div>
+        <!-- === শেষ: ইনকামিং কল মডাল === -->
+
+        <!-- === শুরু: ইন-কল UI === -->
+        <div id="in-call-ui">
+            <div class="flex items-center space-x-2">
+                <img id="in-call-avatar" src="https://placehold.co/32x32/fbc02d/ffffff?text=?" alt="Avatar" class="w-8 h-8 rounded-full object-cover">
+                <div>
+                    <p id="in-call-name" class="text-sm font-semibold text-white truncate">...</p>
+                    <p id="in-call-timer" class="text-xs text-green-400">Connecting...</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button id="in-call-mute-btn" class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white">
+                    <i id="in-call-mute-icon" class="fas fa-microphone"></i>
+                </button>
+                <button id="in-call-hangup-btn" class="w-12 h-10 bg-red-600 rounded-full flex items-center justify-center text-white">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+            </div>
+        </div>
+        <!-- === শেষ: ইন-কল UI === -->
+
+
         <nav id="bottom-nav" class="w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 grid grid-cols-4 gap-2 p-3 shrink-0 shadow-inner hidden">
             <button data-page="chat-list-page" class="nav-btn flex flex-col items-center text-blue-500 dark:text-blue-400">
                 <i class="fas fa-comments text-2xl"></i>
@@ -717,6 +849,22 @@
             isMe: false
         };
 
+        // === নতুন সংযোজন: কলিং ভ্যারিয়েবলস ===
+        const callsCollectionRoot = `calls_${appId}`;
+        const servers = { 
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' }
+                // PROD: Add TURN servers here for NAT traversal
+            ] 
+        };
+        const activeCalls = {}; // partnerId -> { pc, localStream, audioEl, callDocUnsub, iceCandidateUnsub, callId, partnerData, isMuted, callStartTime, callTimerInterval }
+        let currentCallRingTone = null;
+        let currentCallTimerInterval = null;
+        let incomingCallListenerUnsub = null;
+        let currentIncomingCall = null;
+
+
         // --- ফায়ারবেজ পাথ ---
         const usersCollectionPath = `artifacts/${appId}/public/data/users`;
         const chatRoomsCollectionPath = `artifacts/${appId}/public/data/chat_rooms`;
@@ -797,6 +945,8 @@
         const emojiPanel = document.getElementById('emoji-panel');
         const sendLinkBtn = document.getElementById('send-link-btn'); 
         const chatHeaderProfileBtn = document.getElementById('chat-header-profile-btn');
+        const chatHeaderCallBtn = document.getElementById('chat-header-call-btn'); // === নতুন সংযোজন ===
+        const chatHeaderCallIcon = document.getElementById('chat-header-call-icon'); // === নতুন সংযোজন ===
 
         // === নতুন সংযোজন: রিপ্লে প্রিভিউ ===
         const replyPreviewBar = document.getElementById('reply-preview-bar');
@@ -849,6 +999,22 @@
         const confirmModalCancel = document.getElementById('confirm-modal-cancel');
         const confirmModalConfirm = document.getElementById('confirm-modal-confirm');
         let confirmModalCallback = null;
+
+        // === নতুন সংযোজন: কলিং UI এলিমেন্ট ===
+        const incomingCallModal = document.getElementById('incoming-call-modal');
+        const incomingCallerAvatar = document.getElementById('incoming-caller-avatar');
+        const incomingCallerName = document.getElementById('incoming-caller-name');
+        const incomingAcceptBtn = document.getElementById('incoming-accept-btn');
+        const incomingDeclineBtn = document.getElementById('incoming-decline-btn');
+
+        const inCallUI = document.getElementById('in-call-ui');
+        const inCallAvatar = document.getElementById('in-call-avatar');
+        const inCallName = document.getElementById('in-call-name');
+        const inCallTimer = document.getElementById('in-call-timer');
+        const inCallMuteBtn = document.getElementById('in-call-mute-btn');
+        const inCallMuteIcon = document.getElementById('in-call-mute-icon');
+        const inCallHangupBtn = document.getElementById('in-call-hangup-btn');
+
 
         // === ইউটিলিটি ফাংশন ===
 
@@ -1037,6 +1203,11 @@
         async function signOutUser() {
             try {
                 await updateUserStatus('offline');
+                // Ensure all active calls are ended before signing out
+                const allActivePartnerIds = Object.keys(activeCalls);
+                for (const partnerId of allActivePartnerIds) {
+                    await endActiveCall(partnerId, { isSignOut: true });
+                }
                 await signOut(auth);
             } catch (error) {
                 console.error("Error signing out: ", error);
@@ -1277,11 +1448,15 @@
                     const lastMessageTimestamp = room.lastMessage?.timestamp?.toDate() || new Date(0);
                     const unreadCount = room.unreadCounts?.[currentUserId] || 0;
 
+                    // === পরিবর্তিত: কল বাটন HTML সরানো হয়েছে ===
                     chatItemsHTML.push({
                         html: `
                         <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg transition-shadow cursor-pointer" data-partner-id="${partnerId}" data-partner-name="${partnerName}" data-partner-photo="${partnerPhoto}">
                             <div class="relative">
                                 <img src="${partnerPhoto}" alt="${partnerName}" class="w-14 h-14 rounded-full object-cover" />
+                                
+                                <!-- === কল বাটন এখান থেকে সরানো হয়েছে === -->
+
                                 <span id="unread-count-${chatRoomId}" class="absolute top-0 right-0 w-5 h-5 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full flex items-center justify-center ${unreadCount > 0 ? '' : 'hidden'}">${unreadCount}</span>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -1302,7 +1477,8 @@
                 chatListContainer.innerHTML = chatItemsHTML.map(item => item.html).join('');
 
                 chatListContainer.querySelectorAll('[data-partner-id]').forEach(chatEl => {
-                    chatEl.addEventListener('click', () => {
+                    chatEl.addEventListener('click', (e) => {
+                        // === কল বাটন চেক করার দরকার নেই, কারণ এটি আর এখানে নেই ===
                         const partnerData = chatEl.dataset;
                         startChat(partnerData.partnerId, {
                             displayName: partnerData.partnerName,
@@ -1311,11 +1487,593 @@
                     });
                 });
 
+                // === পরিবর্তিত: কল বাটন ইভেন্ট লিসেনার সরানো হয়েছে ===
+
             }, (error) => {
                 console.error("Error loading chat list: ", error);
                 chatListContainer.innerHTML = `<div class="text-center pt-10"><span class="px-3 py-1 bg-red-200 dark:bg-red-700 text-sm rounded-full">Error loading chats.</span></div>`;
             });
         }
+
+        /* --- === শুরু: WebRTC অডিও কলিং JS (সম্পূর্ণ প্রতিস্থাপন) === --- */
+
+        // --- কলিং ইউটিলিটি ফাংশন ---
+        async function ensureMicrophonePermission() {
+            try {
+                // অডিও পারমিশন পান
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                return stream;
+            } catch (e) {
+                console.warn('Microphone permission denied', e);
+                showToast('মাইক্রোফোন অনুমতি ছাড়া কল করা সম্ভব নয়।', true);
+                return null;
+            }
+        }
+
+        function createAudioElementForCall(callId) {
+            // রিমোট অডিও চালানোর জন্য একটি হিডেন <audio> ট্যাগ তৈরি করুন
+            let audioEl = document.getElementById('audio_'+callId);
+            if (!audioEl) {
+                audioEl = document.createElement('audio');
+                audioEl.id = 'audio_'+callId;
+                audioEl.autoplay = true;
+                audioEl.playsInline = true; // iOS-এ ইনলাইন প্লে করার জন্য
+                audioEl.style.display = 'none'; // এটি দেখানোর দরকার নেই
+                document.body.appendChild(audioEl);
+            }
+            return audioEl;
+        }
+
+        function formatCallTimer(seconds) {
+            // কল টাইমার mm:ss ফরম্যাটে দেখান
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        // --- কলিং UI ম্যানেজমেন্ট ---
+        function showIncomingCallModal(callId, callData, partnerData) {
+            if (currentIncomingCall) {
+                // ইতিমধ্যে একটি কল রিং হচ্ছে, নতুনটি উপেক্ষা করুন বা 'ব্যস্ত' দেখান
+                console.warn("Already have an incoming call, rejecting new one.");
+                const callRef = doc(db, callsCollectionRoot, callId);
+                updateDoc(callRef, { state: 'declined' }); // অথবা 'busy'
+                return;
+            }
+
+            currentIncomingCall = { callId, callData, partnerData };
+
+            incomingCallerName.textContent = partnerData.displayName || callData.caller;
+            incomingCallerAvatar.src = partnerData.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${(partnerData.displayName || '?').charAt(0)}`;
+            
+            incomingCallModal.classList.remove('hidden', 'modal-hidden');
+
+            // রিংটোন বাজান
+            if (!currentCallRingTone) {
+                currentCallRingTone = new Audio('https://proxy.gd.workers.dev/https://github.com/hiteshchoudhary/react-native-projects/raw/main/proj02_tic-tac-toe/src/assets/audio/success.mp3'); // একটি ছোট রিংটোন URL
+                currentCallRingTone.loop = true;
+            }
+            currentCallRingTone.play().catch(e => console.warn("Ringtone play failed:", e));
+            
+            // ভাইব্রেশন (যদি সাপোর্টেড হয়)
+            if ('vibrate' in navigator) {
+                navigator.vibrate([200, 100, 200, 100, 200]); // রিংগিং প্যাটার্ন
+            }
+        }
+
+        function hideIncomingCallModal() {
+            if (currentCallRingTone) {
+                currentCallRingTone.pause();
+                currentCallRingTone.currentTime = 0;
+            }
+            if ('vibrate' in navigator) {
+                navigator.vibrate(0); // ভাইব্রেশন বন্ধ করুন
+            }
+            incomingCallModal.classList.add('modal-hidden');
+            setTimeout(() => incomingCallModal.classList.add('hidden'), 300); // অ্যানিমেশনের পরে লুকান
+            currentIncomingCall = null;
+        }
+
+        function showInCallUI(partnerId, partnerData) {
+            const callInfo = activeCalls[partnerId];
+            if (!callInfo) return;
+
+            inCallAvatar.src = partnerData.photoURL || `https://placehold.co/32x32/fbc02d/ffffff?text=${(partnerData.displayName || '?').charAt(0)}`;
+            inCallName.textContent = partnerData.displayName || partnerId;
+            inCallTimer.textContent = "Connecting...";
+            
+            // টাইমার শুরু করুন
+            callInfo.callStartTime = Date.now();
+            callInfo.callTimerInterval = setInterval(() => {
+                const seconds = Math.floor((Date.now() - callInfo.callStartTime) / 1000);
+                inCallTimer.textContent = formatCallTimer(seconds);
+            }, 1000);
+
+            // মিউট বাটন রিসেট করুন
+            callInfo.isMuted = false;
+            inCallMuteIcon.classList.remove('fa-microphone-slash');
+            inCallMuteIcon.classList.add('fa-microphone');
+            inCallMuteBtn.classList.remove('bg-white', 'text-black');
+            inCallMuteBtn.classList.add('bg-white/20', 'text-white');
+
+            inCallUI.classList.add('visible');
+            inCallUI.dataset.partnerId = partnerId; // বর্তমান কলের পার্টনার আইডি সেভ করুন
+        }
+
+        function hideInCallUI() {
+            const partnerId = inCallUI.dataset.partnerId;
+            if (partnerId && activeCalls[partnerId]) {
+                if (activeCalls[partnerId].callTimerInterval) {
+                    clearInterval(activeCalls[partnerId].callTimerInterval);
+                }
+            }
+            inCallUI.classList.remove('visible');
+            inCallUI.dataset.partnerId = '';
+            inCallTimer.textContent = "Connecting...";
+        }
+
+        // === নতুন সংযোজন: চ্যাট হেডার কল বাটন UI ===
+        /**
+         * চ্যাট হেডারে কল বাটন UI আপডেট করুন
+         */
+        function updateChatHeaderCallButtonUI(isActive) {
+            if (!chatHeaderCallBtn || !chatHeaderCallIcon) return;
+
+            chatHeaderCallIcon.classList.toggle('fa-phone', !isActive);
+            chatHeaderCallIcon.classList.toggle('fa-phone-slash', isActive);
+            
+            chatHeaderCallBtn.classList.toggle('call-active-header', isActive); // অ্যানিমেশনের জন্য নতুন ক্লাস
+            
+            if (isActive) {
+                chatHeaderCallIcon.classList.add('text-red-400'); // সক্রিয় কল = হ্যাং আপ = লাল
+                chatHeaderCallBtn.title = 'End call';
+            } else {
+                chatHeaderCallIcon.classList.remove('text-red-400'); // ডিফল্ট রঙ
+                if (currentPartnerInfo) {
+                    chatHeaderCallBtn.title = `Audio call ${currentPartnerInfo.displayName}`;
+                } else {
+                    chatHeaderCallBtn.title = 'Audio call';
+                }
+            }
+        }
+        // === শেষ ===
+
+        // --- প্রধান কলিং ফাংশন ---
+
+        /**
+         * কল শুরু করুন (Start a call)
+         */
+        async function startCall(partnerId, partnerData) {
+            if (!currentUserId) { showToast('Please sign in first.', true); return; }
+            if (activeCalls[partnerId] || Object.keys(activeCalls).length > 0) {
+                showToast('You are already in a call.', true); 
+                return; 
+            }
+            if (currentIncomingCall) {
+                showToast('Please respond to the incoming call first.', true);
+                return;
+            }
+
+            const localStream = await ensureMicrophonePermission();
+            if (!localStream) {
+                showToast('Microphone permission denied.', true);
+                return;
+            }
+
+            showToast(`Calling ${partnerData.displayName}...`, false);
+
+            const callId = `${currentUserId}_${partnerId}_${Date.now()}`;
+            const callRef = doc(db, callsCollectionRoot, callId);
+            
+            // RTCPeerConnection তৈরি করুন
+            const pc = new RTCPeerConnection(servers);
+            
+            // অডিও ট্যাগ তৈরি করুন
+            const audioEl = createAudioElementForCall(callId);
+
+            // কল অবজেক্টে সব তথ্য সেভ করুন
+            const callInfo = {
+                pc, 
+                localStream, 
+                audioEl, 
+                callDocUnsub: null, 
+                iceCandidateUnsub: null,
+                callId,
+                callRef,
+                partnerData,
+                isMuted: false,
+                callStartTime: null,
+                callTimerInterval: null,
+                timeoutTimer: null
+            };
+            activeCalls[partnerId] = callInfo;
+            updateChatHeaderCallButtonUI(true); // === পরিবর্তিত: হেডার বাটন UI আপডেট করুন ===
+
+            // লোকাল অডিও ট্র্যাক যোগ করুন
+            localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+
+            // রিমোট ট্র্যাক হ্যান্ডলার
+            pc.ontrack = (event) => {
+                if (event.streams && event.streams[0]) {
+                    audioEl.srcObject = event.streams[0];
+                }
+            };
+
+            // ICE ক্যান্ডিডেট হ্যান্ডলার
+            pc.onicecandidate = async (event) => {
+                if (event.candidate) {
+                    const candidatesCol = collection(callRef, 'candidates');
+                    await setDoc(doc(candidatesCol), { 
+                        candidate: JSON.stringify(event.candidate), 
+                        owner: currentUserId 
+                    });
+                }
+            };
+
+            // ফায়ারস্টোরে 'calling' ডকুমেন্ট তৈরি করুন
+            try {
+                await setDoc(callRef, {
+                    caller: currentUserId,
+                    callee: partnerId,
+                    callerData: {
+                        displayName: currentUserData.displayName,
+                        photoURL: currentUserData.photoURL
+                    },
+                    state: 'calling',
+                    ts: serverTimestamp()
+                });
+
+                // অফার (Offer) তৈরি করুন
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                
+                // ফায়ারস্টোরে অফার আপডেট করুন
+                await updateDoc(callRef, { offer: JSON.stringify(offer) });
+
+                // কল ডকুমেন্টের পরিবর্তন শুনুন (Listen for changes)
+                callInfo.callDocUnsub = onSnapshot(callRef, async (snap) => {
+                    const data = snap.data();
+                    if (!data) {
+                        endActiveCall(partnerId, { showMsg: false }); // কল ডকুমেন্ট মুছে গেলে কল শেষ করুন
+                        return;
+                    }
+
+                    // 1. উত্তর (Answer) এসেছে
+                    if (data.answer && !pc.currentRemoteDescription) {
+                        try {
+                            const remoteDesc = new RTCSessionDescription(JSON.parse(data.answer));
+                            await pc.setRemoteDescription(remoteDesc);
+                            showToast('Call connected!', false);
+                            showInCallUI(partnerId, partnerData);
+                        } catch (e) {
+                            console.error("Error setting remote description:", e);
+                        }
+                    }
+
+                    // 2. কল বাতিল (Declined)
+                    if (data.state === 'declined') {
+                        showToast('Call declined', true);
+                        endActiveCall(partnerId, { showMsg: false });
+                    }
+
+                    // 3. কল শেষ (Ended)
+                    if (data.state === 'ended') {
+                        showToast('Call ended', false);
+                        endActiveCall(partnerId, { showMsg: false });
+                    }
+                    
+                    // 4. উত্তর নেই (No Answer)
+                    if (data.state === 'no_answer') {
+                        showToast('Call not answered', true);
+                        endActiveCall(partnerId, { showMsg: false });
+                    }
+                });
+
+                // রিমোট ICE ক্যান্ডিডেট শুনুন
+                const candidatesCol = collection(callRef, 'candidates');
+                callInfo.iceCandidateUnsub = onSnapshot(candidatesCol, (snap) => {
+                    snap.docChanges().forEach(async (change) => {
+                        if (change.type === 'added') {
+                            const data = change.doc.data();
+                            if (data.owner !== currentUserId && data.candidate) {
+                                try {
+                                    await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)));
+                                } catch (e) {
+                                    console.warn("Error adding ICE candidate:", e);
+                                }
+                            }
+                        }
+                    });
+                });
+
+                // কল টাইমআউট সেট করুন (e.g., 30 সেকেন্ড)
+                callInfo.timeoutTimer = setTimeout(async () => {
+                    if (activeCalls[partnerId] && !activeCalls[partnerId].callStartTime) {
+                        console.log("Call timeout, no answer.");
+                        await updateDoc(callRef, { state: 'no_answer' });
+                        // onSnapshot হ্যান্ডলার কলটি বন্ধ করবে
+                    }
+                }, 30000); // 30 সেকেন্ড টাইমআউট
+
+            } catch (error) {
+                console.error("Error starting call:", error);
+                showToast('Failed to start call.', true);
+                endActiveCall(partnerId);
+            }
+        }
+
+
+        /**
+         * ইনকামিং কল শুনুন (Listen for incoming calls)
+         */
+        function listenForIncomingCalls() {
+            if (incomingCallListenerUnsub) incomingCallListenerUnsub();
+            if (!currentUserId) return;
+
+            const q = query(
+                collection(db, callsCollectionRoot), 
+                where('callee', '==', currentUserId), 
+                where('state', '==', 'calling')
+            );
+            
+            incomingCallListenerUnsub = onSnapshot(q, (snapshot) => {
+                snapshot.docChanges().forEach(async (change) => {
+                    if (change.type === 'added') {
+                        const callId = change.doc.id;
+                        const callData = change.doc.data();
+                        
+                        // যদি ইতিমধ্যে কোনো কলে থাকি, নতুন কল অটো-ডিক্লাইন
+                        if (Object.keys(activeCalls).length > 0) {
+                            console.warn("Already in a call, rejecting incoming call.");
+                            const callRef = doc(db, callsCollectionRoot, callId);
+                            await updateDoc(callRef, { state: 'declined' }); // বা 'busy'
+                            return;
+                        }
+
+                        // কলারের তথ্য দেখান
+                        const partnerData = callData.callerData || { displayName: callData.caller, photoURL: null };
+                        
+                        showIncomingCallModal(callId, callData, partnerData);
+                    }
+                });
+            });
+        }
+        
+        /**
+         * ইনকামিং কল গ্রহণ করুন (Accept Call)
+         */
+        async function handleAcceptCall() {
+            if (!currentIncomingCall) return;
+
+            const { callId, callData, partnerData } = currentIncomingCall;
+            const partnerId = callData.caller;
+            const callRef = doc(db, callsCollectionRoot, callId);
+            
+            hideIncomingCallModal();
+
+            const localStream = await ensureMicrophonePermission();
+            if (!localStream) {
+                await updateDoc(callRef, { state: 'declined' });
+                showToast('Microphone permission denied.', true);
+                return;
+            }
+
+            const pc = new RTCPeerConnection(servers);
+            const audioEl = createAudioElementForCall(callId);
+            
+            const callInfo = {
+                pc, 
+                localStream, 
+                audioEl, 
+                callDocUnsub: null, 
+                iceCandidateUnsub: null,
+                callId,
+                callRef,
+                partnerData,
+                isMuted: false,
+                callStartTime: null,
+                callTimerInterval: null,
+                timeoutTimer: null
+            };
+            activeCalls[partnerId] = callInfo;
+            // === দ্রষ্টব্য: আমরা কল গ্রহণ করার সময় চ্যাট পেজে নাও থাকতে পারি ===
+            // === তাই `updateChatHeaderCallButtonUI` এখানে কল করা উচিত নয় ===
+            // === এটি `startChat` এ কল করা হবে যদি ব্যবহারকারী চ্যাটে প্রবেশ করে ===
+
+            localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+
+            pc.ontrack = (event) => {
+                if (event.streams && event.streams[0]) {
+                    audioEl.srcObject = event.streams[0];
+                }
+            };
+
+            pc.onicecandidate = async (event) => {
+                if (event.candidate) {
+                    const candidatesCol = collection(callRef, 'candidates');
+                    await setDoc(doc(candidatesCol), { 
+                        candidate: JSON.stringify(event.candidate), 
+                        owner: currentUserId 
+                    });
+                }
+            };
+
+            try {
+                // রিমোট অফার সেট করুন
+                const offer = JSON.parse(callData.offer);
+                await pc.setRemoteDescription(new RTCSessionDescription(offer));
+
+                // উত্তর (Answer) তৈরি করুন
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+
+                // ফায়ারস্টোরে উত্তর এবং 'connected' স্টেটাস আপডেট করুন
+                await updateDoc(callRef, {
+                    answer: JSON.stringify(answer),
+                    state: 'connected'
+                });
+
+                showToast('Call connected!', false);
+                
+                // === যদি ব্যবহারকারী ইতিমধ্যে এই পার্টনারের সাথে চ্যাটে থাকে ===
+                if (currentPartnerId === partnerId && !chatPage.classList.contains('hidden')) {
+                    showInCallUI(partnerId, partnerData);
+                    updateChatHeaderCallButtonUI(true); // === নতুন সংযোজন ===
+                }
+
+
+                // কল ডকুমেন্টের পরিবর্তন শুনুন (মূলত 'ended' স্টেটাসের জন্য)
+                callInfo.callDocUnsub = onSnapshot(callRef, (snap) => {
+                    const data = snap.data();
+                    if (!data || data.state === 'ended') {
+                        showToast('Call ended', false);
+                        endActiveCall(partnerId, { showMsg: false });
+                    }
+                });
+
+                // রিমোট ICE ক্যান্ডিডেট শুনুন
+                const candidatesCol = collection(callRef, 'candidates');
+                callInfo.iceCandidateUnsub = onSnapshot(candidatesCol, (snap) => {
+                    snap.docChanges().forEach(async (change) => {
+                        if (change.type === 'added') {
+                            const data = change.doc.data();
+                            if (data.owner !== currentUserId && data.candidate) {
+                                try {
+                                    await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)));
+                                } catch (e) {
+                                    console.warn("Error adding ICE candidate:", e);
+                                }
+                            }
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error("Error accepting call:", error);
+                showToast('Failed to connect call.', true);
+                endActiveCall(partnerId);
+            }
+        }
+        
+        /**
+         * ইনকামিং কল বাতিল করুন (Decline Call)
+         */
+        async function handleDeclineCall() {
+            if (!currentIncomingCall) return;
+
+            const { callId } = currentIncomingCall;
+            const callRef = doc(db, callsCollectionRoot, callId);
+            
+            hideIncomingCallModal();
+            
+            try {
+                await updateDoc(callRef, { state: 'declined' });
+            } catch (error) {
+                console.error("Error declining call:", error);
+            }
+        }
+
+
+        /**
+         * সক্রিয় কল শেষ করুন (End Active Call)
+         * @param {string} partnerId - The partnerId for the call to end.
+         * @param {object} options - Options { showMsg: boolean, isSignOut: boolean }
+         */
+        async function endActiveCall(partnerId, options = {}) {
+            const { showMsg = true, isSignOut = false } = options;
+            const callInfo = activeCalls[partnerId];
+            if (!callInfo) return;
+
+            if (showMsg) {
+                showToast('Call ended', false);
+            }
+
+            try {
+                // 1. টাইমার এবং UI পরিষ্কার করুন
+                if (callInfo.callTimerInterval) clearInterval(callInfo.callTimerInterval);
+                if (callInfo.timeoutTimer) clearTimeout(callInfo.timeoutTimer);
+                if (inCallUI.dataset.partnerId === partnerId) {
+                    hideInCallUI();
+                }
+                
+                // 2. WebRTC সংযোগ বন্ধ করুন
+                if (callInfo.pc) {
+                    callInfo.pc.close();
+                }
+                
+                // 3. লোকাল স্ট্রিম বন্ধ করুন
+                if (callInfo.localStream) {
+                    callInfo.localStream.getTracks().forEach(track => track.stop());
+                }
+                
+                // 4. অডিও এলিমেন্ট সরান
+                if (callInfo.audioEl) {
+                    callInfo.audioEl.srcObject = null;
+                    callInfo.audioEl.remove();
+                }
+                
+                // 5. ফায়ারস্টোর লিসেনার আনসাবস্ক্রাইব করুন
+                if (callInfo.callDocUnsub) callInfo.callDocUnsub();
+                if (callInfo.iceCandidateUnsub) callInfo.iceCandidateUnsub();
+
+                // 6. ফায়ারস্টোরে 'ended' স্টেটাস সেট করুন (যদি সাইন আউট না হয়)
+                if (!isSignOut && callInfo.callRef) {
+                    try {
+                        const callSnap = await getDoc(callInfo.callRef);
+                        if (callSnap.exists() && callSnap.data().state !== 'ended' && callSnap.data().state !== 'declined') {
+                            await updateDoc(callInfo.callRef, { state: 'ended' });
+                        }
+                    } catch (e) {
+                        console.warn("Error setting call state to 'ended':", e);
+                    }
+                }
+            } catch (e) {
+                console.error("Error during call cleanup:", e);
+            }
+
+            // 7. সক্রিয় কল অবজেক্ট থেকে সরান
+            delete activeCalls[partnerId];
+            
+            // 8. চ্যাট লিস্টে কল বাটন UI আপডেট করুন (=== পরিবর্তিত: হেডার বাটন ===)
+            updateChatHeaderCallButtonUI(false);
+        }
+        
+        /**
+         * ইন-কল মিউট টগল করুন
+         */
+        function toggleMute() {
+            const partnerId = inCallUI.dataset.partnerId;
+            const callInfo = activeCalls[partnerId];
+            if (!callInfo || !callInfo.localStream) return;
+
+            callInfo.isMuted = !callInfo.isMuted;
+            
+            callInfo.localStream.getAudioTracks().forEach(track => {
+                track.enabled = !callInfo.isMuted;
+            });
+
+            // UI আপডেট করুন
+            inCallMuteIcon.classList.toggle('fa-microphone', !callInfo.isMuted);
+            inCallMuteIcon.classList.toggle('fa-microphone-slash', callInfo.isMuted);
+            inCallMuteBtn.classList.toggle('bg-white', callInfo.isMuted);
+            inCallMuteBtn.classList.toggle('text-black', callInfo.isMuted);
+            inCallMuteBtn.classList.toggle('bg-white/20', !callInfo.isMuted);
+            inCallMuteBtn.classList.toggle('text-white', !callInfo.isMuted);
+            
+            showToast(callInfo.isMuted ? 'Muted' : 'Unmuted', false);
+        }
+
+        // === অপসারিত: `updateCallButtonUI` ফাংশনটি সরানো হয়েছে ===
+        
+        /* * --- ফায়ারস্টোর সিকিউরিটি নোট ---
+         * প্রোডাকশনের জন্য, আপনার ফায়ারস্টোর রুলস আপডেট করা উচিত:
+         * 1. `calls_<appId>` কালেকশনে শুধুমাত্র প্রমাণীকৃত (authenticated) ব্যবহারকারীরা লিখতে পারবেন।
+         * 2. একটি কল ডকুমেন্ট (e.g., /calls_<appId>/{callId}) শুধুমাত্র ওই কলের `caller` বা `callee` পড়তে, লিখতে বা আপডেট করতে পারবেন।
+         * 3. `candidates` সাব-কালেকশনেও একই রুল প্রযোজ্য হবে।
+         */
+
+        /* --- === WebRTC JS শেষ === --- */
+
 
         // --- মেসেজ 'seen' হিসাবে মার্ক করা ---
         async function markMessagesAsSeen(chatRoomRef, partnerId) {
@@ -1384,6 +2142,11 @@
                     currentPartnerInfo = room.participantInfo[partnerId];
                     chatHeaderName.textContent = currentPartnerInfo.displayName;
                     chatHeaderAvatar.src = currentPartnerInfo.photoURL || `https://placehold.co/40x40/fbc02d/ffffff?text=${currentPartnerInfo.displayName.charAt(0)}`;
+                    
+                    // === নতুন সংযোজন: পার্টনারের নাম পরিবর্তন হলে কল বাটনের টাইটেল আপডেট করুন ===
+                    if (!activeCalls[partnerId]) {
+                         chatHeaderCallBtn.title = `Audio call ${currentPartnerInfo.displayName}`;
+                    }
                 }
                 
                 const isPartnerTyping = room.typingStatus?.[currentPartnerId] || false;
@@ -1917,6 +2680,11 @@
             messagesContainer.innerHTML = '';
             loadMessagesAndRoom(currentChatRoomId, partnerId);
             loadPartnerStatus(partnerId);
+
+            // === নতুন সংযোজন: কল বাটন দেখানো এবং স্টেটাস আপডেট ===
+            chatHeaderCallBtn.classList.remove('hidden');
+            updateChatHeaderCallButtonUI(!!activeCalls[partnerId]);
+            // === শেষ ===
         }
 
         // --- বন্ধুর প্রোফাইল পেজ দেখানো ---
@@ -2034,12 +2802,23 @@
             if (unsubscribeFriendsList) unsubscribeFriendsList();
             if (unsubscribePartnerStatus) unsubscribePartnerStatus();
             
+            // === নতুন সংযোজন: কল লিসেনার বন্ধ করা ===
+            if (incomingCallListenerUnsub) incomingCallListenerUnsub();
+            
+            // === নতুন সংযোজন: সক্রিয় কল বন্ধ করা ===
+            const allActivePartnerIds = Object.keys(activeCalls);
+            for (const partnerId of allActivePartnerIds) {
+                endActiveCall(partnerId, { showMsg: false, isSignOut: true });
+            }
+            // === শেষ ===
+
             unsubscribeMessages = null;
             unsubscribeRoom = null;
             unsubscribeUnreadCounts = null;
             unsubscribeUserDoc = null;
             unsubscribeFriendsList = null;
             unsubscribePartnerStatus = null;
+            incomingCallListenerUnsub = null;
         }
 
         // --- অ্যাপ চালু করা ---
@@ -2080,6 +2859,11 @@
                 window.addEventListener('beforeunload', (e) => {
                     if (auth.currentUser) {
                         updateUserStatus('offline');
+                        // সাইন আউট না হলেও, ট্যাব বন্ধ করলে কল ডকুমেন্ট আপডেট করা উচিত
+                        const allActivePartnerIds = Object.keys(activeCalls);
+                        for (const partnerId of allActivePartnerIds) {
+                            endActiveCall(partnerId, { showMsg: false, isSignOut: true });
+                        }
                     }
                 });
 
@@ -2106,6 +2890,7 @@
                             messageInput.disabled = false;
                             sendButton.disabled = false;
                             loadChatList();
+                            listenForIncomingCalls(); // === নতুন সংযোজন: কল লিসেনার ===
                             friendSearchInput.placeholder = "Enter friend's Ping ID";
                             showPage('chat-list-page'); // প্রধান অ্যাপ পেজ দেখান
                         } else {
@@ -2254,6 +3039,7 @@
             chatHeaderStatus.textContent = '\u00A0';
             chatHeaderStatus.classList.add('h-4');
             cancelReply(); // === নতুন সংযোজন ===
+            chatHeaderCallBtn.classList.add('hidden'); // === নতুন সংযোজন: কল বাটন লুকান ===
         });
         
         emojiToggleBtn.addEventListener('click', () => {
@@ -2314,6 +3100,20 @@
             }
         });
 
+        // === নতুন সংযোজন: চ্যাট হেডার কল বাটন লিসেনার ===
+        chatHeaderCallBtn.addEventListener('click', () => {
+            if (!currentPartnerId || !currentPartnerInfo) {
+                console.warn('Call button clicked but no partner info');
+                return;
+            }
+
+            if (activeCalls[currentPartnerId]) {
+                endActiveCall(currentPartnerId);
+            } else {
+                startCall(currentPartnerId, currentPartnerInfo);
+            }
+        });
+
         // বন্ধুর প্রোফাইল পেজ
         friendProfileBackBtn.addEventListener('click', () => {
             const originPage = friendProfilePage.dataset.origin || 'chat-list-page';
@@ -2335,8 +3135,19 @@
                 confirmDeleteChat(currentViewingFriend.uid, currentViewingFriend.displayName);
             }
         });
+        
+        // === নতুন সংযোজন: কলিং UI ইভেন্ট লিসেনার ===
+        incomingAcceptBtn.addEventListener('click', handleAcceptCall);
+        incomingDeclineBtn.addEventListener('click', handleDeclineCall);
+        inCallMuteBtn.addEventListener('click', toggleMute);
+        inCallHangupBtn.addEventListener('click', () => {
+            const partnerId = inCallUI.dataset.partnerId;
+            if (partnerId) {
+                endActiveCall(partnerId);
+            }
+        });
+
 
     </script>
 </body>
 </html>
-s
